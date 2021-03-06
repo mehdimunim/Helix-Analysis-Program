@@ -1,0 +1,1754 @@
+<html>
+<head>
+<title>Simulaid documentation</title>
+</head>
+<body bgcolor="#FFFFFF">
+<center>
+<h2>
+Description of the program SIMULAID: a collection of utilities
+designed
+to help setting up and analyze molecular simulations.</h2></center>
+<center>
+<h1>
+Mihaly Mezei</h1></center>
+<center>Department of Pharmacological Sciences,<BR>
+Icahn Sinai School of Medicine at Mount Sinai,<BR>
+New York, NY 100102
+<p><a href="mailto:Mihaly.Mezei@mssm.edu">Mihaly.Mezei@mssm.edu</a>
+<p>Jan. 10, 2017.</center>
+<P><CENTER>
+Reference: M. Mezei, Simulaid: a simulation facilitator and analysis program,
+<i>J. Comp. Chem.,</i> <b>31,</b> 2658-2668 (2010). 
+DOI:<A href="https://dx.doi.org/10.1002/jcc.21551">10.1002/jcc.21551</A></CENTER>
+<P>
+<table NOBORDER >
+<caption>&nbsp;
+<br>&nbsp;</caption>
+<tr>
+<td ALIGN=LEFT>0.&nbsp;</td>
+<td ALIGN=LEFT><a href="#0">GENERAL INTRODUCTION TO SIMULATION
+SETUPS</a></td>
+</tr>
+<tr>
+<td ALIGN=LEFT>I.&nbsp;</td>
+<td ALIGN=LEFT><a href="#I">DESCRIPTION OF THE FUNCTIONS OF THE
+PROGRAM</a></td>
+</tr>
+<tr>
+<td ALIGN=LEFT>II.&nbsp;</td>
+<td ALIGN=LEFT><a href="#II">RUNNING THE PROGRAM - INPUT</a></td>
+</tr>
+<tr>
+<td ALIGN=LEFT>III.&nbsp;</td>
+<td ALIGN=LEFT><a href="#III">THE OUTPUT ON THE TERMINAL</a></td>
+</tr>
+<tr>
+<td ALIGN=LEFT>IV.&nbsp;</td>
+<td ALIGN=LEFT><a href="#IV">FILE FORMATS</a></td>
+</tr>
+<tr>
+<td ALIGN=LEFT>V.&nbsp;</td>
+<td ALIGN=LEFT><a href="#V">INSTALLATION</a></td>
+</tr>
+<tr>
+<td ALIGN=LEFT>VI.&nbsp;</td>
+<td ALIGN=LEFT><a href="#VI">CHANGING DIMENSION</a></td>
+</tr>
+<tr>
+<td ALIGN=LEFT>VI.&nbsp;</td>
+<td ALIGN=LEFT><a href="#VII">REFERENCES</a></td>
+</tr>
+</table>
+<p><a NAME="0"></a>0. GENERAL INTRODUCTION TO SIMULATION SETUPS
+<p>In general, a simulation requires three different types of
+information:
+<ul>
+<li>Description of the interaction energy terms
+<li>Description of the molecules in the system
+<li>Description of the boundary conditions.
+</ul>
+For analysis, the
+<ul>
+<li> Trajectory (history) file
+</ul>
+may also be needed.
+<p>
+Simulaid will help in various aspects of establishing these. In order to
+help clarify the various functionalities of Simulaid, a brief
+description is given of the various components of these
+descriptions. Frequent reference will be made to the PDB (Protein
+Data Bank) format that is considered the 'lingua franca' of
+molecular simulations (although it has a number of 'dialects')
+and to formats used by the simulation packages Amber, Charmm,
+Gromos/Gromacs, Discover, Macromodel, and MMC.
+<p>0.1. <u>Description of the interaction energy terms</u>
+<p>Most simulation packages rely on the concept of
+<b>atomtype</b> for
+the specification of the interaction potential, supplemented by a
+<b>partial charge</b>. It is generally assumed that force
+constants, dispersion and exhange repulsion terms are
+transferable to a larger extent than the partial charges.
+<p>The atomtypes can be defined by alphanumeric labels (Amber,
+Charmm,
+Gromos/Gromacs, Discover) or simple integers (Macromodel, OPLS)
+or both
+(MMC). In most cases, a <b>parameter file</b> contains the data
+necessary
+to extract the various coefficients to be used in the energy
+expressions
+(Amber, Charmm, Gromos/Gromacs, Discover) but they may be built
+into the
+program source code (Macromodel) or both (MMC).
+<p>0.2. <u>Description of the molecules in the system</u>
+<p>Most simulation packages use a hierarchical approach to define
+the assembly of atoms to be simulated.
+<ul>
+<li>The largest unit is called a <b>segment</b> in Charmm, a
+<b>chain</b> in
+PDB. MMC has two segments: the <b>solvent</b> and the
+<b>solute</b>. Segments or chains are likely to be different
+<b>(macro)molecules</b>, although they don't have to be.
+<li>Each segment is generally broken into <b>residues</b>. A
+residue is usually a repeating unit that may occur several times
+at different places (i.e., an amino or nucleic acid).
+<li>In some instances (Charmm, Discover) residues are further
+partioned into <b>groups</b> whose total charge is likely to be
+an integer (in most cases zero).
+<li>In any event, each residue involves a collection of
+<b>atoms</b>.
+</ul>
+<p>
+Simulaid can read molecular structures in the following formats:
+<UL>
+<LI>Charmm .CRD
+<LI>Charmm .CRD, extended format
+<LI>Brookhave PDB
+<LI>Charmm PDB
+<LI>Autodock3 .pdbqs
+<LI>Autodock4 .pdbqt
+<LI>Macromodel
+<LI>MMC .slt
+<LI>Gromos/Gromacs
+<LI>Tripos .mol2
+<LI>Schrodinger Maestro .mae
+<LI>InsightII .car
+<LI>NXYZ (atomic number and coordinates)
+<LI>SXYZ (chemical symbol and coordinates)
+<LI>SXYZRQ (chemical symbol, coordinates, atomic radius and charge)
+<LI>Grasp .crg
+</UL>
+Depending on the input format used, Simulaid can also write in
+most of the formats listed above. 
+It can not write a .mae file and it can only write a .mol2 file
+if the input was also in .mol2 format.
+<p>
+Since residues are considered frequently occuring molecular
+units, several packages (Amber, Charmm, Discover) use a so-called
+residue topology file (RTF) for their definition. For amino and
+nucleic acids the PDB nomenclature is followed, but only
+approximately. This standard includes definitions for amino acid
+and nucleic acid residues. These definitions consist of a
+three-letter residue name and atomnames that can be up to four
+characters long.
+<P>
+Simulaid can read topology files in the following formats:
+<UL>
+<LI>Charmm RTF
+<LI>Amber top
+</UL>
+<p>To arrive at the fully defined system, most packages rely on
+an annotated coordinate file containing the Cartesian coordinates
+of the atoms in the system as well as on the RTF and parameter
+files. For Amber, the coordinate file is in the PDB format while
+for Charmm it is in the so-called CRD format. Once the list of
+residues and atoms are known to Amber or Charmm, they will turn
+to their RTF file where the combination of residue names and
+atomnames will provide for each atom their atomtypes and partial
+charges. The .car file of Discover, the .dat file of Macromodel,
+the .mol2 file of Tripos,
+as well as the .slt file of MMC, however will contain not only
+the residue names and atomnames, but the atom types and partial
+charges as well.
+<p>The record formats of the formatted input records can be
+<A href="#listformat">listed by Simulaid</a>.
+<p>The RTF file of Amber and Charmm also specifies the bonding
+pattern. Macromodel and Tripos, on the other hand, require the bond list in
+the coordinate file while MMC will deduce the bonding pattern from the
+coordinates themselves.
+<p>Segments are usually defined by the input stream.
+<p>0.3. <u>Description of the boundary conditions</u>.
+<p>The simulated system may be a droplet in vacuum or a unit cell
+of a periodic system. Each program has to be explicitly
+instructed in the input stream as to the size and <a
+href="#PBCLIST">shape of the periodic cell</a> - the options vary
+from package to package. Charmm uses an additional file of the
+type .img that specifies the centers of all surrounding cells,
+but most packages use built-in routines for the different cell
+types allowed.
+<p>
+<A NAME="trajectory"></A>0.4. <u>Trajectories</u>.
+Simulaid can read trajectories in the following formats:
+<ul>
+<li>Charmm DCD
+<LI>Amber 
+<li>MMC (both binary and ASCII formats)
+<li>Macromodel
+<li>Stack of PDB files
+<li>Stack of Charmm CRD files
+</ul>
+If a trajectory is in multiple files then the 
+file names should be derived from the name of the first segment. 
+Assuming that the trajectory starts with file <b>x.dcd</b>,
+subsequent segments should be called <b>x_2.dcd</b>, <b>x_3.dcd</b>, etc.
+<p>
+NOTE on binary files: it is important to compile Simulad with the
+same (type) of compilers as the program that generated the trajectory
+was compiled with. Binary files generated with Fortran-77 and Fortran-90
+are different; similarly, they can be different for 32-bit and 64-bit systems.
+<p>
+<A NAME="cluster"></A>0.5. <u>Clustering options</u>.
+Simulaid has implemented several clustering algorithms.
+<UL>
+<LI>Single link clustering: For a given threshold distance for any pair
+of clusters the shortest distance between representatives of each cluster
+is larger than the threshold. For any member of a cluster (of more than one
+members) there is at least one other cluster member within the threshold
+distance.
+<LI>K-means/K-medoids clustering: with the number of clusters set by the user,
+the program iteratively assigns the objects to the cluster whose center is
+the nearest to it.
+The center of the cluster can be established in two ways:
+<UL>
+<LI>K-means: Calculate the center-of-mass of each cluster and set the center there.
+This is meaningful when the coordinates of the nodes are also known
+and the distances represent the cartesian distance between these nodes.
+<LI>K-medoids: Pick the member of each cluster as its center whose distance from the
+member farthes from is is the minimum. This option is useful when the
+distances are not representing cartesian distances.
+</UL>
+<LI>A clustering based on maximum number of neighbors: Pick the (an) object
+that has the most number of neighbors (i.e., within threshold distance);
+and call a cluster and remove it and it neighbors from the list.
+Adjust the neighbor counts and repeat until the list is exhausted.
+<LI>Density-based clusterings. These are a varian of single lik clustering
+where the bond definition is tied to the neighborhood:
+<UL>
+<LI>the number of common neighbors is not less than an input minimum (CNN)
+<LI>as above and also the nodes have to be within a maximum distance
+<LI>both nodes have a minimum number of neighbors and are 
+within a maximum distance (DBSCAN)
+</UL>
+<LI>Clustering into cliques, i.e., clusters where every pair of members
+in a cluster is within a threshold distance.
+For a given threshold this clustering is not unique since the clustering
+is necessarily a partitioning but there can be cliques that overlap.
+<LI>Clustering using the density. It is an enhanced variety of the
+single-ling clustering where the existence of a bond between two nodes
+depends not only (or not at all) on the distance between them but on the
+number of neighbors of the nodes or on the number of commonneighbors.
+</UL>
+Single-link and maximum neighbor based clustering can be run either
+by specifying a distance cutoff, resulting in an unspecified number of 
+clusters or by specifying the number of clusters
+in which case the cutoff is udjusted until this number of cluster results.
+<p>
+Furthermore, single-link clustering can be used to do a hierarchical
+clustering using several different distance cutoffs. In this case clusters
+obtained with a larger cutoff are further clustered with the next smaller
+cutoff.
+<p>
+<p><a NAME="I"></a>I. DESCRIPTION OF THE FUNCTIONS OF THE PROGRAM
+<p>I.0. Online help:
+Any prompt containing a '?' within the bracketed field
+(e.g., 'Do you want ... [y/n/$] ?' or 'Number of ... [100,$]=')
+will respond with an explanation if the
+user types just a '?'.
+Some of the prompts asking for a selection from a list also
+has a help option that can be activated by typing a '?'.
+In each case, the prompt is repeated after the explanation has been printed.
+<p>I.1. Operations performed by several functions:
+<a NAME="keyboard"></a>
+<p>When the graphics option (with SGI Iris GL only)
+is enabled the user is periodocally
+offered the option to modify the display using characters typed
+in to the keyboard:
+<ul>
+<li>&lt;Enter&gt;: rotates the molecule by the angle increment
+(initially set to 10<sup>o</sup>) around the selected axis
+(initally set to the X axis)
+<li>x, y, or z : changes the rotation axis to X, Y, or Z, resp.
+<li>a: &lt;A&gt;sks for an new angle increment
+<li>d: Toggles &lt;d&gt;epth cueing off/onn
+<li>h: Toggles displaying the &lt;h&gt;ydrogens off/on
+<li>c: Toggles displaying the protein side &lt;c&gt;hains off/on
+<li>v: Toggles displaying the sol&lt;v&gt;ents off/on
+<li>&lt;digit&gt;: Changes the solute linewidth to
+the value of &lt;digit&gt;
+<li>s: &lt;S&gt;tops image manipulation
+</ul>
+<a NAME="PBC_reset"></a>
+<p>
+For translation/rotation and trajectory conversions Simulaid
+offers the option to reset the system into the periodic cell.
+The use of periodic boundary conditions may be restricted to
+two or one dimensions; i.e., the resetting is applied only in a selected 
+coordinae plane or along a selected axis.
+<p>
+This option also selects periodic images of each solute molecule
+in such a way that the solute appears as compact as possible.
+Since Simulaid considers each solute segment a single molecule,
+this may result in moving groups of molecules (e.g., lipids)
+always together.
+Thus, for functions that may involve resetting the system into
+a PBC cell, Simulaid offers the users the option to define a number
+of residues as <b>molecular residues</b>, i.e., groups of atoms that
+are to be reset into the PBC cell together but
+independent of the rest of the solute.
+Furthermore, residues  can also be defined as <b>ions</b> - these
+are also treated individually but they are not moved around only to
+keep them in the simulation cell, but not in an
+attempt to make the solute more compact,
+</ul>
+<p>
+<p>I.2. Specific operations performed by Simulaid:
+<UL>
+<LI><u><b>Geometry optimizations</b></u>
+<ul><a NAME="SPHERE"></a>
+<li><b>Find the sphere of smallest radius</b> still enclosing a
+set of atoms and translate the atoms to the center of this
+smallest enclosing sphere (<a href="#PBCOPT">REF1</a>). This
+allows the solvation of a solute with the smallest number of
+solvents providing a solvation layer of given minimum thickness.
+It is possible to input a solvated system where the solvents are
+excluded from the sphere calculations but will be subsequently
+translated along with the atoms included (i.e., the solute);
+solvents outside a layer of user-specified thickness will be
+eliminated. The graphics windows (SGI only) shows the original and reduced
+sphere's x-y cross section and the atoms touching the minimal
+sphere's surface are highlighted as aterisks. Once the
+optimization is completed, the image can be manipulated by
+<a href="#keyboard">keyboard commands</a>:
+<li><b>Find the orientation</b> of the solute molecule so that
+the volume of the cube or rectangle enclosing it is the smallest
+(<a href="#BOUNDOPT">REF2</a>). Smallest enclosing cube is
+optimal for a Delphi run, smallest enclosing rectangle is optimal
+for grand-canonical runs where a bulk solvent layer is required.
+The user is asked if cube or rectangle is required. The
+optimization is performed starting from the input orientation as
+well as from a user defined number of random orientations to
+provide several local minima of the optimization problem from
+which the best will be chosen.&nbsp;<a NAME="ORIENT"></a>
+Option is provided for limiting the optimization to rotations around
+one of the coordinate axes.
+<li><b>Find the orientation</b> of the solute molecule that
+maximizes the smallest image-image distance (<a
+href="#PBCOPT">REF1</a>).  The <i>optimization</i> is performed
+starting from the input orientation as well as from a user
+defined number of random orientations to provide several local
+minima of the optimization problem. The user has a choice of
+optimizing the orientation in a  <a href="#PBCLIST">periodic
+simulation cell</a> defined on input or the construction of the
+smallest possible <a href="#PBCLIST">periodic simulation cell</a>
+with a given minimum image-image distance.
+Again, option is provided for limiting the optimization
+to rotations around one of the coordinate axes.
+<P>
+For the minimization of the cellsize the <i>initial cell
+dimensions</i> are obtained from the maximum extension of the
+molecule in the X, Y, and Z direction for cubic, rectangular and
+hexagonal prism cells, from the smallest enclosing sphere for a
+face-centered cubic, hexagonal close packed, or truncated
+octahedron cell and from input for a cell defined by a Charmm
+image file. Once the best orientation is found, the cell's
+dimensions are reduced until the smallest image-image distance
+reaches a user-defined minimum. Comparing the runs with different
+starting orientations, the program choses the one with the
+smallest volume.
+<p>
+The <i>graphics window</i> (SGI only) shows the molecule in its original
+orientation and the corresponding PBC cell in yellow and red,
+respectively; the molecule in its optimized orietation and and
+the corresponding PBC cell in blue and green, respectively; and
+the line between the atom and its nearest image that determined
+the smallest distance (in purple). Once the optimization is
+completed, the image can be manipulated by <a
+href="#keyboard">keyboard commands</a>.
+</UL>
+<li><a NAME="cleanup"></a><b>Perform cleanup operations</b>.
+Cleanup operations include:
+<ul>
+<li>ensuring that atom and residue numbers are consecutive
+(starting from user-defined atom and residue numbers);
+<li>ensuring that all atoms of a residue are in a contiguous
+stretch;
+<li>ensuring that all PDB files have a chain (segment) ID. When
+none present in the input file, the first chain id will be 'A'.
+Every time a 'TER' record is encountered in the input file the
+segment id will be changed to the next upper-case letter,
+followed by the next lower case letters and finally, the digits
+'0' to '9'.
+<li>ensuring that Macromodel files have both 1-letter and
+3-letter residue names.
+<li>For PDB output files, it gives an option to write
+CONECT records as well
+<li>for MMC's .slt and Autodock's .pdbqs or .pdbqt
+files it provides an option
+to adjust charges to result in integral residue charges.
+</ul>
+<li><a NAME="conversions"></a><u><b>Perform a variety of data
+conversions</b></u>.
+<ul>
+<li><b>Conversions changing file formats</b>
+<ul>
+<li><b>Rearrange atoms</b> within a residue according to a
+template. Atomnames within a residue can be sorted and selected
+to conform to a prescribed template. This may be useful, for
+example, when a trajectory file is created from configurations
+that don't conform to the RTF file used by the program reading
+the trajectory, or when the configuration contains extra atoms
+(such as lone pairs). The atoms and their desired order is
+specified by a <a href="#template">template file</a> and/or by
+the RTF file (in Amber, Charmm or Gromacs formats only)
+describing the residues in the desired order. Currently, template
+files are provided for Amber, Amber94, and Charmm22. If the
+residue is not found in the template or the number of atoms in
+the template is less than the number in the structure or if the
+correspondence between the two atomsets is not one-to-one then
+that residue will be left unchanged. The names of the template
+files (found in the <a href="INSTDIR">installation directory</a>)
+are listed by the program. Again, they can be modified by the
+user and placed in their own directory to allow the treatment of
+non-standard, patched or other terminal residues.
+<li><b>Convert to a different file syntax</b>. Conversions to
+most of the recognized input formats can be requested. The
+following limitations apply to these conversions:
+<ul>
+<li>If the input format was PDB, the charges will be left as
+zero;
+<li>Macromodel output may select generic atomtypes for the
+potential function specification when it fails to recognize the
+bonding pattern around an atom
+<li>For Macromodel output, the program may not be able to
+determine the proper bond orders. The bond orders will be
+especially problematic if the input file does not contain
+hydrogens
+<li>InsightII .car files will have atom symbols for potential
+types
+<li>Can not convert to Grasp .crg format - use the  <A
+HREF="#Grasp">Create a Grasp .crg file</a> option for that
+<li>Can not convert to Tripos .mol2 format
+</ul>
+<li><b>Create an input configuration</b> for the MMC Monte Carlo
+program. The MMC Monte Carlo program's input requires
+coordinates, charges and potential type information for each
+atom. There are three options to establish atomtypes and partial
+charges:
+<ul>
+<li>For Macromodel input and Insight .car file input (assuming
+that the latter has been prepared with AMBER potential types) the
+program will use the Amber codes;
+<li>For Charmm or Amber input the atom codes can be established
+from the residue and atomnames from the Charmm PSF file or the
+Amber top file corresponding to the input structure.
+<li>If no PSF or top file is available,
+a <a href="#Conversion_files">conversion files</a>
+can be used: one of <b>amb_prot_ua.dat</b>, <b>amb_all.dat</b>,
+<b>amb_all94.dat</b>, and <b>cha_all22.dat</b> are provided
+in the distribution or a file prepared by the user.
+Terminal residues may have to be corrected manually,
+though. The Charmm conversion file also has the protonated ASP
+and GLU residue information, using residue names ASX and GLX,
+respectively.
+<li>For Charmm, Amber and Gromacs the conversion information can
+be also extracted from multiple RTF file(s) - the user will be prompted
+for the filenames.
+</ul>
+<li><a NAME="trajconv"></a><b>Convert trajectories</b>.
+This is currently limited to Charmm, Amber, MMC and Macromodel formats.
+During conversions, the user has the option to
+<UL>
+<LI>rearrange the atoms within residues.
+<LI>place only selected configurations on the output file.
+<LI><A href="#PBC_reset">center the solute molecule(s)
+in a periodic cell</a>.
+<LI>rotate the whole system for each frame around a selected axis
+or by an inputted rotation matrix.
+<li><b>Split an MMC trajectory</b> generated in the grand-canonical ensemble
+into Amber trajectories with fixed number of solvents.
+</UL>
+<li><b>Create an input for Amsol 3.5</b>. Amsol requires the
+specification of atomtypes according to its own convention
+besides the atomic coordinates and atomic numbers. This
+functionality determines these codes based on the molecule's
+connectivity table.
+<A NAME="listformat"></a>
+<li><b>Create an input for Gaussian's ONIOM option</b>.
+Besides the X, Y, Z coordinates of each atom,
+this option requires the atomic number, the Amber atom type,
+partial charge of the atoms as well as the treatment category (H, M, or L).
+This option works analogously to the input for creating input for MMC:
+it can use the built-in list for deducing types and charges from atom names
+and/or topology file(s) in Amber, Charmm or Gromos/Gromacs format.
+The H, M, and L regions can be selected by user provided lists or by
+spheres of different radii drawn around a user-selected atom.
+For the latter, option is provided to extend the list specified by the
+inner spheres to avoid breaking non C-C bonds.
+Optionally, it also produces a connectivity input, with bond orders
+deduced from the coordinates, just like for conversion to Macromodel
+format.
+<li><b>List the positions of the various items</b> in a coordinate
+file record for formatted input types.
+</ul>
+<li><b>Conversions changing atom and or residue names</b>
+<ul>
+<li><b>'Regularize' PDB atomnames</b>. Brookhaven specification
+uses the first two characters of the name as the right-adjusted
+chemical symbol and put trailing numeric digits to the place of
+the first space for hydrogens. This functionality enforces this
+convention.
+<li><b>Undo PDB regularization</b>.This functionality moves all
+leading numeric characters found in atomnames to the end of the
+name.
+<li><b>Left-adjust atom names</b>.
+<li><b>Convert residue and atomnames from different
+conventions</b>. Unfortunately, PDB atomnames (and even file
+syntax) follow many different conventions and are slightly
+different in the various software systems in use. This
+functionality modifies atom and residue names
+based on the source of the names and the software system in use.
+Conversion of the atom and residue names are governed by a <a
+href="#pdb_nam">file</a> called <b>pdb_nam.dat</b> (found in the
+<a href="INSTDIR">installation directory</a>). Residues or
+atomnames not in the file will be left unchanged. At present, the
+file contains data to interconvert protein and nucleic acid
+residues for the Amber, Amber94, Charmm, Moil, IUPAC, Macromodel,
+ChemX and PDB conventions. Conversions from Macromodel would
+allow for dropping lone-pair 'atoms' and the change of names of
+the form C0* to their corresponding PDB-type names only. As a
+result, conversions to Macromodel convention have been disabled.
+When converting to PDB convention, the one selected by InsightII
+will be used. When converting from PDB convention, a list of
+known variants will be examined (most of these variants were
+compiled by Dr. D. Strahs). If there is a copy of the conversion file
+<b>pdb_nam.dat</b> in the local directory (the directory Simulaid
+is run from), it will be used instead, so users can add
+additional conversions to the existing residues or add new
+residues. A local copy of <b>pdb_nam.dat</b> can also be used for
+making selected changes by eliminating or changing conversion
+information from the 'master' file.
+</ul>
+</ul>
+<LI><u><b>Trajectory - structure file conversions</b></u>
+<UL>
+<li><a NAME="UNPACK"></a><b>Unpack a collection of
+configurations into single files</b>. This functionality takes a
+large file containing a number of configurations and separates
+them into single configurations.
+There are several options of selecting the files to be unpacked.
+An input file XXX.YYY will
+result in files XXX.1.YYY, XXX.2.YYY, etc.
+<li><a NAME="UNPACKTR"></a><b>Unpack a trajectory</b> into
+single configurations, either in a single file or in separate
+files. The selection options and the
+naming convention of the new files are the same as for
+unpacking configurations (see above).
+The format of the unpacked file can be specified by the user.
+For PDB output, option is given mark eachs structure as MODEL.
+<li><b>Convert (pack) a series of configurations</b> into a trajectory
+file. This option will create a Charmm, Amber or MMC binary
+trajectory file and put the input configuration as well as all
+subsequent configurations into this file as consecutive
+snapshots.
+When packing into MMC binary format, Simulaid will search for
+energy information if the input structures are in PDB or Charmm CRD format
+s follows:
+<UL>
+<li>In Charmm .CRD files, Checking the title records for
+the string '* energy=' or '* Energy=', or '* E=', followed by the energy
+<li>In PDB files, Checking the REMARK records for the string
+ 'REMARK energy=' or 'REMARK Energy=', or 'REMARK E=', followed by
+the energy
+</UL>
+</UL>
+<LI><u><b>Edit the conformation</b></u>
+(translate/rotate, add/delete atoms, etc)
+<ul>
+<li><a NAME="edit"></a><b>Edit the configuration</b>. Editing
+allows to
+<ul>
+<li>select (keep only one) chain/segment
+<li>excise (drop only one) chain/segment
+<li>keep only the backbone
+<li>keep only the alpha carbons
+<li>drop all aliphatic (bonded to carbon) hydrogens
+(and add its charge to the carbon's)
+<li>select atom range to keep
+<li>select atom range to drop
+<li>select residue range to keep
+<li>select residue range to drop
+</ul>
+<li>
+<a NAME="ROTATE"></a><b>Translate and/or rotate the inputted structure</b>
+<UL>
+<LI>The following translations can be performed
+<UL>
+<LI>Translate by a user-specified vector.
+<LI>Translate by a user-specified vector and
+<A href="#PBC_reset">reset the molecules into a
+user-specified periodic cell</a>.
+<LI>Center the solute molecule(s) in a user-specified periodic cell.
+For more than one solute molecules, the images resulting in the most
+compact solute will be selected.
+</UL>
+Translation is useful when switching
+between sytems with the origin at the corner (e.g., Amber) and at
+the center (e.g., Charmm and MMC) or when a simulation
+lets molecules move away from the periodic cell.
+<LI>Rotation can be performed
+around a user-specified axis by a user-specied angle
+or by a user-specified rotation matrix
+</UL>
+<li><a NAME="modify"></a><b>Modify the configuration</b>. Modifying
+allows to
+<ul>
+<li>replace an atom
+<li>add an atom
+</ul>
+When replacing a terminal atom (i.e., on with only one bonded neighbor)
+the bond length can be changed. When adding a new atom X, the program
+will let the user establish a bonded sequence of heavy atoms,
+R3-R2-R1-X and the user will have to specify the R1-X distance,
+R2-R1-X angle and the R3-R2-R1-X torsion angle.
+<li><a NAME="replace"></a><b>Replace the coordinates of a configuration</b>.
+This option allows the replacement of just the coordinates in a structure
+without changing the rest of the file.
+The replacement can be
+<UL>
+<LI>simply a copy of an other structure
+<LI>the coordinates of the original structure translated and rotated to
+obtain the best overlay to an inputted reference structure
+</UL>
+The source of the coordinates or the reference structure can
+be in any format except .mol2 for the system to be changed.
+<li><b>Overlay a structure on a reference structure</b>
+<li><b>Transform a peptide to retro-inverso</b>. This option
+essentially swaps the petide >C=O with the paptide >NH.
+It is recommended to do a short minimization on the transformed structure,
+especially when prolenes are involved.
+<li><b>Replace the charges in a configuration</b>.
+For now,
+both the input and the replacing structure must be in Autodock's .pdbqt format.
+<li><b>Extract the CA carbons of the protein backbone into a PDB file</b>
+<li><b>Change the (solvent) water molecules</b> to their gas
+phase geometry. Minimizations or molecular dynamics may have been
+run without restraining the solvents to their experimental
+geometry. This option 'fixes' these solvents.
+<li><b>Eliminate solvents</b> outside a simulation cell.
+Simulation setup may involve the 'soaking' of a solute in some
+solvent bath. This option allows the carving out of a periodic
+cell of any of the above mentioned types. The graphics window (SGI only)
+shows the original system and the PBC cell outside which the
+solvents will be eliminated. This image can also be manipulated
+by <a href="#keyboard">keyboard commands</a>.
+<li><b>Reverse optimization</b>.
+This option transforms back the structure in the original position/orientation.
+The translation/rotation information is read from the comment lines
+in the input structure file as saved there by Simulaid.
+<li><b>Create a full unit cell from the asymmetric unit</b>.
+This option extracts from the PDB file the transformation information that
+defines the symmetry-related images of the asymmetric unit and performs
+these transformations.
+<li><b>Create biological oligomers from the asymmetric unit</b>.
+This option extracts from the PDB file the transformation information that
+defines the symmetry-related images forming the biological oligomers
+and performs these transformations.
+<li><b>Gather all crystal contacts of the asymmetric unit</b>.
+This option gathers all copies of the asymmetric unit that are in contact
+with the first copy.
+Each copy may be related to the first asymmetric unit by
+symmetry transformation and/or unit cell translation.
+</UL>
+<LI><u><b>Prepare a structure-derived file</b></u>
+(sequence, Charmm RTF, UHBD dat, etc)
+<UL>
+<li><a NAME="EXTRAXTSEQ"></a><b>Extract the sequence list</b>
+from the inputted structure. For structures carrying residue
+information this function will extract the list of the residues
+in a user selectable format:
+<UL>
+<LI>Charmm segment definition format
+<LI>PDB (SEQRES) format
+<LI>PIR format (first line: title; subsequent lines:
+one letter residue codes without any separator).
+<LI>GCG - the proprietary format of the Wisconsin GCG program
+</UL>
+<A NAME="Grasp"></A>
+<li><b>Create a Grasp .crg file</b> from RTF file(s)
+<li><b>Create a UHBD  .dat file</b> from RTF and parameter file(s)
+(for now, only in Charmm format)
+<li><b>Print the centers of neigboring image cells and cell vertices.</b>
+The cell centers will written as a pdb file called <b>imagecell.pdb</b>
+and the vertices in an other PDB file called <b>pbcvertices.pdb</b>,
+complete with CONECT statements to draw the cell polygon's edges.
+With the graphics option, the cell will be drawn on the screen as well.
+<li><b>Generate torsion angle input</b> for Monte Carlo
+calculations:
+<ul>
+<li>Torsion angle list in Macromodel (Bmin) format (general or
+protein (i.e., with rigid peptide bond))
+<li>Torsion angle list in
+<A HREF="http://inka.mssm.edu/~mezei/mmc">MMC</A> format
+for proteins
+(backbone with rigid peptide bond and sidechains or sidechains only)
+or for a general molecule.
+</ul>
+<li><b>Create Charmm topology file residue records</b> for
+residues specified by the user.
+When the input is in InsightII .car format, the atom types are
+also converted, using the algorithm (and routines) of the program
+<A HREF="http://inka.mssm.edu/~mezei/intocham">Intocham</A>.
+</UL>
+<li><u><b>Perform a number of conformation analyses</b></u> on the
+solute.<BR>
+The analyses can be done on the configuration read or on a trajectory
+specified by the user.
+When analyzing a trajectory, options are provided for
+analyzing only selected configurations.
+The time axis of plots of the evolution of various properties may be
+labeled by the frame number, or in units of time (ps, ns, or ms).
+The following analyses are implemented:
+<ul>
+<LI><u><b>Geometry/topology analyses</b></u>
+<UL>
+<li>Print a complete list of
+<b>neighbors, bond lenths, angles and torsions</b>
+and mark atoms that are <b>chiral centers</b> (in some rare cases
+the algorithm may miss a subtle chirality).
+<li>Print a complete <b>list of torsion angles</b> and the corresponding
+1-4 distances
+<li>Perform a <b>functional group analysis</b> that groups atoms into
+functional groups, list these groups and prints the neighbors of
+each member of each group
+<li>Print the <b>longest connected chain</b> of the molecule
+(one atom per line)
+and for each atom prints the longest side chain.
+<li>Print a complete <b>list of bonds types</b> and their lengths, angles and
+their values as well as
+statistics (min, max, average) of the lengths of bonds  and
+values on angles between various elements
+<li>Allow the user to change the bond-threshold values for 
+selected atoms
+</UL>
+<LI><u><b>Finding and tracking various bonds</b></U><BR>
+For each type of bond (hydrogen bond, salt bridge or hydrophobic bond)
+Simulaid finds the atom pairs that form this kind of bond.<BR>
+For trajectories, Simulaid
+<ul>
+<li>Plots the history of each hydrogen bond
+(i.e., tracks when it was on or off)
+<li>Maps the atom pairs to residue pairs and plot the residue-residue
+bond history
+<li>Calculates the frequencies of residue pairs being bonded
+and generate a 2D map of these frequencies.
+<li>Optionally, calculates the correlation <i>c(i,j)</i>
+between selected hydrogen bonds
+<li>Optionally, <A HREF="#cluster">clusters</A>
+these hydrogen bonds using <i>(1-c(i,j))^e</i> 
+or <i>(1/c(i,j))^e</i> as the distance function;
+the exponent <i>e</i> can be 1,2,3,... or 1/2, 1/3, 1/4, ...
+<li>Calculates the fraction of on and off states and the # of state changes
+<li>Optionally, calculates the bond autocorrelation functions
+to estimate bond lifetimes
+<li>Optionally, writes a PDB file of the system where 
+<ul><li>the B factor column contains the fraction of time that
+residue was bonded (either the CA atom or, optionally, all atoms of that residue)
+<li>a line is drawn between the CA atom (or the first atom of the residue if no CA
+atom was found) with a He atom at the middle of the line.
+The He atoms form a separate segment withc chain id X and the residue
+number of eash He atom is just the bond number. Fruthermore, the occupancy column
+contans the fraction of time the residue pair to which the He atom belongs 
+was bonded.
+<li>if the residue-residue bond correlations were calculated then Simulaid can
+also draw a bond between the He atoms of bonds that are correlated (i.e.,
+the bond correlation distance function is below a user specified threshold or
+between the He atoms of bonds that are anti correlated (i.e.,
+the bond correlation distance function is abowe a user specified threshold.
+</ul>
+</ul>
+Actions specific to different bonds:
+<UL>
+<li><b>hydrogen bonds</b>:
+<ul>
+<li>Specify the distance thresholds for hydrogen bonds
+<li>Select atoms whose hydrogen bonds are to be tracked
+<li>Print a list of hydrogen bonds with the geometric parameters.<BR>
+</ul>
+<li><b>salt bridges</b>:
+<ul>
+<li>Specify the atom name and/or partial charge that can form salt bridge
+<li>Specify the distance threshold for salt bridges
+<li>Select atoms whose salt bridges are to be tracked
+<li>Print a list of salt bridges with their length.<BR>
+</ul>
+<li><b>hydrophobic bonds</b>:
+<ul>
+<li>Specify the carbon atom type that are considered hydrophobic
+<li>Specify the distance threshold for hydrophobic bonds
+<li>Select atoms whose hydrophobic bonds are to be tracked
+<li>Print a list of hydrophobic bonds with their length.<BR>
+</ul>
+<li><b>heavy-atom contact bonds</b>:
+<ul>
+<li>Specify the distance threshold for the contact
+<li>Select atoms whose contacts are to be tracked<BR>
+</ul>
+<li>Compare the residue-residue bond map calculated above from two different
+matrices of the same size (e.g., a wild type and a mutant).
+The difference plot can use 
+<ul>
+<li>the actual differences
+<li>the absolute value of the differences
+<li>the discretized differences: -1 if structure 1 lost the bonds between
+this pair; +1 if structure 2 lost the bonds between this pair; zero otherwise.
+</ul>
+<li>Search for <b>hydrogen-bonded bridges</b> between selected solute atoms.
+The program asks for a list of solute atoms (specified by atom indices,
+or atom names or protein backbone) to start looking for hydrogen-bonded
+chains ending in the solute (maximum length considered: 4 bonds)
+</UL>
+<LI><u><b>Calculate atomic properties</b></U> to be written on the
+data column of the output structure file.
+<UL>
+For PDB fomat, the temperature factor column is used,
+for Insight and Macromodel the charge column.
+<li>Get the <b>hydrophobicity</b>
+(hydropathy) values of the residue the atom belongs to.
+The user can choose among Kyte-Doolittle, Eisenberg or White's
+scale or input a new one. A good resource (references, values)
+for the large number of such scales is the paper
+J. Cornette, K. B. Cease, H. Margalit, J. L. Spouge,
+J. A. Berzofsky and C. DeLisi,
+Hydrophobicity Scales and Computational Techniques for Detecting
+    Amphipathic Structures in Proteins,
+<i>J. Mol. Biol.,</i> <B>195,</B> 659-685 (1987).
+<li>Calculate c<b>ircular variance </b>of the solute atoms and solvent
+molecules w.r.t. the solute
+(<A HREF="#CVMAP">REF. 3</a>).
+<A NAME="Delphi_map"></A>
+<li>Read in a<b>
+<A HREF="http://trantor.bioc.columbia.edu/delphi/">DELPHI</A>
+potential map</b> (written in InsightII format) and calculate the
+potential at the sites of the solute atoms (InsightII has a
+DELPHI spectrum built in for coloring).
+<UL>
+When a Delphi map is read, option is provided for calculating the
+potential at a user-specified site and/or printing a PDB file
+of the potentials at a selected subset of the map.
+Potential in the vicinity of atoms can be set to zero (using
+a user-specified threshold) or interpolated from grids farther.
+</UL>
+</UL>
+<LI><u><b>Calculate molecular properties</b></U>
+<UL>
+<li>Calculate a Monte Carlo estimate of the
+<b>volume of the solute</b>'s combined
+vdW spheres, the volume of the shell region excluded by the solvent
+(of user-specified radius), the <b>volume of the first solvation shell</b>
+and, for multimolecular solutes the <b>volume of the
+interface</b> beween the solute molecules
+(the combined total and the pairwise values).
+A region is considered interface if it is between two atoms on
+different molecules and the solvation shells of the two atoms overlap.
+For trajectories, a plot of the evolution and the distributions of the
+excluded volume and first solvation shell volume is also given, as well as
+averages and correlations among the volumes calculated.
+<li>Calculate the <b>principal axes</b> of a selected solute molecule.
+For trajectory scan, the angle between the initial and the current
+axes are also calculated and plotted.
+The initial structure can be set to either the first structure of the
+trajectory or the structure inputted at th start.
+The calculation of the principal axes can be restricted to a subset of the
+atoms in the selected solute molecule.
+<li>Calculate the <b>radius of gyration</b>,
+<b>hydrodynamic radius</b> and - when partial charges are available - the 
+dipole moment of a selected solute molecule.
+<li><b>Average B factors</b> for each chain/segment
+</UL>
+<LI><u><b>RMSD's</b></U>
+<A NAME="2D-RMSD"></A>
+<UL>
+<li>Calculate the <b>RMSD</b> between the reference structure and
+the structures and the <b>RMSF</b> in a trajectory.
+The atoms used for overlay and calculation of the RMSD can be
+limited to a subset of the system (see the
+<a href="#edit">Edit the configuration</a> option).
+The RMSF calculation gives the root mean square average of the 
+differences in the atomic positions of all atoms in a residue,
+averaged over all frames in the trajectory.
+<li>Calculate the <b>2D-RMSD map</b> over a trajectory.
+The calculations will give
+<UL>
+<li>The RMSD between all pairs of structures in a trajectory,
+printed and (optionally) visualized in a color-coded Postscript 2D map.
+Option is given to avarege and condnese blocks in the plot.
+<LI>The average RMSD will also be
+calculated as a function of the run length.
+<LI>The distribution of the MSD's, printed and (optionally)
+displayed in a Postscript plot.
+<LI>The distribution of the MSD's
+divided by the distribution from an uncorrelated random
+walk (R^2 = c * N), printed and (optionally) displayed in a Postscript plot.
+<LI>The structure for which the largest RMSD between itself and
+the rest of the structures is minimal
+<LI>The structure for which the sum of MSD's between itself and
+the rest of the structures is minimal
+<LI>Optionally the program can <A HREF="#cluster">cluster</A>
+the structures, using the calculated RMSD's as the distance measure.
+<UL>
+The clustering can be also performed using the 2D RMSD values calculated
+in a previous Simulaid run
+(reading in the result file of extension <b>.rd2</b>).
+</UL>
+The clustering is based either on a user-given distance threshold, or on
+the user-defined requested number of clusters.
+Representative members (to be considered at the center of the cluster)
+of the cluster will be selected based on the following criteria:
+<ul>
+<li>The structure with the smallest <b>maximum</b> RMSD with the rest
+of the cluster members
+<li>The structure with the smallest <b>average</b> RMSD with the rest
+<li>The structure with the smallest <b>energy</b>  within the cluster.
+This option is only available if energy was read from the trajectory.
+Currently, energies can be read from some of MMC formatted trajectories:
+<ul>
+<li>Binary MMC trajectory
+<li>MMC trajectory that is a set of Charmm .CRD files, having in the
+title the string '* energy=' or '* Energy=', or '* E=', followed by
+the energy
+<li>MMC trajectory that is a set of PDB files, containing REMARK lines
+of the form
+ 'REMARK energy=' or 'REMARK Energy=', or 'REMARK E=', followed by
+the energy
+</ul>
+When the energy is available, for each cluster the average energy will also be
+calculated and printed.
+</ul>
+<LI>Optionally, separate trajectories can be generated containing the frames
+of the different clusters.
+</ul>
+<li>Calculate the <b>cross RMSD map</b> between two trajectories
+run on the same system. The calculations will give
+<UL>
+<LI>The color-coded map of the RMSD's
+<LI>The distribution of the RMSD's
+<LI>If requested, for each structure in the first trajectory
+Simulaid will print the number of the one in the
+second with the smallest RMSD and the same for the second trajectory.
+Structure pairs that are mutully the closest ones are marked.
+<li>If the 2D RMSD result of the two trajectories are available then
+Simulaid can read in the <b>.rd2</b> files of these calculation, the
+result file (the file with <b>.rdx</b> extension) of the cross RMSD calculation,
+perform a clustering on the <b>.rd2</b> files and calculate the
+overlap among the clusters of the two trajectory.
+<li>Calculate the <b>difference between two sets of RMSFs</b>
+calculated by Simulaid.
+</ul>
+</UL>
+<LI><u><b>Measure various distances</b></U>
+<UL>
+<li>Find (protein) <b>residue pairs that are in "contact"</b>;
+one residue should be in a user-specified <i>reference</i> range
+and the other in the user-specified <i>neighborhood</i> range.
+Contacts are defined in three different ways:
+<UL>
+<LI>The distance between the
+between representative atoms of the two residues considered
+(<b>C(alpha)</b> by default (unless
+the user specifies a different representative atom)
+is within a certain threshold distance
+<LI>the distance between the pair of atoms
+(one on each residue under consideration) nearest to each other
+is within a certain threshold distance
+<LI>There is a pair of atoms (<i>R,N</i>) in the residue pair considered
+such that <i>R</i> is closest to <i>N</i> when considering the whole 
+<i>reference</i> range
+and <i>N</i> is closest to <i>R</i> when considering the whole 
+<i>neighborhood</i> range.
+</UL>
+The distance list is followed by a nonredundant list of neigbour residues
+as well as a nonredundant list of the non-neighbour residues.
+When analyzing trajectories, the average residue-residue distances 
+between the selected residue range will also be calculated.
+Besides the residue-residue distances, the contacts
+(defined as mutually proximal atoms in the reference and neighbour residue sets
+are also calculated and printed.
+<li>Calculate the matrix of <b>distances between the molecules</b> 
+(i.e., chains/segments)
+<A NAME="Res_dist_map"></A>
+<li>Perform an analysis of the adjaceny matrix defined between residues
+based on the idea of 
+<A HREF="#Schuyler">A. Schuyler et al.</A> that looks at the column 
+sum of successive powers of the adjacency matrix and its generalization
+that uses weighted edges.
+<li>Calculate the <b>distance between two selected atoms</b> (including
+PBC imaging, if requested).<BR>
+When scanning a trajectory,
+<ul>
+<li>option is given to use the first atom of the pair from the
+inputted reference structure
+<li>the evolution of the distance and its components are plotted
+as function of simulation length.
+</ul>
+<li>For a set of pairs of atoms calculate the <b>average distances</b> and
+their standard deviation and the <b>distribution</b> of the
+distances between the atom pairs.
+<li>Check for potentially <b>unphysical distances</b> in the system
+<li>Compare two sets of trajectory-averaged distances and plot the
+matrix of these distances. Option is provided to plot the absoulet value 
+of the distances.
+<A NAME="Clusterdist"></A>
+Optionally, atom pairs can be replaced by pairs of small clusters
+(e.g., the hydrogens of a given methyl group);
+the distance between such clusters is defined as the distance between the
+closest pair of two atoms in different clusters.
+</UL>
+<li>Calculate the protein <b>backbone torsion angles Phi and Psi</b>.
+The following outputs can be obtained:
+<UL>
+<li>A Ramachandran map of the protein backbone torsions.
+For a single configuration, the points are color-coded continuously
+with the residue number
+on the rainbow scale red-yellow-green-cyan-blue,
+and for trajectory scan they are color-coded with the frame number.
+<LI>A file with the calculated angles.
+For trajectory scan, the distribution of angles in 60<sup>o</sup>
+grids and the
+<A HREF="http://roselab.jhu.edu/utils/pross.html">PROSS</a>
+ assignment is also printed.
+<LI>Optionally,
+for residues selected by the user (currently up to 25),
+the time-evolution of the angles is also shown both with dial plots
+and with a path in the Ramachandran map and
+plots of the autocorrelation function of the conformation of each residue
+is also prepared (to quantify the rate of convergence).
+</UL>
+<li>Calculate <b>selected torsion angles</b> (currently up to 49).
+For analyzing trajectories, calculate
+their average, CV. If requested, all pairs of angles will be used to calculate
+the Pearson correlation coefficent and Fisher-Lee
+circular correlation coefficients:
+<A NAME="CCC"></A>
+<p>
+<CENTER>
+C(a,b) = Dab / (A<sup>2</sup>*B<sup>2</sup>) </CENTER>
+where
+<CENTER>
+Dab = 
+ SUM<sup>N</sup><sub>i=1</sub> &nbsp; SUM<sup>N</sup><sub>j=i+1</sub> &nbsp; 
+sin(a<sub>i</sub>-a<sub>j</sub>) * sin(b<sub>i</sub>-b<sub>j</sub>)
+</CENTER>
+<CENTER>
+A = SUM<sup>N</sup><sub>i=1</sub> &nbsp; SUM<sup>N</sup><sub>j=i+1</sub> &nbsp; 
+sin(a<sub>i</sub>-a<sub>j</sub>)<sup>2</sup> 
+</CENTER>
+<CENTER>
+B = SUM<sup>N</sup><sub>i=1</sub> &nbsp; SUM<sup>N</sup><sub>j=i+1</sub> &nbsp; 
+ sin(b<sub>i</sub>-b<sub>j</sub>)<sup>2</sup>
+</CENTER>
+<p>
+Also, prepare dial plots showing the evolution of the selected torsions.
+<li>Perform the
+<A HREF="#PROKINK">analysis of <b>proline kinks</b></A>
+as implemented in the program
+<A HREF="http://icbtools.med.cornell.edu/prokink/">ProKink</A>
+by <a href="http://drugdiscovery.tripod.com/">Visiers</A> et al.
+<UL>
+<LI>As an enhacement ot the original algorithm, option is porvided
+to fit a plane to the proline ring and use the projection of the
+alpha-carbon to this plane for the definition of the wobble and
+phase shift angles.
+<LI>When reading a trajectory, the proline kink is animated in the
+graphics window (SGI only) and the kink angles are plotted both in a second
+window and onto a Postscript file.
+<LI>The psudorotation angle with the nitrogen as the apex
+is also calculated and plotted for each structure.
+</UL>
+<LI>With a selected set of helices for each <B>helix</B>
+(<A HREF="#TRAJELIX">REF. 8</a>),
+<UL>
+<LI>calculate its axis
+<LI>find and plot the angles between
+the axis and the laboratory frame coordinate axes
+<LI>calculate the and plot radius if circle fitted to the alpha carbons
+(a bend indicator) and provide a novel shape estimator.
+<LI>calculate and plot the length of the helix
+<LI>calculate and plot the average turn angle per residue.
+<LI>when more than one helix is selected for analysis, the
+angles between each pair and the distance between the centers of each helix
+will also be calculated<BR>
+</UL>
+When scanning a trajectory, for each frame
+<UL>
+<LI>calculate and plot the angle between the axis in the current and in the
+reference structure (read in at the start of the run)
+<LI>calculate and plot the angle the helix was rotated around
+the axis (again, compared to the reference structure).
+The overall rotation of the protein can be applied to the reference
+helix before the comparison.
+<LI>calculate and plot the displacement fo the helix center
+compared to the reference structure.
+The displacement of the protein's COM can be subtracted.
+<LI>calculate the angle between the normals of the plane fitted to the
+reference structure and the current structure, rotate both normals
+so that the reference planes normal is parallel to the Z axids and plot
+the progress of the X-Y projection of the current (rotated) normal.
+</UL>
+At the end of the trajectory scan the correlation coefficients among all pairs
+of calculated properties will be calculated.
+For properties involving two angles the
+<A HREF="#CCC">Fisher-Lee circular correlation coefficient</A>
+will also be calculated:
+For properties involving one angle only the
+Mardia linear-circular correlation coefficient will also be calculated:
+<p>
+<CENTER>
+C(a,x) = (r12<sup>2</sup>+r12<sup>2</sup>-2*r12*r13*r23)/(1-r23<sup>2</sup>)
+</CENTER>
+where
+<CENTER>
+r12 = corr(sin(a),x); &nbsp; r13 = corr(cos(a),x); &nbsp;
+r23 = corr(sin(a),cos(a))
+</CENTER>
+<p>
+<li>Calculate <b>pseudorotation angles</b> as defined by
+<A HREF="#PSROT2">Cremer &amp; Pople</A>
+and for 5-membered rings also by
+<A HREF="#PSROT2">Altona &amp; Sundaralingam.</A>
+<li>Find helices and sheets using the formalism implemented
+in the program <b>DSSP</b> (
+<a href="#DSSP">Kabsch &amp; Sander</a>).
+When scanning a trajectory, a plot of the secondary structure
+evolution is also prepared.
+<A NAME="CV_map"></A>
+<li>Calculate and plot (both in the graphics window (SGI only) and onto a
+Postscript file) the 
+<A NAME="#CVmap"><b>circular variance map</b></A> of the
+solute:<br>
+The circular variance map of a macromolecule of <i>N</i> residues
+is an <i>N</i>x<I>N</i> matrix:
+<p>
+<CENTER>
+CV<sub>i,j</sub> = [ SUM<sub>k between i and j</sub>
+(<b>r</b><sub>i,k</sub>/|<b>r</b><sub>i,k</sub>|)]/|i-j+1| ,
+</CENTER>
+<p>
+while its weighted variant is defined as:
+<P><CENTER>
+CV<sup>w</sup><sub>i,j</sub> =
+ [ SUM<sub>k between i and j</sub> <b>r</b><sub>i,k</sub>]/
+ [ SUM<sub>k between i and j</sub>|<b>r</b><sub>i,k</sub>|]
+</CENTER>
+<A NAME="Resid_corr"></A>
+<li>Calculate the the <b>covariance and correlation matrices</b>
+of selected residues over a
+trajectory. Both matrices are is printed and a color-coded map
+is plotted for both.
+Furtermore, if requested, the eigenvalues and eigenvectors of the
+covariance matrix will also be calulated.
+<li>Extract and <b>tabulate results</b> for selected properties form the large
+output tables created by the script <b>mm_pbsa.pl</b>
+that is part of the Amber suite of programs analyzing Amber trajectories.
+Simulaid will recognize if the input tables contain residue-residue
+contributions or residue-molecule contributions.
+The table colums are the selected energy contribution terms, except for
+the case when one property is selected to tabulate from from residue-residue
+tables - in that case the table printed will have both rows and colums
+as residues, the range of which is specified by the user.
+In addition, correlations between selected properties can also be calculated.
+</ul>
+<li><B>General clustering</b>
+<ul>
+<li><b>Cluster atoms</b>. This option takes the input structure, and 
+<A HREF="#cluster">cluster</A>
+the atoms based on their distances.
+This function can be used for a data set representing a density distributions
+- the clustering will delineate the regions of different density maxima.
+<li><b>Cluster based on an input matrix</b>
+This option reads in a matrix representing distances and performs clustering
+on it. The input is assumed to be in the following form:<br>
+<b> Size of the matrix (N)</b><br>
+N times:<br>
+<ul>
+<b>Row number</b>, <b>Row name</b><br>
+N numbers, representing one row of the matrix (separated by spaces)<br>
+</ul>
+This matrix can be transformed before clustering using several formulae:
+<ul>
+<li>R(i,j) = 1 - R(i,j)
+<li>R(i,j) = R(i,j)^N
+<li>R(i,j) = R(i,j)^(1/N)
+<li>R(i,j) = (1- R(i,j))^N
+<li>R(i,j) = (1- R(i,j))^(1/N)
+</ul>
+</ul>
+<A NAME = "logging"></A>
+<li><b>Start logging</b> the keyboard input.
+When logging is turned on, the program writes all keyboard input on a file
+that can be later used as input to repeat the run:<BR>
+<b>simulaid &lt; &lt;logfile&gt;</b><BR>
+Note that if the run created new files than 'replaying' the log file
+will only work if these files are removed, or a line containing <b>y</b>
+is inserted at the places where Simulaid would ask permission to overwrite
+such files.
+<A NAME = "predictable"></A>
+<li>Make the interactive quiz <b>predictable</b>.
+In certain cases, Simulaid has extra questions
+or omits some questions, depending on the data. This can confuse runs
+that use a log file as input. To avoid this problem, when this option
+is set, the extra qestions will assume default answers and the questions that 
+may be eliminated in some cases will not be.
+<li><b>Animate a trajectory</b> (only when compiled with the
+C@GL comments removed)
+</UL>
+<P>
+<a NAME="II"></a>II.RUNNING THE PROGRAM - INPUT
+<p>The program is run interactively: the user is first asked to select the
+operation to be performed then (if needed) the
+<ul>
+<li><b>name</b> of the input STRUCTURE file. If the graphics code is
+active the program opens a graphics window and displays the
+molecule read. Input syntax can be
+<ul>
+<li>(<b>.CRD</b>) Charmm CRD, either in the original (80 characters/atoms,
+4-character names) to the extended format introduced with Charmm 32 (132
+characters/atoms, 8-character names, 10-character integers)
+<li>(<b>.pdb</b>) Original Protein Data Bank format - there are
+several variants:
+<UL>
+<LI>Brookhaven format
+<LI>Charmm PDB (Charmm PDB differs from Brookhaven PDB mainly
+in the placement of the segment ID)
+<LI>Autodock PDBQS - an extension of the PDB format containig
+partial charge and solvation parameters (used by Autoock 3)
+<LI>Autodock PDBQT - an extension of the PDB format containig additional
+partial charge (used by Autoock 4)
+</UL>
+<li>Macromodel
+<li>Macromodel/Xcluster (for more than one conformations, a
+Macromodel format conformation is followed by only x,y,z
+information as provided by Xcluster)
+<li><b>(.slt</b>) MMC solute description file format
+<li><b>(.gro</b>) Gromos/Gromacs coordinate file format
+<li><b>(.mol2</b>) Tripos Mol2 coordinate file format (only for input)
+<li><b>(.car</b>) Insight car format
+<li>Free format as defined by the Insight format file<a
+NAME="NXYZ"></a>nxyz.frm (number of atoms in the first line,
+followed by atomic number and x,y,z coordinates in each of the
+successive lines)
+<li>Free format as defined by the Insight format file<a
+NAME="SXYZ"></a>sxyz.frm (like nxyz.frm, except that chemical
+symbols are expected instead of atomic numbers)
+<li>Free format as defined by the Insight format file<a
+NAME="SXYZQR"></a>sxyzqr.frm (like sxyz, but appended by charge
+and residue number).
+<li>(<b>.crg</b>) Grasp charge file
+</ul>
+<li>If the extension of the input file is neither of the extensions
+specified above the program asks the
+<b>format</b> of the input data.
+<li><b>type</b> of calculation to be run,
+<li><b>name</b> of the output file.
+<br>Whenever relevant, it asks the
+<ul>
+<li><a NAME="PBCLIST"></a>simulation <b>cell shape</b>. The
+following (periodic) boundary conditions are recognized:
+<ul>
+<li>cubic
+<li>rectangular
+<li>hexagonal prism (both regular or irregular hexagon),
+with user-specified coordinate axis along the prism axis
+and with user-specified coordiante axis going through the hexagon vertex
+(e.g., X axis along the prism axis and vertices
+of the hexagon are on the Z axis - as used by MMC)
+<li>face-centered cubic
+<li>truncated octahedron, X axis normal to a square face - as used by Charmm
+<li>truncated octahedron, X axis normal to a hexgon face - as used by Amber
+<li>hexagonal close-packed
+<li>image-file based
+<li>sphere (used only for trimming solvents)
+<li>no boundary conditions
+</ul>
+<li><b>residue name of the solvent</b> (default: HOH for PDB,
+WTR for Insight and TIP3 otherwise)
+<li><b>number of solvent atoms</b> for solvents other than TIP3,
+WTR or HOH.
+<li>For runs optimizing <a href="#SPHERE">position</a> or <a
+href="#ORIENT">orientation</a> it offers the option of excluding
+hydrogens.
+<li><a href="#SPHERE">Sphere optimization</a> asks the <b>width
+of the extra solvent layer</b> - this width will be used for
+volume calculations and (when relevant) excluding excess
+solvents.
+<li><a href="#ORIENT">Orienting run</a> asks the <b>minimum
+image-image distance to be achieved</b>. The final cell size will
+be determined with this value in sight.
+<li><a href="#trajconv">Trajectory conversions</a> will use the
+input configuration to define the order of the atoms in the input
+trajectory and may be given a second configuration file to
+establish the target trajectory's atom order.
+</ul>
+</ul>
+<li>Creation of a Grasp .crg file involves specifying the RTF
+file name(s). Note that the Grasp format limits atom names to
+four characters and residue names to three characters. If either
+of these limits is exceded, the program will truncate the names
+and print a warning. Also, the program requires a valid 'input'
+filename, but it will be ignored.
+<li>Animation runs (only when the graphics code is active, of
+course) require the specification of the trajectory file name,
+the range and frequency of sampling and the frequency of
+pausing for manipulations.
+Each solute segment/chain is colored differently (using
+six colors, cyclicly repeated:
+1:red; 2:green; 3:yellow; 4:blue; 5:pink; 6; cyan),
+solvents are colored white.
+For simulations with variable box size the smallest and largest
+PBC boxes are also drawn.
+For multisegment solutes one segment can be highlighted.
+After each pass option is
+given to repeat the animation and change the value for the
+length of waiting time between showing two frames.
+Each time the animation pauses the display can also be
+manipulated by <a href="#keyboard">keyboard commands</a>. The
+length of wait is defined in a hardware dependent arbitrary unit.
+There is also an option to reorient the system to the orientation
+of the initial configuration (useful for animating Monte Carlo
+runs).
+<p>
+For most runs with <a href="#conversions">conversions</a> or with
+<a href="#cleanup">cleanup</a> the program asks <b>the number of
+additional structures to process</b> in the same way. This allows
+the processing of a batch of files with one run. For Charmm
+format output, the segment id of the additional structures will
+be appended by 1,2, etc., as long as there is 'room' for this
+additional information in the four-digit sequence id (i.e., the
+original segment id contained enough blanks). <p>Additional input
+structures may be either in the same file or in separate files -
+you will be asked which. Each file may contain several structures
+- you will be asked how many. If they are in separate files, and
+the first file was called ether <b>A.B</b> or <b>A.1.B</b> then
+the remaining files have to be called <b>A.2.B</b>, <b>A.3.B</b>,
+etc. Similar naming convention applies to the output files.
+<p>The output file(s) will contain the modified molecule. Except
+for runs requesting a transformation of syntax, it will use the
+same syntax type as the input file. The header comments for
+Charmm and PDB formats will be extended with a description of the
+transformation(s) done by the program and/or the results of the
+optimization.
+<p>If the graphics code is active, some functionalities allow the
+rotation of the molecule in the graphics window
+(<a href="#keyboard">keyboard commands</a>).
+<p>
+<u>Running Simulaid on a batch of files</u>
+<p>
+Simulaid has been succesfully run from a c-shell script on a batch of files.
+The script requires a copy of all the answers to the interactive quiz
+durig the Simulaid run. This can be obtained by running Simulaid
+and turn on on <A HREF="#logging">input logging</A>.
+It is advisable to set the input 
+<A HREF="#predictable">predictable</A> in this case.
+This list has to be put into the 
+script file between the <b>simulaid &lt;&lt; fin</b> command and the
+terminator string <b>fin</b>. In the example below all <b>.pdb</b>
+files in the directory are converted from PDB atom/residue name
+convention to Charmm's convention.
+Also, the generation of the list of files to be processed has
+to be adapted to each case.
+<p>
+<pre>
+#! /bin/csh -f
+#
+# script to convert from PDB name convention to Charmm convention
+#
+set files = `ls *.pdb`
+# The variable $file lists all the .pdb files in this directory
+foreach file ($files)
+set file1 = `echo $file | sed s/\.pdb/_ch\.pdb/`
+# Generated a new file name from the priginal .pdb file name to use as output
+echo Reading $file and writing file $file1
+simulaid &lt;&lt; fin &gt;&gt; junk
+p
+n
+f
+$file
+b
+$file1
+y
+
+
+9
+3
+
+
+
+fin
+end
+#rm junk
+exit
+</pre>
+<p><a NAME="III"></a>III. THE OUTPUT ON THE TERMINAL
+<p>The terminal output will include the title cards and the
+number of atoms found in the input file (the number of hydrogens
+also if they are not to be considered) for all types of runs.
+<ul>
+<li>For <a href="#PBCOPT">enclosing sphere calculation</a>:
+<ul>
+<li>
+The initial radius found based on the center determined by
+shifting along the X, Y, and Z axes by
+(<b>X(min)</b>+<b>X(max)</b>)/2, (<b>Y(min)</b>+<b>Y(max)</b>)/2,
+(<b>Z(min)</b>+<b>Z(max)</b>)/2, respectively, where
+<b>X(min)</b>, <b>X(max)</b> are the smallest and largest X
+coordinates, etc.;
+<li>The optimized radius;
+<li>The volume of the initial and optimized sphere and the
+number of waters required to fill it in.
+<li>The volume of the initial and optimized spheres increased by
+the water layer width and the number of waters required to fill
+it in.
+<li>The vector shifting the molecule to the center of the
+smallest sphere.
+<li>If solvents were present in the input file, the number of
+them remaining that is within the layer of specified width around
+the optimized sphere.
+</ul>
+<li>For <a href="#BOUNDING">minimizing the bounding box</a>:
+<ul>
+<li>The initial bounding box sixe
+<li>Messages describing the progress of optimization.
+<li>The smallest bounding boxes found in each minimization try
+<li>The optimal bounding box sixe
+<li>The vector shifting the molecule's COM to (0,0,0) and
+the rotation matrix to the optimal orientation
+</ul>
+<li>For <a href="#ORIENT">orientation optimization</a>:
+<ul>
+<li>The shortest distance between atoms on different images in
+the original and in the new orientation. The optimization will be
+performed starting from the input orientation as well as from a
+user-defined number of different random orientations.
+<li>Messages describing the progress of optimization.
+<li>The cell parameter(s), like the edge lengths, corresponding
+to the cell shape used in the calculation.
+<li>The cell volume and the number of waters required to fill it
+in (without the solute present).
+<li>The vector shifting the molecule's COM to (0,0,0) and
+the rotation matrix to the optimal orientation
+</ul>
+<li>For solvent geometry fixing calculations:
+<ul>
+<li>The number of solvents found.
+</ul>
+<li>For elimination of waters outside a simulation cell:
+<ul>
+<li>The number of waters kept and the number of non-water atoms
+found.
+</ul>
+<li>The <a href="#cleanup">cleanup operations</a>, performed
+automatically at the end of the run or at special request. Note,
+that automatically invoked cleanup operations start the residue
+and atomnumbers from one.
+<ul>
+<li>The number of atoms found detached from their residue
+<li>A message if resequencing was or was not needed
+</ul>
+<li>Conversion output
+<ul>
+<li>For each type of conversion a variety of warnings or error
+messages may be obtained indicating that the input file does not
+conform to some assumptions or the templates used are not
+prepared for the particular input. These messages should be
+heeded.
+<li>For residue-name bearing input a sequence list can be written
+to a file.</ul>
+<li>The analysis option provides a menu from which a choice
+should be made and ask if trajectory scan is requested.
+After the analysis requested is performed
+the program returns to this menu allowing the user to do an other one
+or to stop.
+If additional configurations are read from the input file,
+the last analysis will be repeated.
+<ul>
+<li>Each type of analysis prints the name of the output file
+(generated from the input file name by adding a special suffix)
+where the requested information is written.
+<li>Various statistics generated over the lists are also printed
+on the terminal.
+</ul>
+</ul>
+Furthermore, several internal consistency checks are
+implemented to increase the chance of detecting any error that
+might have remained in the program. Failing such a test results
+in a message preceded by PROGRAM ERROR. This always indicates a
+bug in the program and should be brought to the attention of the
+author, together with the input file that was processed when the
+error occurred.
+<p><a NAME="IV"></a>IV. FILE FORMATS
+<ul>
+<li><a NAME="pdb_nam"></a>The name conversion file
+<b>pdb_nam.dat</b> is of the following syntax:
+<ul>
+<li>Part 1: <b>nconv</b>,<b>ncol</b> (free format)
+<ul>
+<li><b>nconv</b>: Number of name conventions included.
+<li><b>ncol</b>: number of data columns in the file.
+</ul>
+<li>Part 2: 8-character names of the conventions (in one line):
+<br>"Amber&nbsp;&nbsp; ", "Amber94 ", "Charmm&nbsp; ",
+"Moil&nbsp;&nbsp;&nbsp; ", "IUPAC&nbsp;&nbsp; ",
+"Macromod","ChemX&nbsp;&nbsp; ", " PDB&nbsp;&nbsp;&nbsp;&nbsp; "
+<br><b>PDB has to be the last convention</b>.
+<li>Part 3: Data for residue name conversions. Each line has
+<b>ncol</b> entries.
+<ul>
+<li>The first entry is a generic residue name.
+<li>Entries <b>two</b> to <b>nconv+1</b> are the actual residue
+names corresponding to possible variants in the various
+conventions.
+<li>Entries from <b>nconv+2</b> to <b>ncol</b> are possible
+additional PDB variants. A blank entry means that conversions to
+that convention of the corresponding atoms will retain the
+original name. An entry of "****" means that conversions to that
+convention will result in dropping those atoms.
+<li>This section is concluded with a line for residue name
+"DONE".
+</ul>
+ <li>
+Part 4: Data for atom name conversions. Each line has <b>ncol</b>
+entries. The first entry is a generic residue name as defined in
+Part 3. Entries <b>two</b> to <b>nconv+1</b> are the atom names
+corresponding to the variants in the various conventions.
+<p>
+Entries from <b>nconv+2</b> to <b>ncol</b> are possible
+additional PDB variants. Entries for PDB varians have to conform
+to the PDB convention requiring that atom names for elements with
+single-character chemical id be in the <b>second</b> position -
+leaving the first one either blank or filled with a number (e.g.,
+"_OD1" or "2HA1").
+<p>There are a number of entries with blank generic residue names
+- they represent names that convert to each other for any
+residue. This section is also concluded with a line for residue
+name "DONE".</ul>
+<li><a NAME="template"></a>The template file for the orders of
+the atoms within each residue has 8-character entries in the form
+"RESN&nbsp;&nbsp;&nbsp; ","ATNM&nbsp;&nbsp;&nbsp; ". The current
+versions have been directly generated from the RTF files of Amber
+and Charmm.
+<li>The&nbsp;<a NAME="Conversion_file"></a>file containing the
+information needed to convert to MMC Monte Carlo input has
+8-character entries "RESN&nbsp;&nbsp;&nbsp; ",
+"ATNM&nbsp;&nbsp;&nbsp; ", "PFCD&nbsp;&nbsp;&nbsp; ",
+"Charge","GROUPa b" where
+<ul>
+<li>RESN is the residue name
+<li>ATNM is the atom name
+<li>PFCD is the left-adjusted atom-type name
+<li>Charge is the partial charge given with decimal point
+<li>GROUPa b gives information about the carous charge groups
+within a residue. For each group, a=1 for the first atom of the
+group and a=0 for the rest; b is the sequence number of the group
+within the residue (i.e., b=1,...,b=2,..., etc).
+</ul> Again, they have been extracted from the RTF files of Amber
+and Charmm, respectively. Note that the atom order template file
+has the same syntax as the MMC conversion file for the residue
+and atomnames thus an MMC conversion file can be also used for
+atom order template file.
+</ul>
+<a NAME="V"></a>V. INSTALLATION
+<p>The distribution contains the source code and some data files.
+Installation of the program requires the following steps:<a
+NAME="INSTDIR"></a>
+<ul>
+<li>Putting these data files into a directory of your choice,
+referred to as the installation directory.
+<li>Changing in the block data
+<UL>
+<LI>the string <B>MYPATH</B> to the path of the installation directory
+<LI>the fourth number in the data ldatapaths statement (00)
+to the number of characters in <B>/MYPATH/</B> 
+</UL>
+<li>Removing the C@**
+(i.e., deleting the first four characters in the line)
+comments from lines corresponding to your environment
+in the subroutine datprt (near the end of the source code) for
+the printing of the date on output files as follows:
+<ul>
+<li>"C@UG" --> "" - SGI IRIX Fortran compiler
+<li>"C@G7" --> "" - g77 Fortran compiler
+<li>"C@AB" --> "" - Absoft Fortran compiler
+<li>"C@EF" --> "" - Intel Fortran compiler
+<li>"C@HP" --> "" - Hewlett-Packard Fortran compiler
+<li>"C@AX" --> "" - IBM AIX Fortran compiler
+</ul>
+<li>The subroutine datprt checks if the program is executed on
+certain hostnames, assumed to be the headnodes of a cluster. 
+The hostnames (e.g., minerva2 in the distribution copy) should be
+replaced with the actual hostname. This will enable Simulaid to 
+warn the user that
+longer runs should be sent to a compute node.
+<li>If the program is to be compiled without the graphics
+interface (i.e., not to run on an SGI graphics workstation),
+simply compile the program with Fortran, e.g.,:<br>
+<i>f77 -o simulaid.bin simulaid.f</i><br> to obtain the
+executable <b>simulaid.bin</b>
+<li>If the program is to be compiled with Fortran95 then there
+is a preprocessor in the distribution f77tof95.f and f77tof95_f95.f (the
+second one is the Fortran95 version of the first one) that changes
+the syntax to conform to Fortran95 requirements.
+<li>If the program is to be run on an SGI graphics workstation
+then the compilation has to be preceded by uncommenting this part
+of the code (make sure that the graphics libraries are installed
+on your system):<br>
+<i>cat simulaid.f | sed 's/C@GL//' > simulaid_tmp.f<br>
+f77 simulaid_tmp.f -o simulaid.bin -lfgl -lgl rm
+simulaid_tmp.f</i><br> to obtain the executable
+<b>simulaid.bin</b>
+</ul>
+The distribution directory also contains the files
+<b>nxyz.frm</b>, <b>sxyz.frm</b> and <b>sxyzrq.frm</b> that give
+the decription of the data format for some of the InsightII
+free-formats. The Charmm image files for the non-rectangular
+boundary conditions, <b>hexy.img</b>, <b>hexz.img</b>,
+<b>fcc.img</b>, <b>to.img</b>, and <b>hcp.img</b> are also given.
+<p>
+<a NAME="VI"></a>VI. CHANGING DIMENSIONS
+<p>
+The sizes of the arrays are established with parameter statements
+throughout the code. Several symbols user used for this purpose.
+There are certain relations between these symbols, 
+so changing one of them is likely to require changes in some others.
+Below is a list of these symbols and their relations that have to be 
+maintained (the program check for violations).
+<p>
+<B>IMPORTANT</B>: Parameter statements for any symbol occur several places
+in the program. When a change is required, it has to be carried out
+at ALL occurences! 
+<UL>
+<LI>  MAXPHI: maximum number of
+<A HREF="#Delphi_map">Delphi gridpoints</A>
+<UL>
+Also, MAXPHI<sup>3</sup> is the memory used for 2D-data - see below
+the parameter definitions depending on MAXPHI
+</UL>
+<LI>  MAXREC: Maximum number of records to read
+<UL> 
+&gt; maximum number of atoms<BR>
+must be divisible by 20 
+</UL>
+<LI>  MAXRSD: Maximum number of residues
+<LI>  MAXNEIG: Maximum number of neighbors of an atom in the neighbor list
+<UL>
+(7+2*MAXNEIG)*MAXREC &lt; MAXPHI<sup>3</sup>
+</UL>
+<LI>  MAXBONDS: Maximum number of bonds (hydrogen, hydrophobic or salt bridge)
+<LI>  MAX2D: maximum number of frames for the 
+<A HREF="#2D-RMSD">2-D RMSD map</A>
+<UL>
+&lt; MAXBONDS<BR>
+4*MAXBONDS+MAX2D+2*MAX2D<sup>2</sup> &lt; MAXPHI<sup>3</sup>
+</UL>
+<LI>  MAXCV: maximum number of residues for the 
+<A HREF="#CV_map">CV-based domain map</A>
+<UL>
+8*MAXCV+5*MAXCV*<sup>2</sup> &lt; MAXPHI<sup>3</sup>
+<UL>
+<LI>  MAXRCORR: maximum number of residues for the 
+<A HREF="#Resid_corr">residue correlation map</A>
+</UL>
+2*MAXRCORR*<sup>2</sup>+16*MAXRCORR &lt; MAXPHI<sup>3</sup>
+</UL>
+<LI>  MAXCONN: maximum number of residues for the 
+<A HREF="#Res_dist_map">residue distance map</A>
+<UL>
+3*MAXCONN*<sup>2</sup>-11*MAXCONN &lt; MAXPHI<sup>3</sup>
+</UL>
+</UL>
+The current version uses MAXREC=200000, MAXRSD=70000, MAXNEIG=25,
+MAXPHI=300, MAX2D=3500, MAXCV=2000, MAXRCORR=5000 . 
+Valid values for a larger version (ca. 1.1 Gb) are
+MAXPHI=640, MAX2D=10000, MAXCV=800, MAXRCORR=10000.
+<p>
+In additions to the symbols above, there are other size parameters
+whose value can be chosen independently (the current value is in braces):
+<UL>
+<LI>MAXFRAMES {50000}: the number of trajectory frames to store for analysis
+<LI>MAXCOPY {600}: the number of different data (e.g., torsion angles) per frame
+to store for analysis
+<LI>MAXHX {50}: the maximum number of residues per protein helix
+<LI>MAXNHX {16}: the maximum number of helices for a simngle TRAJHELIX run
+<LI>MAXBRDIGEATOM {8000}:  Maximum number of bridge anchor atoms: 
+<LI>MAXBRDIGETYPE {500}:  Maximum number of bridge destination atoms: 
+<LI>MAXBRIDGELEN {4}:  Maximum number of H bonds in a bridge:  
+<LI>MAXDDISTR {200}: Maximum number of atom pairs to calculate the distance distribution
+<LI>MAXDDBIN {20}: The number of distance bins in the distance distributions
+<LI>MAXCDLIST {2000}: The total number of 
+<A HREF="#Clusterdist">atom pairs</A> that can be involved
+in distance distribution calculation
+</UL>
+<p>
+<center>
+<a NAME="VII"></A><p>REFERENCES</center>
+<p>
+<a NAME="PBCOPT"></a>1. M. Mezei, Optimal Position of the Solute
+for Simulations,
+<A
+HREF="http://www3.interscience.wiley.com/cgi-bin/jtoc?ID=33822">
+<i>J. Comp. Chem.</i></a> <b>18:</b>812-815.<br>
+<A HREF="http://www3.interscience.wiley.com/cgi-bin/issuetoc?
+ID=48509">Abstract (free) and Full Text (with subscription)</A>
+<p>
+<a NAME="BOUNDOPT"></a>2. M. Mezei, Finding of the smallest
+enclosing cube to improve molecular modeling,
+<a href="http://www.dl.ac.uk/CCP/CCP5/newsletters/47/start.html">
+Information Newsletter for Computer Simulation of Condensed
+Phases,</a> CCP5, Daresbury Lab., No 47, (2000).
+<p>
+<A NAME="CVMAP"></a>
+3. M. Mezei, A new method for mapping macromolecular topography,
+<i>J. Molec. Modeling and Simul.,</i>
+<b>21,</b> 463-472 (2003).
+<p>
+<A NAME="PSROT1"></a>
+4. C. Altona and M. Sundaralingam,
+<i>J. Am. Chem. Soc.,</i> <b>94,</b> 8205 (1972).
+<p>
+<A NAME="PSROT2"></a>
+5. D. Cremer and J.A. Pople,
+<i>J. Am. Chem. Soc.,</i> <b>97,</b> 1354 (1975).
+<p>
+<A NAME="DSSP"></a>
+6. W. Kabsch and C. Sander,
+Dictionary of protein secondary structure:
+Pattern recognition of hydrogen-bonded and geometrical features.
+<i>Biopolymers,</i> <b>22,</b> 2577-2637 (1983).
+<p>
+<A NAME="PROKINK"></a>
+7. I. Visiers, B.B. Braunheim, and H. Weinstein,
+ Prokink: a protocol for numerical evaluation of helix
+distortions by proline.
+<i>Prot. Engrg.,</i> <b>13,</b> 603-606 (2000).
+<p>
+<A NAME="TRAJELIX"></a>
+8. M. Mezei and M. Filizola,
+TRAJELIX: A computational tool for the geometric characterization of
+protein helices during molecular dynamics simulations.
+<i>J. Computer-Aided Molecular Design</i>, <b>20,</b> 97-107 (2006).    
+<p>
+<A NAME="Schuyler"></A>
+9. Computational Methods for Predicting Sites of Functionally Important Dynamics
+Adam D. Schuyler, Heather A. Carlson, and Eva L. Feldman,
+<i>J. Phys. Chem. B</i>,<b>113,</b> 6613-6622 (2009)
+<A HREF="http://pubs.acs.org/doi/abs/10.1021/jp808736">DOI: 10.1021/jp808736c</A>
+<p>
+</body>
+</html>
