@@ -6,10 +6,12 @@ def polar(x, y, z):
 	NOTE: Unlike most conventions, phi is the angle between R and the Z axis
 	***
 	Parameters:
-	x,y,z: point
+	x,y,z: coordinates of a point
 	"""
 	PI = math.pi
+	# calculating r the distance to origin
 	r = (x**2 + y**2 + z**2)**0.5
+	# calculating theta
 	if (x!=0 and y!= 0):
 		theta = math.atan(abs(y/x))
 		if ( y > 0):
@@ -31,10 +33,15 @@ def polar(x, y, z):
 				theta = 0
 			else:
 				theta = PI
+	# calculating phi
 	if ( r == 0):
+		# (x,y,z) is the origin so no angle
 		phi = 0
 	else:
 		cosa = z/r
-		phi = dacoscheck(cosa, ccc, 1,6, 'POLAR')
+		try:
+			phi = dacoscheck(cosa)
+		except:
+			print("Problem in dacoscheck")
 	return r,theta,phi
 

@@ -1,10 +1,17 @@
 import numpy as np
 
-def calcperp(start,dir,fro,orig, perpvec,itest):
+def calcperp(start,dir,fro,orig, itest):
 	"""
 	For a line from start in the direction dir, calculate the normal to it
 	from the point fro. The normal meets the line at orig and its direction
 	is perpvec
+	***
+	Parameters:
+	start: beginning of the line
+	dir: direction of the line
+	fro: point whence to calculate the normal
+	orig: intersection between the line and the normal
+	itest: ???
 
 	"""
 	dsx = np.zeros(3)
@@ -18,6 +25,7 @@ def calcperp(start,dir,fro,orig, perpvec,itest):
 	for k in range(3):
 		orig[k] = fro[k] - perpvecfac*perpvec[k]
 	if (itest > 0):
+		# printing important information
 		print('Start',start)
         print('Dir {} Magn = {}',dir,np.linalg.norm(dir))
         print('From',fro)
