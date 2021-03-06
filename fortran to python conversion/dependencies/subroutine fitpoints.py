@@ -1,7 +1,7 @@
 import numpy as np
 import warnings
 
-def fitpoints(c,n,ndim, axfact,idebughx):
+def fitpoints(c,n,ndim,idebughx):
 	"""
 	For n points in c, find the mean (c0) and the direction of the normal 
 	to the best fitting plane (ndim=3) or the direction of the best fitting
@@ -11,7 +11,6 @@ def fitpoints(c,n,ndim, axfact,idebughx):
 	c: input coordinates
 	n: number of coordinates
 	ndim: if 2 find the best fitting line, if 3 best fitting plane
-	axfact:
 	idebughx:
 
 	Return:
