@@ -11,10 +11,10 @@ def parlsq(co, n, docircfit, iprint):
 	Parameters
 	co: input coordinates of the helix
 	n : number of atoms
-	docircfit: if true, perform a circular fit for the set of points
+	docircfit: if true, performs a circular fit for the set of points
 
 	Returns:
-	dir: the axis vector
+	dir: the axis vector of the helix
 	ip: the initial point
 	fp: the final point
 	rms: root mean squared
@@ -24,6 +24,7 @@ def parlsq(co, n, docircfit, iprint):
 	Sr = np.zeros(3) # made of (Srx, Sry, Srz)
 	St_r = np.zeros(3) # made of (St_rx, St_ry, St_rz)
 	St2 = 0
+	dir = np.zeros(3)
 	for i in range(n):
 		co_i = np.array(co[0][i], co[1][i], co[2][i])
 		St += i

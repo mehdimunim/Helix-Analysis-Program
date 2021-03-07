@@ -1,6 +1,6 @@
 import numpy as np
 
-def rotate_c(c, rot):
+def rotate_c(c, nats, rot):
 	"""
 	Rotate a molecule given by its coordinates
 	CNEW = ROT * CN
@@ -8,9 +8,11 @@ def rotate_c(c, rot):
 	Parameters:
 	c: coordinates of the molecule (dimension 3*n)
 	rot: rotation matrix (dimension 3*3)
+
+	Returns:
+	cnew: rotated molecule
+	
 	"""
-	#number of atoms in the molecule
-	nats = np.size(c[0])
 	#output molecule, rotated by rot matrix
 	cnew = np.zeros(3,n)
 	# raise exception if rot is not a rotation matrix

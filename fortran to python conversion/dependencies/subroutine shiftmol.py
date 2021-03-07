@@ -4,7 +4,13 @@ def shiftmol(c, n, c0, fac):
 	***
 	Parameters:
 	c: molecule coordinates (dimension 3*n)
-	c0: given point in space 
+	n: number of atoms
+	c0: given point in space
+	fac: factor
+
+	Returns:
+	Molecule shifted
+
 	"""
 	print("SHIFTMOL n = {} fac = {} c0= {} ".format(,n,fac,c0))
 	for i in range(n):

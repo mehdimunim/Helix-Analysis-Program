@@ -9,7 +9,7 @@ def kahn(co,nats,docircfit,dir,ip,fp,rms, iprint,message,MAXHX):
 
     	Construct a vector A from ca atom i to i-1. Construct B
     from i to i+1.  Find V1, the vector which bisects A and B.  V1 is
-    perpendicuar to the helix axis (for a perfect mathematical helix).
+    perpendicular to the helix axis (for a perfect mathematical helix).
     Let i = i + 1 and repeat the procedure, finding V2.  As V1 and V2
     are both perp. to the helical axis, their cross product gives the
     helix direction.   Average over all possible tetrads of ca atoms,

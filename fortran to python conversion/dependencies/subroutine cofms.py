@@ -1,18 +1,22 @@
 import numpy as np
 
-def cofms(csa, aw):
+def cofms(csa, natm, aw):
 	"""
+
 	Compute center of mass from global atomic coordinates
 			SUM(csax[i]*aw[i]) + SUM(csay[i]*aw[i]) + SUM(csaz[i]*aw[i])
 	rmass = -----------------------------------------------------------
 			                SUM(aw[i])
+	
 	***
 	Parameters:
 	csa: input coordinates
 	aw: atom weights
+
+	Returns:
+	rmass: center of mass
+
 	"""
-	#number of atoms
-	natm = np.size(csa[0])
 	#calculate rmass numerator
 	for i in range(3):
 		rmass[i]=sum([aw[j]*csa[i][j] for j in range(natm)])

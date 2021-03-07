@@ -191,4 +191,4 @@ def bestoverlay(nat, index1, index2, c1, c2, atw, atwsuminp, atw1, LEVTEST,TOLER
   except:
     print("BESTOV failed rot=",rot)
   print("BESTOV diag={} mu={}".format(diag,rmu))
-  return rot
+  return atwsum, com1, com2, rot
