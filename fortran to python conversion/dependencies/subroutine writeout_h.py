@@ -1,6 +1,7 @@
 def writeout_h(dir, ip, fp, rms, message, iprint):
 	"""
 	Write header???
+	Write summary of the set of points
 	***
 	Parameters:
 	dir: direction vector

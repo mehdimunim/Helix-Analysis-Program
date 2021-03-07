@@ -1,16 +1,18 @@
 import numpy as np
 
-def circfit(x, nats):
+def circfit(x, nats, dir):
 	""" 
+
 	Calculates the best-fit circle to a set of data and returns the 
 	center in ip
+
 	***
 	Parameters
 	x: the coordinates (array of 3,2*MAXHX length)
 	nats: the number of atoms
-
-	Returns:
 	dir: input direction vector
+	
+	Returns:
 	ip: output center of x
 
 	"""
@@ -50,4 +52,4 @@ def circfit(x, nats):
 	xp0 = rotabout(xp0,zero,thet,'z')
 	ip = xp0.copy() 
 	print("Output circle ip = {},dir = {}".format(ip,dir))
-	return dir, ip
+	return ip
