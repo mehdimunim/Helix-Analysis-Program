@@ -3,7 +3,7 @@ import math
 
 def checkbend (c,axisdir,camod,perpvec,n,axtol,idebughx):
 	"""
-	Check if c is bend
+	Check if strucutre c is bend
 	***
 	Parameters:
 	c: input coordinates of dimension 3*n
@@ -14,7 +14,10 @@ def checkbend (c,axisdir,camod,perpvec,n,axtol,idebughx):
 	idebughx:
 
 	Returns:
-	idecide: integer corresponding to a decision
+	idecide: integer corresponding to the type of bend: too short, bent, random, alternate, too long 
+	nup,ndown,nrun,nnear: 
+	x0,rcirc: center and radius of the structure
+	rn : direction vector
 	"""
 	rm = np.zeros(3)
 	x = np.zeros(3)
@@ -60,7 +63,7 @@ def checkbend (c,axisdir,camod,perpvec,n,axtol,idebughx):
 		for i in range(n):
 			writepdbd(77,camod[0][i],i,i,'C','CA ','B',1.0,0.0)
 	# Calculate the radius of the fitting circle to the pulled points
-	axisdir,circ = circfit(c,n)
+	circ = circfit(c,n)
 	rcirc = math.sqrt(ddistsq(circ,x0))
 	rr = 0
 	for i in range(n):
@@ -127,4 +130,4 @@ def checkbend (c,axisdir,camod,perpvec,n,axtol,idebughx):
 	nup= nupdown[0]
 	ndown = nupdown[1]
 	idecide = runtest(nup,ndown,nrun,idecide)
-	return idecide
+	return idecide,nup,ndown,nrun,nnear, x0, rcirc, rn

@@ -7,8 +7,17 @@ def dacoscheck(arg):
 	otherwise raise an exception
 	***
 	Parameters:
-	arg: input angle
+	dargin: input angle
+	argin:
+	idbp:
+
+	Returns:
+	acos(dargin) if idb=1 else acos(argin)
 	"""
+	#if (idb == 1):
+		#arg = dargin
+	#else:
+		#arg = argin
 	#Checking arg value and returning acos(arg) if correct
 	if ((arg > 1 and arg<=1.01) or (arg < -1 and arg >=-1.01)):
 		# arg is close enough to the [-1,1] range to be approximated by its boundaries

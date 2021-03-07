@@ -37,5 +37,5 @@ def calcperp(start,dir,fro,orig, itest):
         	xx = start - orig
         	cc = np.dot(dir,xx)/np.linalgn.norm(xx)
         	print("Dir . (orig-start)",cc)
-   	return cc
+   	return perpvec, orig
 

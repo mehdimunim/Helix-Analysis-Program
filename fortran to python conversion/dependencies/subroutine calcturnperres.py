@@ -2,6 +2,7 @@ import math
 
 def calcturnperres(nres,incrot,perpvec,axisdir,anglechangeref,irefang,MAXHX):
 	"""
+
 	Calculate TPR (Turn Per Residue)
 	***
 	Parameters:
@@ -12,6 +13,10 @@ def calcturnperres(nres,incrot,perpvec,axisdir,anglechangeref,irefang,MAXHX):
 	anglechangeref: reference of angle change
 	irefang; reference angle
 	MAXHX: total number of helices
+
+	Returns:
+	turnperres : turn per residue
+	
 	"""
 	PI = math.pi
 	nresu = nres - 2*incrot

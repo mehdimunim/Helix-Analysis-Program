@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-def kahn(co,nats,docircfit,iprint,message,MAXHX):
+def kahn(co,nats,docircfit,dir,ip,fp,rms, iprint,message,MAXHX):
 	"""
 	ref. Computers in Chemistry Vol 13, No 3, pg 191, 1989
 
@@ -39,7 +39,7 @@ def kahn(co,nats,docircfit,iprint,message,MAXHX):
 	tmp, p1mp2, p2mp1, dmag, ddot: Arrays of length 3, 2*MAXHX
 
 	"""
-
+    
     for i in range(nats):
         for k in range(3):
             if (iprint > 3):
@@ -104,9 +104,11 @@ def kahn(co,nats,docircfit,iprint,message,MAXHX):
 		tmp = dvproj(dir, tmp)
 		ip += tmp
 
-    # seems to be a mistake because calculatation
-    #  of RMS and fp already done in parlsq (that uses RMScalc)
-	# RMS, fp = RMScalc(co, nats, dir, ip)
+	RMS, fp = RMScalc(co, nats, dir, ip)
 	writeout_h(dir, ip, fp, rms, message, iprint)
-	return rms, dir, ip, fp
-    
+	return rms, fp
+
+
+
+
+
