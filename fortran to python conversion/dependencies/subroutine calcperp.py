@@ -1,6 +1,6 @@
 import numpy as np
 
-def calcperp(start,dir,fro,orig, itest):
+def calcperp(start, dir, fro, itest):
 	"""
 	For a line from start in the direction dir, calculate the normal to it
 	from the point fro. The normal meets the line at orig and its direction
