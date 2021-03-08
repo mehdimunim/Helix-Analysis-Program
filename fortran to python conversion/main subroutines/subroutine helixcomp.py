@@ -145,89 +145,73 @@ def helixcomp(nslt,nres,calph0,dir0,perpvec0,start0,en0,cent0,rn0,camod,axfact,c
     dir = dir0.copy()
     if (idebughx  >  0):
       print("current reoriented helix cent:",cent)
+  for ir in range(nres):
+    for k in range(3):
+      print("Alpha C:",calph[k][ir])
+  for ir in range(0, nres):
+    perpvec[0][ir], org = calcperp(start, dir, calph[0][ir], it)
+  nflip=0
+  rotav=0
+  rotav2=0
+  changemin=100.0
+  changemax=0.0
+  nflipprev=nflip
+  print("NRES-",nres)
+  for ir in range(nres):
+    angchange = angcomp(perpvec0[0][ir],dir0,perpvec[0][ir])
+    print("ir={} dang = {} ".format(ir,angchange))
+    for k in range(3):
+      print("dir0 = {} perpvec = {} perpvec0 = {}".format(dir0[k],perpvec[k][ir],perpvec0[k][ir]))
+    rotav+=angchange
+    rotav2+=angchange**2
+    if (angchange < changemin):
+      changemin = angchange
+    if (angchange > changemax):
+      changemax = angchange
+    angchange[ir] = angchange  
+
+  torsion=rotav/nres
+  sd=math.sqrt(abs(rotav2/nres-torsion**2))
+  print("Nframe= {} avg = {} min = {} max = {}".format(nframe,torsion*180/PI,changemin*180/PI, changemax*180/PI))
+  for ir in range(nres):
+    print("anglechange[ir]*180/PI")
+  if (changemax - changemin > PI/2):
+    # Likely to have some sign flips
     for ir in range(nres):
       for k in range(3):
-        print("Alpha C:",calph[k][ir])
-    for ir in range(0, nres):
-      perpvec[0][ir], org = calcperp(start, dir, calph[0][ir], it)
-    nflip=0
-    rotav=0
-    rotav2=0
-    changemin=100.0
-    changemax=0.0
-    nflipprev=nflip
-    print("NRES-",nres)
-    for ir in range(nres):
-      angchange = angcomp(perpvec0[0][ir],dir0,perpvec[0][ir])
-      print("ir={} dang = {} ".format(ir,angchange))
-      for k in range(3):
-        print("dir0 = {} perpvec = {} perpvec0 = {}".format(dir0[k],perpvec[k][ir],perpvec0[k][ir]))
-      rotav+=angchange
-      rotav2+=angchange**2
-      if (angchange < changemin):
-        changemin = angchange
-      if (angchange > changemax):
-        changemax = angchange
-      angchange[ir] = angchange  
-
-    torsion=rotav/nres
-    sd=math.sqrt(abs(rotav2/nres-torsion**2))
-
-
-
-cd77        write (77,6533) nframe,torsion*180.0/pi,changemin*180.0/pi,
-cd77     -    changemax*180.0/pi,(anglechange(ir)*180.0/pi,ir=1,nres)
-cd776533    format(' Nframe=',i6,' avg,min,max=',3f10.3,/,(10f8.2))
-        if (changemax-changemin  >  pi/2.0) :
-c         Likely to have some sign flips
-          for ir in range(0, nres):
-            for k in range(0, 3):
-              xx(k)=-perpvec(k,ir)
-            
-            call angcomp(perpvec0(1,ir),dir0,xx,angchange)
-            if (abs(angchange-torsion)  < 
-     -        abs(anglechange(ir)-torsion)) :
-              call trnsfrd(perpvec(1,ir),xx,3)
-              nflip=nflip+1
-            ## end if
-          
-          if (nflip  <=  nres  and  nflip  >  nflipprev) go to 100
-        ## end if
-        if (nflip  >  0) :
-c         Recalculate TPR
-          call calcturnperres(turnperres,nres,incrot,perpvec,dir,
-     -      anglechangeref,1,pi,MAXHX)
-          res(1,nframe,incrhx+6)=cos(turnperres)
-          res(2,nframe,incrhx+6)=sin(turnperres)
-        ## end if
-        res(1,nframe,incrhx+4)=cos(torsion)
-        res(2,nframe,incrhx+4)=sin(torsion)
-        call dcross(dir0,rn0,xx)
-        call dcross(rn0,xx,yy)
-        for k in range(0, 3):
-          rot(1,k)=yy(k)
-          rot(2,k)=xx(k)
-          rot(3,k)=rn0(k)
-        
-c       Keep the normal from oscillating 180 degrees
-        if (ddot(rn,rn0)  <  0.0) call dvmul(rn,-1.00,rn)
-        call dsmatvec(rot,rn,xx)
-        res(1,nframe,incrhx+12)=xx(1)
-        res(2,nframe,incrhx+12)=xx(2)
-        call printhelix(iw0,startw,# endw,cent,rms,helixlen,dirw,angles,
-     -    decideb# end,nup,ndown,nrun,nnear,rcirc,turnperres,anglesn,ihx,
-     -    radtodeg)
-        rn_rn0=radtodeg*dacoscheck(ddot(rn,rn0),ccc,1,6,'HELIXNORMALS')
-        write (iw0,1000) radtodeg*torsion,radtodeg*sd,radtodeg*rotation,
-     -    rn_rn0,dev,math.sqrt(ddot(dev,dev))
-      ## end if
-      if (nrep  <  0) return
-      return
-1000  format(' Rotation=',f9.2,' SD=',f7.2,
-     -  ' Local tilt=',f9.2,' N/Nr angle:',f8.3,/,
-     -  ' X,Y,Z displacements=',3f8.2,' Absolute displacement=',f8.2)
-1001  format(' ',a,' helix cent:',3f12.3,/,' Alpha C:',(3f12.3))
-      # end    
- 
-
-      
+        xx[k]=-perpvec[k][ir]
+      angchange = angcomp(perpvec0,dir0,xx)
+      if (abs(angchange - torsion < abs(anglechange[ir] - torsion))):
+        perpvec[0][ir] = xx
+        nflip+=1
+    if (nflip <= nres and nflip > nflipprev):
+      # got to 100
+    if (nflip > 0):
+      #Recalculate TPR
+      turnperres + calcturnperres(nres,incrot,perpvec,dir,anglechangeref,1,MAXHX)
+      res[0][nframe][incrhx + 6] = math.cos(turnperres)
+      res[1][nframe][incrhx + 6] = math.sin(turnperres)
+    res[0][nframe][incrhx + 4] = math.cos(torsion)
+    res[1][nframe][incrhx + 4] = math.sin(torsion)
+    xx = np.cross(dir0,rn0)
+    yy = np.cross(rn0,xx)
+    for k in range(3):
+      rot[0][k] = yy[k]
+      rot[1][k] = xx[k]
+      rot[2][k] = rn0[k]
+    # Keep the normal from oscillating 180 degrees
+    if (np.dot(rn,rn0) < 0):
+      rn = dvmul(rn,-1)
+      xx = dsmatvec(rot,rn)
+      res[0][nframe][incrhx + 12] = xx[0]
+      res[1][nframe][incrhx + 12] = xx[1]
+      printhelix(iw0,startw,endw,cent,rms,helixlen,dirw,angles,decidebend,nup,ndown,nrun,nnear,rcirc,turnperres,anglesn,ihx,radtodeg)
+      try :  
+        rn_rn0 = radtodeg*dacoscheck(np.dot(rn,rn0))
+      except:
+        print("Error in dacoscheck angle=",np.dot(rn,rn0))
+      print("Rotation = {} SD = {} Local tilt = {} N/Nr angle: {} X,Y,Z displacements = {} Absolute displacement = {}".format(radtodeg*torsion,radtodeg*sd,radtodeg*rotation,rn_rn0,dev,math.sqrt(np.dot(dev,dev))))
+  if (nrep < 0):
+    return radtodeg*torsion,radtodeg*sd,radtodeg*rotation,rn_rn0,dev,math.sqrt(np.dot(dev,dev))
+  return radtodeg*torsion,radtodeg*sd,radtodeg*rotation,rn_rn0,dev,math.sqrt(np.dot(dev,dev))
+  
