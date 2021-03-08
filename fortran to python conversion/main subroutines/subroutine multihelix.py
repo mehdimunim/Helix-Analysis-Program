@@ -1,112 +1,114 @@
-      def multihelix(iw0,nhx,nhxres,radtodeg,c,icaahx,
-     -  icbahx,icbreshx,maxat,maxhx,mxnhx)
-      dimension c(3,maxat),icaahx(maxhx,mxnhx),
+import numpy as np
+import math
+import warnings
+
+def multihelix(iw0,nhx,nhxres,radtodeg,c,icaahx, icbahx,icbreshx,maxat,maxhx,mxnhx):
+  dimension c(3,maxat),icaahx(maxhx,mxnhx),
      -  icbahx(mxnhx),icbreshx(mxnhx)
-      parameter (MAXFRAMES=50000,MAXCOPY=600)
+  MAXFRAMES=50000
+  MAXCOPY=600
       common /analres/ nframe,nframeref,nframetot,maxframe,maxpres,
      -  increment,increment2,res(2,MAXFRAMES,MAXCOPY),
      -  x0(MAXCOPY),y0(MAXCOPY),nxselres,ixselres(MAXCOPY)
-      parameter (MAXNHX=12,MAXNHX2=(MAXNHX*(MAXNHX-1)))
+  MAXNHX=12
+  MAXNHX2=MAXNHX*(MAXNHX-1)
       character*2 ap_pa,in_ex
       common /signs/ itmem,normhx,isg2(MAXNHX2),memdir(MAXNHX),ap_pa(3),
      -  in_ex(2)
-c     common /hxtrack/ ihxt1,ihxt2,torsav1(3,4),torsav2(3,4),x1(3),x2(3)
+  # common /hxtrack/ ihxt1,ihxt2,torsav1(3,4),torsav2(3,4),x1(3),x2(3)
       dimension ax1(3),ax2(3),cent1(3),cent2(3),c12(3),ct1(3),ct2(3),
      -  ct12(3),torsats(3,4),s1(3),s2(3),e1(3),e2(3),exs1(3),
      -  exs2(3),exe1(3),exe2(3)
       #real*8 dargin,dax1(3),dax2(3),dc12(3),dax1_dax2,dc12_1,dc12_2,
      -  dscprod
       character*80 line
-      ixres=nhx*nhxres+1
-c     write (iw0,*) 'MULTIHELIX nhxres=',nhxres
-      nframes=max0(1,nframe)
-      nhx2tot=(nhx*(nhx-1))/2
-      i0line=0
-      call blankout(line,1,80)
-      for ihx in range(0, nhx):
-        incr1=(ihx-1)*nhxres
-        ax1(1)=res(1,nframes,incr1+13)
-        ax1(2)=res(2,nframes,incr1+13)
-        ax1(3)=res(1,nframes,incr1+14)
-        cent1(1)=res(2,nframes,incr1+14)
-        cent1(2)=res(1,nframes,incr1+15)
-        cent1(3)=res(2,nframes,incr1+15)
-        halflen1=res(1,nframes,incr1+7)/2.0
-        for jhx in range(ihx+1, nhx):
-          incr2=(jhx-1)*nhxres
-          ax2(1)=res(1,nframes,incr2+13)
-          ax2(2)=res(2,nframes,incr2+13)
-          ax2(3)=res(1,nframes,incr2+14)
-          cent2(1)=res(2,nframes,incr2+14)
-          cent2(2)=res(1,nframes,incr2+15)
-          cent2(3)=res(2,nframes,incr2+15)
-          halflen2=res(1,nframes,incr2+7)/2.0
-          ax1_ax2=scprod(ax1,ax2)
-          ang=dacoscheck(dargin,ax1_ax2,0,6,'MULTIHELIX')*radtodeg
-          dist_cc=sqrt(dist2(cent1,cent2))
-          call arrdiff(cent1,cent2,c12,3)
-          c12_1=scprod(c12,ax1)
-          c12_2=scprod(c12,ax2)
-          parfact=1.0
-          if (abs(ax1_ax2)  <  0.01) :
-c           Axes perp# endicular
-            a1=-c12_1
-            a2=c12_2
-            write (iw0,1001) ihx,jhx,'perp# endicular'
-          elif (abs(ax1_ax2)  >  0.99) :
-            if (abs(ax1_ax2)  >  0.999) :
-c             Axes parallel
-              a2=0.0
-              call project(cent2,cent1,ax1,ct1,a1)
-              write (iw0,1001) ihx,jhx,'parallel'
-              parfact=0.1
-            else:
-              for k in range(0, 3):
-                dax1(k)=ax1(k)
-                dax2(k)=ax2(k)
-                dc12(k)=c12(k)
-              
-              dax1_dax2=dscprod(dax1,dax2)
-              dc12_1=dscprod(dc12,dax1)
-              dc12_2=dscprod(dc12,dax2)
-              a1=(dc12_2-dc12_1/dax1_dax2)/(1.0/dax1_dax2-dax1_dax2)
-              a2=(dc12_1-dc12_2/dax1_dax2)/(dax1_dax2-1.0/dax1_dax2)
-            ## end if
-          else:
-            a1=(c12_2-c12_1/ax1_ax2)/(1.0/ax1_ax2-ax1_ax2)
-            a2=(c12_1-c12_2/ax1_ax2)/(ax1_ax2-1.0/ax1_ax2)
-          ## end if
-          call paramx(cent1,ax1,a1,ct1)
-          call paramx(cent2,ax2,a2,ct2)
-          call arrdiff(ct1,ct2,ct12,3)
-          c12norm=sqrt(scprod(ct12,ct12))
-          tst1=scprod(ct12,ax1)/c12norm
-          tst2=scprod(ct12,ax2)/c12norm
-          if ((tst1+tst2)*parfact  >  0.01) :
-            if (tst1+tst2  <  0.1) :
-              write (6,1002) 'Probable',ihx,jhx,tst1,tst2
-              write (iw0,1002) 'Probable',ihx,jhx,tst1,tst2
-            else:
-              write (6,1002) '',ihx,jhx,tst1,tst2
-              write (iw0,1002) '',ihx,jhx,tst1,tst2
-            ## end if
-          ## end if
-c         write (iw0,8766) ihx,jhx,halflen1,halflen2,a1,a2
-c8766     format(' I,JHX=',2i2,' Hlen1,2=',2f6.2,' a1,2=',2f8.2)
-          if (a1  <  -halflen1  or  a1  >  halflen1  or 
-     -        a2  <  -halflen2  or  a2  >  halflen2) :
-c           Make sure the closest approach points are inside the helix
-            noproj=0
-            d2min=99999.0
-            call paramx(cent2,ax2,-halflen2,s2)
-            call paramx(cent2,ax2,halflen2,e2)
-            call paramx(cent1,ax1,-halflen1,s1)
-            call paramx(cent1,ax1,halflen1,e1)
-            call project(s1,cent2,ax2,exs1,as1)
-            call project(e1,cent2,ax2,exe1,ae1)
-            call project(s2,cent1,ax1,exs2,as2)
-            call project(e2,cent1,ax1,exe2,ae2)
-            if (a1  <  -halflen1) :
+
+  ixres=nhx*nhxres+1
+  print("MULTIHELIX nhxres =",nhxres)
+  nframes = max0[0][nframe]
+  nhx2tot = (nhx*(nhx - 1))/2
+  i0line = 0
+  line[1:80]= " "
+  for ihx in range(nhxres):
+    incr1=(ihx-1)*nhxres
+    ax1[0]=res[0][nframes][incr1+13]
+    ax1[1]=res[1][nframes][incr1+13]
+    ax1[2]=res[0][nframes][incr1+14]
+    cent1[0]=res[1][nframes][incr1+14]
+    cent1[1]=res[0][nframes][incr1+15]
+    cent1[2]=res[1][nframes][incr1+15]
+    halflen1=res[0][nframes][incr1+7]/2.0
+    for jhx in range(ihx+1, nhx):
+      incr2=(jhx-1)*nhxres
+      ax2[0]=res[0][nframes][incr2+13]
+      ax2[1]=res[1][nframes][incr2+13]
+      ax2[2]=res[0][nframes][incr2+14]
+      cent2[0]=res[1][nframes][incr2+14]
+      cent2[1]=res[0][nframes][incr2+15]
+      cent2[2]=res[1][nframes][incr2+15]
+      halflen2=res[0][nframes][incr2+7]/2.0
+      ax1_ax2=np.dot(ax1,ax2)
+      try:
+        ang=dacoscheck(dargin)*radtodeg
+      except:
+        print("Error in dacoscheck dargin = ",dargin)
+      dist_cc=math.sqrt(dist2(cent1,cent2))
+      c12 = cent1 - cent2
+      c12_1=np.dot(c12,ax1)
+      c12_2=np.dot(c12,ax2)
+      parfact=1.0
+      if (abs(ax1_ax2)  <  0.01) :
+        # Axes perpendicular
+        a1=-c12_1
+        a2=c12_2
+        print(" Helices {} and {} are perpendicular",ihx,jhx)
+      elif (abs(ax1_ax2)  >  0.99) :
+        if (abs(ax1_ax2)  >  0.999) :
+          # Axes parallel
+          a2=0.0
+          ct1, a1 = project(cent2,cent1,ax1)
+          print("Helices {} and {} are parallel",ihx,jhx)
+          parfact=0.1
+        else:
+          for k in range(3):
+            dax1[k]=ax1[k]
+            dax2[k]=ax2[k]
+            dc12[k]=c12[k]
+          dax1_dax2=np.dot(dax1,dax2)
+          dc12_1=np.dot(dc12,dax1)
+          dc12_2=np.dot(dc12,dax2)
+          a1=(dc12_2-dc12_1/dax1_dax2)/(1.0/dax1_dax2-dax1_dax2)
+          a2=(dc12_1-dc12_2/dax1_dax2)/(dax1_dax2-1.0/dax1_dax2)
+      else:
+        a1=(c12_2-c12_1/ax1_ax2)/(1.0/ax1_ax2-ax1_ax2)
+        a2=(c12_1-c12_2/ax1_ax2)/(ax1_ax2-1.0/ax1_ax2)
+      ct1 = cent1 + a1*ax1
+      ct2 = cent2 + a2*ax2
+      ct12 = ct1 - ct2
+      call arrdiff(ct1,ct2,ct12,3)
+      tst1=np.dot(ct12,ax1)/c12norm
+      tst2=np.dot(ct12,ax2)/c12norm
+      if ((tst1+tst2)*parfact  >  0.01) :
+        if (tst1+tst2  <  0.1) :
+            warnings.warns("Probable program Error: ihx = {} jhx = {} c12*m1 = {} c12*m2 = {} ".format(ihx,jhx, tst1,tst2))
+        else:
+          raise Exception("Program Error: ihx = {} jhx = {} c12*m1 = {} c12*m2 = {} ".format(ihx,jhx, tst1,tst2))
+      print(" I = {} JHX = {} Hlen1 = {} Hlen2 = {} a1 = {} a2 = {}".format(ihx,jhx,halflen1,halflen2,a1,a2))
+      if (a1  <  -halflen1  or  a1  >  halflen1  or a2  <  -halflen2  or  a2  >  halflen2) :
+        # Make sure the closest approach points are inside the helix
+        noproj=0
+        d2min=99999.0
+        s2 = cent2 - halflen2*ax2
+        e2 = cent2 + halflen2*ax2
+        s1 = cent1 - halflen1*ax1
+        e1 = cent1 + halflen1*ax1
+        exs1, as1 = project(s1,cent2,ax2)
+        exe1, ae1 = project(e1,cent2,ax2)
+        exs2, as2 = project(s2,cent1,ax1)
+        exe2, ae2 = project(e2,cent1,ax1)
+        if (a1  <  -halflen1) :
+
+          
 c             call compared2(s1,exs1,d2min,halflen2,-halflen1,a1,a2,
 c    -          as1)
               if (amax1(as2,ae2)  <  -halflen1) noproj=1
