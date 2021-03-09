@@ -1,0 +1,5 @@
+- Régler les goto dans ormat, helixcomp
+- transformer dtred2 et dtdisq en np.linalg.eig et regarder cohérence avec valeurs retours
+- Dessiner le workflow du programme (interne entre les fonctions de simulaid et externe avec nos ajouts, ntmt entrées/sorties)
+- Faire marcher Simulaid avec le fichier pour avoir les résultats de sorties sous la main (ça permettra de s'assurer qu'on a bien compris le programme)
+- Documenter le code, donc en ajoutant des lignes de commentaire et en précisant les variables
