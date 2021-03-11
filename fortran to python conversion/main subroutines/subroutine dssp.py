@@ -70,86 +70,86 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
     ihfound = 0
     iafound = 0
     for ia in range[n1, nslt]:
-      atnam[: lnam] = line[index[ia]][inamcol1: inamcol2]
-      if (lnam == 4):
-         atnam[5: 8) = ':   '
-      if (lnam > 4):
-        call leftadjustn[atnam, atnam, lnam]
-      if (atnam[1: 4] == 'C   ' or atnam[1: 4] == ' C   '):
-        icfound = 1
-        ixc[nres+1] = ia
-      elif (atnam[1: 4] == 'O   ' or atnam[1: 4] == ' O   '):
-        iofound = 1
-        ixo[nres+1] = ia
-      elif (atnam[1: 4] == 'N   ' or atnam[1: 4] == ' N   '):
-        infound = 1
-        ixn[nres+1] = ia
-      elif (atnam[1: 4] == 'CA  ' or atnam[1: 4] == ' CA  '):
-        iafound = 1
-        ixa[nres+1] = ia
-      elif (atnam[1: 4] == 'H   ' or atnam[1: 4] == ' H   ' or atnam[1: 4] == ' D  ' or atnam[1: 4] == 'D   ' or atnam[1: 4] == 'HN  ' or atnam[1: 4] == ' HN '):
-        ihfound = 1
-        ch[0][nres+1] = c[0][ia].copy()
-      if (ia == nslt):
-        iresn = -1
-      else:
-        read(line(index(ia+1))(iresncol1: iresncol2), *, ERR=999) iresn
-        if (ia == n1) ireso = iresn
-      if (iresn != ireso):
-        # New residue
-        nres += 1
-        iok = 1
-        if (ireso != 0):
-            if (icfound*infound*iofound < 1):
-                if (nconfig <= maxrepconf):
-                    print('Residue {} is missing N, C or O'.format(ireso))
-                iok = 0
-            elif (ihfound == 0):
-                # Generate H coordinates from C(prev), CA and N
-                iok = 0
-                ch[0][nres] = 0
-                if (iccprevf*iafound == 1):
-                    dnh = 0.0
-                    dnc = 0.0
-                    for k in range(3):
-                        rx(k) = 2.0*c(k, ixn(nres))-c(k, ixa(nres))-ccprev(k)
-                        dnh = dnh+rx(k)**2
-                        dnc = dnc+(c(k, ixn(nres))-ccprev(k))**2
-                    if (dnc < 4.0):
+        atnam[: lnam] = line[index[ia]][inamcol1: inamcol2]
+        if (lnam == 4):
+            atnam[5: 8) = ':   '
+        if (lnam > 4):
+            call leftadjustn[atnam, atnam, lnam]
+        if (atnam[1: 4] == 'C   ' or atnam[1: 4] == ' C   '):
+            icfound = 1
+            ixc[nres+1] = ia
+        elif (atnam[1: 4] == 'O   ' or atnam[1: 4] == ' O   '):
+            iofound = 1
+            ixo[nres+1] = ia
+        elif (atnam[1: 4] == 'N   ' or atnam[1: 4] == ' N   '):
+            infound = 1
+            ixn[nres+1] = ia
+        elif (atnam[1: 4] == 'CA  ' or atnam[1: 4] == ' CA  '):
+            iafound = 1
+            ixa[nres+1] = ia
+        elif (atnam[1: 4] == 'H   ' or atnam[1: 4] == ' H   ' or atnam[1: 4] == ' D  ' or atnam[1: 4] == 'D   ' or atnam[1: 4] == 'HN  ' or atnam[1: 4] == ' HN '):
+            ihfound = 1
+            ch[0][nres+1] = c[0][ia].copy()
+        if (ia == nslt):
+            iresn = -1
+        else:
+            read(line(index(ia+1))(iresncol1: iresncol2), *, ERR=999) iresn
+            if (ia == n1) ireso = iresn
+        if (iresn != ireso):
+            # New residue
+            nres += 1
+            iok = 1
+            if (ireso != 0):
+                if (icfound*infound*iofound < 1):
+                    if (nconfig <= maxrepconf):
+                        print('Residue {} is missing N, C or O'.format(ireso))
+                    iok = 0
+                elif (ihfound == 0):
+                    # Generate H coordinates from C(prev), CA and N
+                    iok = 0
+                    ch[0][nres] = 0
+                    if (iccprevf*iafound == 1):
+                        dnh = 0.0
+                        dnc = 0.0
                         for k in range(3):
-                            ch[k][nres] = c[k][ixn[nres]]+rx[k]/math.sqrt(dnh)
-                        iok = 1
+                            rx(k) = 2.0*c[k][ixn[nres]]-c[k][ixa[nres]]-ccprev[k]
+                            dnh = dnh+rx[k]**2
+                            dnc = dnc+(c[k][ixn[nres]]-ccprev[k])**2
+                        if (dnc < 4.0):
+                            for k in range(3):
+                                ch[k][nres] = c[k][ixn[nres]] + \
+                                    rx[k]/math.sqrt(dnh)
+                            iok = 1
+                        else:
+                            if (nconfig <= maxrepconf):
+                                print(
+                                    "Chain break at residue {} no H generated".format(nres))
                     else:
                         if (nconfig <= maxrepconf):
-                            print(
-                                "Chain break at residue {} no H generated".format(nres))
+                            print("Could not generate H for residue', ireso)
+                if (icfound == 1):
+                    iccprevf = 1
+                    if (nres > 1 and ixn[nres] > 0):
+                        if (dist2(ccprev, c[0][ixn[nres]]) > 4.0):
+                            ihbneig[nres-1] = -1
+                            if (nconfig <= maxrepconf):
+                                print("Chain break between residues {} and {}".format(
+                                  nres - 1, nres))
+                    ccprev = c[0][ixc[nres]].copy()
                 else:
-                    if (nconfig <= maxrepconf):
-                        print("Could not generate H for residue', ireso)
-            if (icfound == 1):
-                iccprevf = 1
-                if (nres > 1 and ixn[nres] > 0):
-                    if (dist2(ccprev, c(1, ixn(nres))) > 4.0):
-                        ihbneig(nres-1) = -1
-                        if (nconfig <= maxrepconf):
-                            print("Chain break between residues {} and {}".format(
-                                nres - 1, nres))
-                ccprev = c[0][ixc[nres]]
-            else:
-                iccprevf = 0
-                ccprev = np.zeros(3)
-            if (iok == 1):
-                nresok += 1
-                ihbneig[nres] = 0
-            else:
-                ihbneig[nres] = -1
+                    iccprevf = 0
+                    ccprev = np.zeros(3)
+                if (iok == 1):
+                    nresok += 1
+                    ihbneig[nres] = 0
+                else:
+                    ihbneig[nres] = -1
             ireso = iresn
             icfound = 0
             iofound = 0
             infound = 0
             ihfound = 0
             iafound = 0
-
     if (nresok == 0):
         raise ValueError("ERROR: No residues containing C, O and N were found")
         ifail = 1
@@ -158,8 +158,8 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
     for ir in range(nres):
         enghb[ir] = threshold+10**(-5)
         dssplab[ir] = ' '
-        if (ixc(ir) > 0):
-            cres[0][ir] = c[1][ixc[ir]].copy()
+        if (ixc[ir] > 0):
+            cres[0][ir] = c[0][ixc[ir]].copy()
         else:
             cres[0][ir] = np.zeros(3)
     rchb = 9.2
@@ -169,30 +169,29 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
         for ir in range(nres):
             if (ihbneig[ir] >= 0):
                 for jr in range(ir+3, nres):
-                  if (ihbneig(jr) >= 0):
-                    if (dist2(c[0][ixc[ir]], c[0][ixc[ir]]) < rchb**2):
-                        eij = 1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixc[ir]]))+
-                        1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
-                        1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
-                        1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixc[ir]]))
-                        eji = 1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixn[ir]]))+
-                        1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
-                        1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
-                        1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixn[ir]]))
-                        if (eij < enghb[ir]):
-                            if (enghb[ir] == 0.0):
-                                write(6, 1157) ir, jr, ihbneig(ir), enghb(ir), eij
-                            ihbneig[ir] = jr
-                            enghb[ir] = eij
-                        # end if
-                        if (eji < enghb[jr]):
-                            if (enghb[jr] == 0.0):
-                               write(6, 1157) jr, ir, ihbneig(jr), enghb(ir), eji
-                            ihbneig[jr] = ir
-                            enghb[jr] = eji
+                    if (ihbneig(jr) >= 0):
+                        if (dist2(c[0][ixc[ir]], c[0][ixc[ir]]) < rchb**2):
+                            eij = 1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixc[ir]]))+
+                            1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
+                            1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
+                            1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixc[ir]]))
+                            eji = 1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixn[ir]]))+
+                            1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
+                            1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))-
+                            1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixn[ir]]))
+                            if (eij < enghb[ir]):
+                                if (enghb[ir] == 0.0):
+                                    write(6, 1157) ir, jr, ihbneig(ir), enghb(ir), eij
+                                ihbneig[ir] = jr
+                                enghb[ir] = eij
+                            if (eji < enghb[jr]):
+                                if (enghb[jr] == 0.0):
+                                    write(6, 1157) jr, ir, ihbneig(jr), enghb(ir), eji
+                                ihbneig[jr] = ir
+                                enghb[jr] = eji
     else:
         for ir in range(nres):
-            if (ihbneig(ir) >= 0):
+            if (ihbneig[ir] >= 0):
                 for jjr in range(nneig[ir]):
                     jr = ineig(jr, ir)
                     if (ihbneig[jr] >= 0 and jr > ir+2):
@@ -206,185 +205,168 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                             1.0/math.sqrt(dist2(c[0][ixo[jr]), ch[0][ir])) -
                             1.0/math.sqrt(dist2(c[0][ixc[jr]], c[0][ixn[[ir]]))
                             if (eij < enghb[[ir]]:
-                              if (enghb[ir] == 0.0):
-                                 write(6, 1157) ir, jr, ihbneig(ir), enghb(ir), eij
-                              ihbneig[ir]=jr
-                              enghb[ir]=eij
+                                if (enghb[ir] == 0.0):
+                                    write(6, 1157) ir, jr, ihbneig(ir), enghb(ir), eij
+                                ihbneig[ir]=jr
+                                enghb[ir]=eij
                             # end if
                             if (eji < enghb[jr]):
-                              if (enghb(jr) == 0.0):
-                                  write(6, 1157) jr, ir, ihbneig(jr), enghb(ir), eji
-                              ihbneig[jr]=ir
-                              enghb[jr]=eji
+                                if (enghb(jr) == 0.0):
+                                    write(6, 1157) jr, ir, ihbneig(jr), enghb(ir), eji
+                                ihbneig[jr]=ir
+                                enghb[jr]=eji
     # A hydrogen bond exist from C=O(i) to NH(ihbneig(i))
     nss=0
     iparal=np.zeros(nres)
     iantiparal=np.zeros(nres)
     ir=1
     while (ir < nres):
-      # Look for the next SS element
-      while (ir < nres and ihbneig(ir) <= 0)
-        ir += 1
-      nhbinc=ihbneig[ir]-ir
-      irf=ir
-      nss0=nss
-      if (nhbinc > 2 and nhbinc <= 5):
-        # Possible helix start
-        ihfound=1
-        nstep=1
-        ir=ir+1
-        while (ihfound == 1):
-            nhbinc1=ihbneig[ir] - ir
-            nhbinc2=ihbneig[ir+1]-(ir+1)
-            nhbinc3=ihbneig[ir+2]-(ir+2)
-            if (nhbinc1 != nhbinc):
-                if (nhbinc2 != nhbinc):
-                    if (nhbinc1 == nhbinc2):
-                        ihfound=0
-                    elif (nhbinc3 != nhbinc):
-                        ihfound=0
-        # end if
-      # end if
-    # end if
-    #     write (77,6622) ir,nhbinc1,nhbinc2,nhbinc3,ihfound
-    # 6622 format(' ir=',i4,' dihn1,2,3=',3i3,' ifhound=',i2)
-    if (ihfound == 1):
-      nstep += 1
-      irprev=ir
-      ir += 1
-if ((ir-irf) > 1):
-    nss += 1
-    ifss[nss]=irf
-    ilss[nss]=ir+nhbinc-1
-    itypss[nss]=nhbinc+3
-    #     write (06,*) 'Helix nss,ifss,ilss,itypss=',nss,ifss(nss),
-    #    -  ilss(nss),itypss(nss)
-else:
-    ir += -1
-elif (nhbinc == -3):
-    # Possible Lambda helix
-    ihfound=1
-    nstep=1
-    ir=ir+1
-    while (ihfound == 1):
-        nhbinc1=ihbneig[ir] - ir
-        if (nhbinc1 != nhbinc):
-            ihfound=0
-          # write (77,6622) ir,nhbinc1,nhbinc2,nhbinc3,ihfound
-          # 6622 format(' ir=',i4,' dihn1,2,3=',3i3,' ifhound=',i2)
-        if (ihfound == 1):
-            nstep=nstep+1
-            irprev=ir
+        # Look for the next SS element
+        while (ir < nres and ihbneig[ir] <= 0)
             ir += 1
-    if ((ir-irf) > 1):
-        nss += 1
-        ifss[nss]=irf
-        ilss[nss]=ir+nhbinc-1
-        itypss[nss]=9
-        # write (77,*) 'L Helix nss,ifss,ilss,itypss=',nss,ifss(nss),
-        # end if
-    elif (ihbneig[ir] > 0):
-        # Possible sheet
-        isfound=1
-        isfirst=0
-        islast=0
-        npar=0
-        napar=0
-        ineigmax=0
-        ineigmin=nres
-        ifs=-1
-        while (isfound == True):
-            jr=ihbneig[ir]
-            # write (77,*) 'Sheet? ir,jr,ihbneig(jr)=',ir,jr,ihbneig(jr)
-            if (jr > 0):
-                if (ihbneig(jr) == ir):
-                    # HB(i,j) = HB(j,i) => Antiparallel
-                    iantiparal[ir]=1
-                    ing=jr
-                    ifs=ir-1
-                    ils=ir+1
-                    # write (77,*) 'A1 ir=',ir
-    if (jr >= 2):
-        if (ihbneig[jr-2] > 0):
-            if (ihbneig[jr-2] == ir):
-                # HB(j-1,i)=HB(i,j+1) => Parallel
-                iparal(ir)=1
-                ing=jr
-                ifs=ir
-                ils=ir+2
-                # write (77,*) 'P2 ir=',ir
-    if (ir >= 1 and ir < nres):
-        jrm=ihbneig[ir-1]
-        if (jrm > 0):
-            if (ihbneig[jrm] == ir+1):
-                # HB(i-1,j)=HB(j,i+1) => Parallel
-                iparal(ir)=1
-                ing=jrm
-                ifs=ir
-                ils=ir+2
-                # write (77,*) 'P1 ir=',ir
-    else:
-      jrm=0
-    if (jrm > 2):
-      if (ihbneig[jrm-2] > 0):
-        if (ihbneig[jrm-2] == ir+1):
-            # HB(i-1,j+1)=HB(j-1,i+1) => Antiparallel
-            iantiparal(ir)=1
-            ing=jrm
-            ifs=ir
-            ils=ir+2
-    if (iparal[ir]+iantiparal[ir] > 0):
-        if (isfirst == 0):
-           isfirst=ifs
-        if (ineigmin > ing):
-           ineigmin=ing
-        if (ineigmax < ing):
-            ineigmax=ing
-    elif (ir == 1):
-        isfound=0
-    elif (ir > 1):
-        if (iparal[ir-1]+iantiparal[ir-1] == 0):
-            isfound=0
-            islast=ils
-    npar=npar+iparal[ir]
-    napar=napar+iantiparal[ir]
-    ir= += 1
-    if (islast-isfirst > 2 and isfirst > 0):
-        nss += 1
-        ifss[nss]=isfirst
-        ilss[nss]=islast
-        if (npar*napar > 0):
-            itypss[nss]=3
-        elif (npar > 0):
-            itypss[nss]=1
-            if ((ineigmax-ineigmin) > (islast-isfirst)*2):
-                itypss[nss]=4
-        elif (napar > 0):
-            itypss[nss]=2
-            if ((ineigmax-ineigmin) > (islast-isfirst)*2):
-                itypss[nss]=5
-        # write (77,*) 'Sheet nss,ifss,ilss,itypss=',nss,ifss(nss),
-        # -  ilss(nss),itypss(nss)
-      if (nss == maxss):
-        write(6, 1002) maxss
-        if (iwdssp > 0) write(iwdssp, 1002) maxss
-        ir=nres
-      elif (nss == nss0):
-          # Neither helix nor sheet - just skip over
-
-      else:
-        if (nss > 1):
-            if (ilss[nss-1] >= ifss[nss]) ifss[nss]=ilss[nss-1]+1
-        else:
-            if (ifss(1) < 1):
-                 ifss(1)=1
-        ir += 1
-  for iss in range(nss):
-    #  write (77,1001) iss,ifss(iss),ilss(iss),itypss(iss)
-    # 1001    format(' SS',i4,' Start at',i4,' # end at',i4,' Type=',i2)
-      for ir in range(ifss[iss], ilss[iss]):
-          dssplab[ir]=typc[itypss[iss]]
-          idistdssp[itypss[iss]][ir]=idistdssp[itypss[iss]][ir]+1
+        nhbinc=ihbneig[ir]-ir
+        irf=ir
+        nss0=nss
+        if (nhbinc > 2 and nhbinc <= 5):
+            # Possible helix start
+            ihfound=1
+            nstep=1
+            ir += 1
+            while (ihfound == 1):
+                nhbinc1=ihbneig[ir] - ir
+                nhbinc2=ihbneig[ir+1]-(ir+1)
+                nhbinc3=ihbneig[ir+2]-(ir+2)
+                if (nhbinc1 != nhbinc):
+                    if (nhbinc2 != nhbinc):
+                        if (nhbinc1 == nhbinc2):
+                            ihfound=0
+                        elif (nhbinc3 != nhbinc):
+                            ihfound=0
+                if (ihfound == 1):
+                    nstep += 1
+                    irprev=ir
+                    ir += 1
+            if ((ir-irf) > 1):
+                nss += 1
+                ifss[nss]=irf
+                ilss[nss]=ir+nhbinc-1
+                itypss[nss]=nhbinc+3
+            else:
+                ir += -1
+            elif (nhbinc == -3):
+                # Possible Lambda helix
+                ihfound=1
+                nstep=1
+                ir=ir+1
+                while (ihfound == 1):
+                    nhbinc1=ihbneig[ir] - ir
+                    if (nhbinc1 != nhbinc):
+                        ihfound=0
+                    if (ihfound == 1):
+                        nstep += 1
+                        irprev=ir
+                        ir += 1
+                if ((ir-irf) > 1):
+                    nss += 1
+                    ifss[nss]=irf
+                    ilss[nss]=ir+nhbinc-1
+                    itypss[nss]=9
+                elif (ihbneig[ir] > 0):
+                    # Possible sheet
+                    isfound=1
+                    isfirst=0
+                    islast=0
+                    npar=0
+                    napar=0
+                    ineigmax=0
+                    ineigmin=nres
+                    ifs=-1
+                    while (isfound == 1):
+                        jr=ihbneig[ir]
+                        if (jr > 0):
+                            if (ihbneig[jr] == ir):
+                                # HB(i,j) = HB(j,i) => Antiparallel
+                                iantiparal[ir]=1
+                                ing=jr
+                                ifs=ir-1
+                                ils=ir+1
+                        if (jr >= 2):
+                            if (ihbneig[jr-2] > 0):
+                                if (ihbneig[jr-2] == ir):
+                                    # HB(j-1,i)=HB(i,j+1) => Parallel
+                                    iparal[ir]=1
+                                    ing=jr
+                                    ifs=ir
+                                    ils=ir+2
+                        if (ir >= 1 and ir < nres):
+                            jrm=ihbneig[ir-1]
+                            if (jrm > 0):
+                                if (ihbneig[jrm] == ir+1):
+                                # HB(i-1,j)=HB(j,i+1) => Parallel
+                                iparal[ir]=1
+                                ing=jrm
+                                ifs=ir
+                                ils=ir+2
+                        else:
+                            jrm=0
+                        if (jrm > 2):
+                            if (ihbneig[jrm-2] > 0):
+                                if (ihbneig[jrm-2] == ir+1):
+                                    # HB(i-1,j+1)=HB(j-1,i+1) => Antiparallel
+                                    iantiparal[ir]=1
+                                    ing=jrm
+                                    ifs=ir
+                                    ils=ir+2
+                        if ((iparal[ir]+iantiparal[ir]) > 0):
+                            if (isfirst == 0):
+                                isfirst=ifs
+                            if (ineigmin > ing):
+                                ineigmin=ing
+                            if (ineigmax < ing):
+                                ineigmax=ing
+                        elif (ir == 1):
+                            isfound=0
+                        elif (ir > 1):
+                            if ((iparal[ir-1]+iantiparal[ir-1]) == 0):
+                                isfound=0
+                                islast=ils
+                        npar=npar+iparal[ir]
+                        napar=napar+iantiparal[ir]
+                        ir= += 1
+                        if ((islast-isfirst) > 2 and isfirst > 0):
+                            nss += 1
+                            ifss[nss]=isfirst
+                            ilss[nss]=islast
+                            if (npar*napar > 0):
+                                itypss[nss]=3
+                            elif (npar > 0):
+                                itypss[nss]=1
+                                if ((ineigmax-ineigmin) > (islast-isfirst)*2):
+                                    itypss[nss]=4
+                            elif (napar > 0):
+                                itypss[nss]=2
+                                if ((ineigmax-ineigmin) > (islast-isfirst)*2):
+                                    itypss[nss]=5
+                            # write (77,*) 'Sheet nss,ifss,ilss,itypss=',nss,ifss(nss),
+                            # -  ilss(nss),itypss(nss)
+                if (nss == maxss):
+                    write(6, 1002) maxss
+                    if (iwdssp > 0):
+                        write(iwdssp, 1002) maxss
+                    ir=nres
+                elif (nss == nss0):
+                    # Neither helix nor sheet - just skip over
+                else:
+                    if (nss > 1):
+                        if (ilss[nss-1] >= ifss[nss]) ifss[nss]=ilss[nss-1]+1
+                    else:
+                        if (ifss[0] < 1):
+                            ifss[0]=1
+                    ir += 1
+    for iss in range(nss):
+        for ir in range(ifss[iss], ilss[iss]):
+            dssplab[ir]=typc[itypss[iss]]
+            idistdssp[itypss[iss]][ir]=idistdssp[itypss[iss]][ir]+1
 
     if (iwdssp > 0):
         if (nconfig <= 1):
@@ -394,33 +376,35 @@ elif (nhbinc == -3):
             else:
                 write(iwdssp, 2006)
                 write(6, 2006)
-      if (iwhead == 1)
-          write(iwdssp, 2004)(typc(i), ssname(i)(1: lssname(i)), i= 1, 9)
-      iresf=1
-      while (iresf <= nres):
-          iresl=min0[nres][iresf+49]
-          for ic in range(50):
-              charl1(ic)=' '
-              charl2(ic)=' '
-          for ir in range(max0[2][iresf]), min0[iresl][nres-2]):
-              if (ixa(ir-2)*ixa(ir)*ixa(ir+2) != 0):
-                  call angles(dist2(c(1, ixa(ir-2)), c(1, ixa(ir))), dist2(c[0][ixa[ir+2]], c[0][ixa[ir]]), dist2(c[0][ixa[ir-2]], c[0][ixa[ir+2]]), ca1, ca2, cbend)
-                  cosa=cbend
-                  bend=180.0-dacoscheck(cosa, ccc, 1, 6, 'DSSP')*radtodeg
-                  # write (77,*) ir,' b# end=',b# end
-                  if (bend > 70.0):
-                     charl1[ir-iresf+1]='S'
-              else:
-                  charl1[ir-iresf+1]='?'
+        if (iwhead == 1):
+            write(iwdssp, 2004)(typc(i), ssname(i)(1: lssname(i)), i= 1, 9)
+        iresf=1
+        while (iresf <= nres):
+            iresl=min0[nres][iresf+49]
+            for ic in range(50):
+                charl1(ic)=' '
+                charl2(ic)=' '
+            for ir in range(max0[2][iresf]), min0[iresl][nres-2]):
+                if (ixa[ir-2]*ixa[ir]*ixa[ir+2] != 0):
+                    call angles(dist2(c(1, ixa(ir-2)), c(1, ixa(ir))), dist2(c[0][ixa[ir+2]], c[0][ixa[ir]]), dist2(c[0][ixa[ir-2]], c[0][ixa[ir+2]]), ca1, ca2, cbend)
+                    cosa=cbend
+                    try:
+                        bend=180.0 - dacoscheck(cosa)*radtodeg
+                    except:
+                        print("Error in dacoscheck angle=", cosa)
+                    if (bend > 70.0):
+                        charl1[ir-iresf+1]='S'
+                else:
+                    charl1[ir-iresf+1]='?'
             for ir in range(max0[1][iresf], min0[iresl][nres-2]):
                 if (ixa[ir-1]*ixa[ir]*ixa[ir+1]*ixa[ir+2] != 0):
-                    tors=dihangl(c, ixa(ir-1), ixa(ir), ixa(ir+1), ixa(ir+2))
+                    tors=dihangl(c, ixa[ir-1], ixa[ir], ixa[ir+1], ixa[ir+2])
                     if (tors >= 0.0):
                         charl2[ir-iresf+1]='+'
                     else:
                         charl2[ir-iresf+1]='-'
-                  else:
-                      charl2[ir-iresf+1]='?'
+                else:
+                    charl2[ir-iresf+1]='?'
             write(iwdssp, 2000) iresf, iresl, (mod(i, 10), i=iresf, iresl)
             write(iwdssp, 2001)(mod(ihbneig(i)/1000, 10), i=iresf, iresl)
             write(iwdssp, 2001)(mod(ihbneig(i)/100, 10), i=iresf, iresl)
@@ -431,31 +415,29 @@ elif (nhbinc == -3):
             write(iwdssp, 2002)(dssplab(i), i=iresf, iresl)
             iresf=iresl+1
 
-    # end if
     if (iwrose > 0):
-      # Tentative alternative for turn detection (see Rose's 1977 paper)
-      write(iwrose, *) 'Data for turn detection with GW Rose method'
-      call normplane(c(1, ixa(1)), c(1, ixa(3)), c(1, ixa(5)), rnprev)
-      call normplane(c(1, ixa(2)), c(1, ixa(3)), c(1, ixa(4)), rn1prev)
-      for ir in range(4, nres-2):
-          call radcirc(c(1, ixa(ir-2)), c(1, ixa(ir)), c(1, ixa(ir+2)), r)
-          call normplane(c(1, ixa(ir-2)), c(1, ixa(ir)), c(1, ixa(ir+2)), rn)
-          rnn=np.dot(rn, rnprev)
-          call normplane(c(1, ixa(ir-1)), c(1, ixa(ir)), c(1, ixa(ir+1)), rn1)
-          rnn1=scprod(rn1, rn1prev)
-          call angles(dist2(c(1, ixa(ir-2)), c(1, ixa(ir))), dist2(c(1, ixa(ir+2)), c(1, ixa(ir))), dist2(c(1, ixa(ir-2)), c(1, ixa(ir+2))), ca1, ca2, cb  # end)
-          cosa=cbend)
-          try:
-            bend=180.0-dacoscheck(cosa)*radtodeg
-          except:
-            print("Error in dacoscheck angle=", cosa)
-          charl1[0]=' '
-          if (bend > 70.0):
-              charl1[0]='S'
-          write(iwrose, 2003) ir, charl1(1), dssplab(ir), r, rnn, rnn1
-          rnprev=rn.copy()
-          rn1prev=rn1.copy()
-    return
+        # Tentative alternative for turn detection (see Rose's 1977 paper)
+        write(iwrose, *) 'Data for turn detection with GW Rose method'
+        call normplane(c(1, ixa(1)), c(1, ixa(3)), c(1, ixa(5)), rnprev)
+        call normplane(c(1, ixa(2)), c(1, ixa(3)), c(1, ixa(4)), rn1prev)
+        for ir in range(4, nres-2):
+            call radcirc(c(1, ixa(ir-2)), c(1, ixa(ir)), c(1, ixa(ir+2)), r)
+            call normplane(c(1, ixa(ir-2)), c(1, ixa(ir)), c(1, ixa(ir+2)), rn)
+            rnn=np.dot(rn, rnprev)
+            call normplane(c(1, ixa(ir-1)), c(1, ixa(ir)), c(1, ixa(ir+1)), rn1)
+            rnn1=np.dot(rn1, rn1prev)
+            call angles(dist2(c(1, ixa(ir-2)), c(1, ixa(ir))), dist2(c(1, ixa(ir+2)), c(1, ixa(ir))), dist2(c(1, ixa(ir-2)), c(1, ixa(ir+2))), ca1, ca2, cb  # end)
+            cosa=cbend
+            try:
+                bend=180.0-dacoscheck(cosa)*radtodeg
+            except:
+                print("Error in dacoscheck angle=", cosa)
+            charl1[0]=' '
+            if (bend > 70.0):
+                charl1[0]='S'
+            write(iwrose, 2003) ir, charl1(1), dssplab(ir), r, rnn, rnn1
+            rnprev=rn.copy()
+            rn1prev=rn1.copy()
     999   write(6, 1000) ia, line
     if (iwdssp > 0):
        write(iwdssp, 1000) ia, line
