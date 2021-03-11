@@ -53,6 +53,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
     maxrec:
 
     Returns:
+    res
 
     """
     ing = 0
@@ -69,12 +70,14 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
     infound = 0
     ihfound = 0
     iafound = 0
+
+    # Processing the PDB file
     for ia in range[n1, nslt]:
         atnam[: lnam] = line[index[ia]][inamcol1: inamcol2]
         if (lnam == 4):
             atnam[5: 8) = ':   '
         if (lnam > 4):
-            call leftadjustn[atnam, atnam, lnam]
+            call leftadjustn(atnam, atnam, lnam)
         if (atnam[1: 4] == 'C   ' or atnam[1: 4] == ' C   '):
             icfound = 1
             ixc[nres+1] = ia
@@ -94,7 +97,8 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
             iresn = -1
         else:
             read(line(index(ia+1))(iresncol1: iresncol2), *, ERR=999) iresn
-            if (ia == n1) ireso = iresn
+            if (ia == n1):
+                ireso = iresn
         if (iresn != ireso):
             # New residue
             nres += 1
@@ -206,13 +210,15 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                             1.0/math.sqrt(dist2(c[0][ixc[jr]], c[0][ixn[[ir]]))
                             if (eij < enghb[[ir]]:
                                 if (enghb[ir] == 0.0):
-                                    write(6, 1157) ir, jr, ihbneig(ir), enghb(ir), eij
+                                    print(" eHB update {} to {} eold = {} old partner = {} enew = {}".format(
+                                        ir, jr, ihbneig[ir], enghb[ir], eij))
                                 ihbneig[ir]=jr
                                 enghb[ir]=eij
                             # end if
                             if (eji < enghb[jr]):
                                 if (enghb(jr) == 0.0):
-                                    write(6, 1157) jr, ir, ihbneig(jr), enghb(ir), eji
+                                    print(" eHB update {} to {} eold = {} old partner = {} enew = {}".format(
+                                        jr, ir, ihbneig[jr], enghb[ir], eij))
                                 ihbneig[jr]=ir
                                 enghb[jr]=eji
     # A hydrogen bond exist from C=O(i) to NH(ihbneig(i))
@@ -347,12 +353,11 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                                 itypss[nss]=2
                                 if ((ineigmax-ineigmin) > (islast-isfirst)*2):
                                     itypss[nss]=5
-                            # write (77,*) 'Sheet nss,ifss,ilss,itypss=',nss,ifss(nss),
-                            # -  ilss(nss),itypss(nss)
                 if (nss == maxss):
-                    write(6, 1002) maxss
+                    raise ValueError(
+                        "ERROR; maximum number of secondary structure elements \({}\) has been reached redimension the program".format(maxss))
                     if (iwdssp > 0):
-                        write(iwdssp, 1002) maxss
+                        # write(iwdssp, 1002) maxss
                     ir=nres
                 elif (nss == nss0):
                     # Neither helix nor sheet - just skip over
@@ -371,13 +376,24 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
     if (iwdssp > 0):
         if (nconfig <= 1):
             if (nss > 0):
-                write(iwdssp, 2005)(i, ires0+ifss(i), ires0+ilss(i), ssname(itypss(i))(1: lssname(itypss(i))), i = 1, nss)
-                write(6, 2005)(i, ires0+ifss(i), ires0+ilss(i), ssname(itypss(i))(1: lssname(itypss(i))), i= 1, nss)
+                for i in range(nss):
+                    print("SS# {} Residue index range: \({},{}\) Type: {}".format(
+                        i, ires0 + ifss[i], ires0 + ilss[i], ssname[itypss[i]][1:lssname[itypss[i]]]))
+                # write(iwdssp, 2005)(i, ires0+ifss(i), ires0+ilss(i), ssname(itypss(i))(1: lssname(itypss(i))), i= 1, nss)
             else:
-                write(iwdssp, 2006)
-                write(6, 2006)
+                # write(iwdssp, 2006)
+                print(" No secondary structure element was found")
         if (iwhead == 1):
-            write(iwdssp, 2004)(typc(i), ssname(i)(1: lssname(i)), i= 1, 9)
+            for i in range(9):
+                print("line 1: residue number \(mod 10\)")
+                print(
+                    "lines 2-5: the digits of the residue number to which the {} residue number of line 1 is H-bonded \(if any\)".format(typc[i]))
+                print(
+                    "line 6: S for residues with bend angle \(CA[ir - 2] - CA[ir] - CA[ir+2]\) > 70 deg ")
+                print("line 7: + or -, the signe of the ")
+                print("CA[ir-1] - CA[ir] - CA[ir+1] - CA[ir +2] angle")
+                print("line 8: secondary structure element type: ")
+                # write(iwdssp, 2004)(typc(i), ssname(i)(1: lssname(i)), i = 1, 9)
         iresf=1
         while (iresf <= nres):
             iresl=min0[nres][iresf+49]
@@ -386,7 +402,8 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                 charl2(ic)=' '
             for ir in range(max0[2][iresf]), min0[iresl][nres-2]):
                 if (ixa[ir-2]*ixa[ir]*ixa[ir+2] != 0):
-                    call angles(dist2(c(1, ixa(ir-2)), c(1, ixa(ir))), dist2(c[0][ixa[ir+2]], c[0][ixa[ir]]), dist2(c[0][ixa[ir-2]], c[0][ixa[ir+2]]), ca1, ca2, cbend)
+                    ca1, ca2, cbend=angles(dist2(c[0][ixa[ir-2]], c[0][ixa[ir]]), dist2(
+                        c[0][ixa[ir+2]], c[0][ixa[ir]]), dist2(c[0][ixa[ir-2]], c[0][ixa[ir+2]]))
                     cosa=cbend
                     try:
                         bend=180.0 - dacoscheck(cosa)*radtodeg
@@ -405,28 +422,29 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                         charl2[ir-iresf+1]='-'
                 else:
                     charl2[ir-iresf+1]='?'
-            write(iwdssp, 2000) iresf, iresl, (mod(i, 10), i=iresf, iresl)
-            write(iwdssp, 2001)(mod(ihbneig(i)/1000, 10), i=iresf, iresl)
-            write(iwdssp, 2001)(mod(ihbneig(i)/100, 10), i=iresf, iresl)
-            write(iwdssp, 2001)(mod(ihbneig(i)/10, 10), i=iresf, iresl)
-            write(iwdssp, 2001)(mod(ihbneig(i), 10), i=iresf, iresl)
-            write(iwdssp, 2002)(charl1(i-iresf+1), i=iresf, iresl)
-            write(iwdssp, 2002)(charl2(i-iresf+1), i=iresf, iresl)
-            write(iwdssp, 2002)(dssplab(i), i=iresf, iresl)
+            # write(iwdssp, 2000) iresf, iresl, (mod(i, 10), i=iresf, iresl)
+            # write(iwdssp, 2001)(mod(ihbneig(i)/1000, 10), i=iresf, iresl)
+            # write(iwdssp, 2001)(mod(ihbneig(i)/100, 10), i=iresf, iresl)
+            # write(iwdssp, 2001)(mod(ihbneig(i)/10, 10), i=iresf, iresl)
+            # write(iwdssp, 2001)(mod(ihbneig(i), 10), i=iresf, iresl)
+            # write(iwdssp, 2002)(charl1(i-iresf+1), i=iresf, iresl)
+            # write(iwdssp, 2002)(charl2(i-iresf+1), i=iresf, iresl)
+            # write(iwdssp, 2002)(dssplab(i), i=iresf, iresl)
             iresf=iresl+1
 
     if (iwrose > 0):
         # Tentative alternative for turn detection (see Rose's 1977 paper)
-        write(iwrose, *) 'Data for turn detection with GW Rose method'
-        call normplane(c(1, ixa(1)), c(1, ixa(3)), c(1, ixa(5)), rnprev)
-        call normplane(c(1, ixa(2)), c(1, ixa(3)), c(1, ixa(4)), rn1prev)
-        for ir in range(4, nres-2):
-            call radcirc(c(1, ixa(ir-2)), c(1, ixa(ir)), c(1, ixa(ir+2)), r)
-            call normplane(c(1, ixa(ir-2)), c(1, ixa(ir)), c(1, ixa(ir+2)), rn)
+        # write(iwrose, *) 'Data for turn detection with GW Rose method'
+        rnprev=normplane(c[0][ixa[0]], c[0][ixa[2]], c[0][ixa[4]])
+        rn1prev=normplane(c[0][ixa[1]], c[0][ixa[2]], c[0][ixa[3]])
+        for ir in range(3, nres-2):
+            r = radcirc(c[0][ixa[ir-2]], c[0][ixa[ir]], c[0][ixa[ir+2]])
+            rn=normplane(c[0][ixa[ir-2]], c[0][ixa[ir]], c[0][ixa[ir+2]])
             rnn=np.dot(rn, rnprev)
-            call normplane(c(1, ixa(ir-1)), c(1, ixa(ir)), c(1, ixa(ir+1)), rn1)
+            rn1=normplane(c[0][ixa[ir-1]], c[0][ixa[ir]], c[0][ixa[ir+1]])
             rnn1=np.dot(rn1, rn1prev)
-            call angles(dist2(c(1, ixa(ir-2)), c(1, ixa(ir))), dist2(c(1, ixa(ir+2)), c(1, ixa(ir))), dist2(c(1, ixa(ir-2)), c(1, ixa(ir+2))), ca1, ca2, cb  # end)
+            ca1, ca2, cbend=angles(dist2(c[0][ixa[ir-2]], c[0][ixa[ir]]), dist2(
+                c[0][ixa[ir+2]], c[0][ixa[ir]]), dist2(c[0][ixa[ir-2]], c[0][ixa[ir+2]]))
             cosa=cbend
             try:
                 bend=180.0-dacoscheck(cosa)*radtodeg
@@ -435,10 +453,11 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
             charl1[0]=' '
             if (bend > 70.0):
                 charl1[0]='S'
-            write(iwrose, 2003) ir, charl1(1), dssplab(ir), r, rnn, rnn1
+            # write(iwrose, 2003) ir, charl1(1), dssplab(ir), r, rnn, rnn1
             rnprev=rn.copy()
             rn1prev=rn1.copy()
-    999   write(6, 1000) ia, line
+    raise ValueError(
+        "ERROR: invalid residue number for atom {} : {}".format(ia, line))
     if (iwdssp > 0):
-       write(iwdssp, 1000) ia, line
+       # write(iwdssp, 1000) ia, line
     return res

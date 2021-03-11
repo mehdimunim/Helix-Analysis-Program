@@ -46,7 +46,7 @@ c7711    format(2i5,' c',i1,'=',f10.5)
         end if
       end if
       return
-1000  format(3(' Smallest, middle and largest ',a1,
+1000  format((' Smallest, middle and largest ',a1,
      -  ' coordinate values=',3f9.4,/),
      -  ' Volume of enclosing rectangle=',f12.2,' A^3')
 1001  format(' WARNING: input structure contains ',a1,' coordinate ',
