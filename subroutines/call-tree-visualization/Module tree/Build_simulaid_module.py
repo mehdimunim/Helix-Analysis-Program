@@ -48,13 +48,14 @@ def build_simulaid_module():
         for subroutine in subroutines:
             with open(subroutine, "r") as sub:
                 for line in sub:
-                    module.write("    " + line)
+                    if line.strip().startswith("c"):
+                        module.write("    " + line)
             os.remove(subroutine)
-        module.write("\nend module simulaid")
+        module.write("end module simulaid")
 
 
 def main():
-    # remove the line below if necessary
+    # update simulaid_module.f
     os.remove("simulaid_module.f")
     build_simulaid_module()
 
