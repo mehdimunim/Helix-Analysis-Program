@@ -8,19 +8,20 @@ import os
 
 class Call_tree:
 
-    def __init__(self, name, call_number):
+    def __init__(self, name):
+        # dictionary with the name of the subroutine and the number of occurences
         self.name = name
-        self.call_number = call_number
+        self.name_and_occurences = {name: 1}
         self.children = []
 
     def get_subroutines_call(self):
         """
         Get all subroutines list from a file
         """
-        if (self.name == "simulaid.f"):
-            file = self.name
-        else:
-            file = "subroutine " + self.name + ".f"
+        # Exclude the main file simulaid.f
+        if (self.name != "simulaid"):
+            file = "subroutine " + self.name
+        file += ".f"
         res = []
         if (os.path.isfile(file)):
             with open(file) as s:
@@ -48,13 +49,18 @@ class Call_tree:
         # check if the node is orphane
         if (len(subroutines) != 0):
             for sub in subroutines:
-                tree = Call_tree(sub, 1)
-                self.children.append(tree)
-                tree.fill()
+                # adding one call else appending the new subroutine
+                if sub in [child.name for child in self.children:
+                    child.name_and_occurences[sub] += 1
+                else:
+                    tree = Call_tree(sub)
+                    tree.fill()
+                    self.children.append(tree)
 
 
 def pprint_tree(node, file=None, _prefix="", _last=True):
-    print(_prefix, "`- " if _last else "|- ", node.name, sep="", file=file)
+    print(_prefix, "`- " if _last else "|- ", node.name,
+          len(node.children), sep="", file=file)
     _prefix += "   " if _last else "|  "
     child_count = len(node.children)
     for i, child in enumerate(node.children):
@@ -63,7 +69,7 @@ def pprint_tree(node, file=None, _prefix="", _last=True):
 
 
 def main():
-    main_tree = Call_tree("helixcomp", 1)
+    main_tree = Call_tree("dssp")
     main_tree.fill()
     pprint_tree(main_tree)
 
