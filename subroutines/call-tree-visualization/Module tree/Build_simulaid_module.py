@@ -48,7 +48,8 @@ def build_simulaid_module():
         for subroutine in subroutines:
             with open(subroutine, "r") as sub:
                 for line in sub:
-                    if line.strip().startswith("c"):
+                    # retrieve the comment lines
+                    if not line.startswith("c"):
                         module.write("    " + line)
             os.remove(subroutine)
         module.write("end module simulaid")
