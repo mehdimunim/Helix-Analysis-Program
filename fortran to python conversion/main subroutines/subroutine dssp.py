@@ -75,7 +75,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
     for ia in range[n1, nslt]:
         atnam[: lnam] = line[index[ia]][inamcol1: inamcol2]
         if (lnam == 4):
-            atnam[5: 8) = ':   '
+            atnam[5: 8] = ':   '
         if (lnam > 4):
             call leftadjustn(atnam, atnam, lnam)
         if (atnam[1: 4] == 'C   ' or atnam[1: 4] == ' C   '):
@@ -130,7 +130,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                                     "Chain break at residue {} no H generated".format(nres))
                     else:
                         if (nconfig <= maxrepconf):
-                            print("Could not generate H for residue', ireso)
+                            print("Could not generate H for residue", ireso)
                 if (icfound == 1):
                     iccprevf = 1
                     if (nres > 1 and ixn[nres] > 0):
@@ -200,15 +200,15 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                     jr = ineig(jr, ir)
                     if (ihbneig[jr] >= 0 and jr > ir+2):
                         if (dist2(c[0][ixc[ir]], c[0][ixc[jr]]) < rchb**2):
-                            eij = 1.0/math.sqrt(dist2(c[0][ixo[[ir]], c[0][ixn[jr]])) +
+                            eij = 1.0/math.sqrt(dist2(c[0][ixo[[ir]]], c[0][ixn[jr]])) +
                             1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr])) -
-                            1.0/math.math.sqrt(dist2(c[0][ixo[[ir]], ch[0][jr])) -
+                            1.0/math.math.sqrt(dist2(c[0][ixo[[ir]]], ch[0][jr])) -
                             1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixn[jr]]))
-                            eji = 1.0/math.sqrt(dist2(c[0][ixo[jr]), c[0][ixn[[ir]])) +
+                            eji = 1.0/math.sqrt(dist2(c[0][ixo[jr]], c[0][ixn[[ir]]])) +
                             1.0/math.sqrt(dist2(c[0][ixc[jr]], ch[0][ir])) -
-                            1.0/math.sqrt(dist2(c[0][ixo[jr]), ch[0][ir])) -
-                            1.0/math.sqrt(dist2(c[0][ixc[jr]], c[0][ixn[[ir]]))
-                            if (eij < enghb[[ir]]:
+                            1.0/math.sqrt(dist2(c[0][ixo[jr]], ch[0][ir])) -
+                            1.0/math.sqrt(dist2(c[0][ixc[jr]], c[0][ixn[[ir]]]))
+                            if (eij < enghb[ir]):
                                 if (enghb[ir] == 0.0):
                                     print(" eHB update {} to {} eold = {} old partner = {} enew = {}".format(
                                         ir, jr, ihbneig[ir], enghb[ir], eij))
@@ -355,7 +355,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                                     itypss[nss]=5
                 if (nss == maxss):
                     raise ValueError(
-                        "ERROR; maximum number of secondary structure elements \({}\) has been reached redimension the program".format(maxss))
+                        "ERROR; maximum number of secondary structure elements ({}) has been reached redimension the program".format(maxss))
                     if (iwdssp > 0):
                         # write(iwdssp, 1002) maxss
                     ir=nres
@@ -377,7 +377,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
         if (nconfig <= 1):
             if (nss > 0):
                 for i in range(nss):
-                    print("SS# {} Residue index range: \({},{}\) Type: {}".format(
+                    print("SS# {} Residue index range: ({},{}) Type: {}".format(
                         i, ires0 + ifss[i], ires0 + ilss[i], ssname[itypss[i]][1:lssname[itypss[i]]]))
                 # write(iwdssp, 2005)(i, ires0+ifss(i), ires0+ilss(i), ssname(itypss(i))(1: lssname(itypss(i))), i= 1, nss)
             else:
@@ -385,11 +385,11 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                 print(" No secondary structure element was found")
         if (iwhead == 1):
             for i in range(9):
-                print("line 1: residue number \(mod 10\)")
+                print("line 1: residue number (mod 10)")
                 print(
-                    "lines 2-5: the digits of the residue number to which the {} residue number of line 1 is H-bonded \(if any\)".format(typc[i]))
+                    "lines 2-5: the digits of the residue number to which the {} residue number of line 1 is H-bonded (if any)".format(typc[i]))
                 print(
-                    "line 6: S for residues with bend angle \(CA[ir - 2] - CA[ir] - CA[ir+2]\) > 70 deg ")
+                    "line 6: S for residues with bend angle (CA[ir - 2] - CA[ir] - CA[ir+2]) > 70 deg ")
                 print("line 7: + or -, the signe of the ")
                 print("CA[ir-1] - CA[ir] - CA[ir+1] - CA[ir +2] angle")
                 print("line 8: secondary structure element type: ")
@@ -400,7 +400,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
             for ic in range(50):
                 charl1(ic)=' '
                 charl2(ic)=' '
-            for ir in range(max0[2][iresf]), min0[iresl][nres-2]):
+            for ir in range(max0[2][iresf], min0[iresl][nres-2]):
                 if (ixa[ir-2]*ixa[ir]*ixa[ir+2] != 0):
                     ca1, ca2, cbend=angles(dist2(c[0][ixa[ir-2]], c[0][ixa[ir]]), dist2(
                         c[0][ixa[ir+2]], c[0][ixa[ir]]), dist2(c[0][ixa[ir-2]], c[0][ixa[ir+2]]))

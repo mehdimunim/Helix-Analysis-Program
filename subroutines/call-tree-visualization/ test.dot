@@ -1,0 +1,10 @@
+graph dssp { 
+dssp
+ trnsfr
+ zeroit
+ nnlistsim
+ zeroiti
+ angles
+ normplane
+ radcirc
+} 
