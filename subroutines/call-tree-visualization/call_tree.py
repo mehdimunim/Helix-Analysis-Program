@@ -49,10 +49,14 @@ class Call_tree:
         # check if the node is orphane
         if (len(subroutines) != 0):
             for sub in subroutines:
+                sub_is_child = False
                 # adding one call else appending the new subroutine
-                if sub in [child.name for child in self.children:
-                    child.name_and_occurences[sub] += 1
-                else:
+                for child in self.children:
+                    if sub == child.name:
+                        child.name_and_occurences[sub] += 1
+                        sub_is_child = True
+                        break
+                if not sub_is_child:
                     tree = Call_tree(sub)
                     tree.fill()
                     self.children.append(tree)
@@ -69,9 +73,10 @@ def pprint_tree(node, file=None, _prefix="", _last=True):
 
 
 def main():
-    main_tree = Call_tree("dssp")
+    main_tree = Call_tree("analyze")
     main_tree.fill()
     pprint_tree(main_tree)
+    print(len(main_tree.children))
 
 
 main()
