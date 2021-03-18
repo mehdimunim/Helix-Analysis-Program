@@ -69,31 +69,44 @@ def convert(tree, mypath):
     """
     os.chdir(mypath)
     # searching tree depth-first and writing the absolute path of the subroutines
-    list = dfs(tree, tree, [])
+    res = search_tree(tree)
     print(tree.name)
-    with open(" test.dot", "w+") as dot:
+    with open(tree.name + ".dot", "w+") as dot:
         dot.write("graph " + tree.name + " { \n")
-        for line in list:
+        for line in res:
             print(line)
             dot.write(line + "\n")
         dot.write("} \n")
 
 
-def dfs(tree, node, visited):
+def search_tree(tree):
     """
-    Returns a list representation of tree in depth-first-search fashion
-    each item is depicted with its absolute path from the mother node 
+        Returns a list representation of tree in depth-first-search fashion
+        each item is depicted with its absolute path from the mother node 
     """
-    if node not in visited:
-        visited.append(node.name)
-        for child in tree.children:
-            dfs(tree, child, visited)
-    return visited
+    res = []
+
+    def rec(tree, line):
+        """
+        Recursive function 
+        """
+        # if node is a leaf
+        if len(tree.children) == 0:
+            branch = "--".join(line)
+            line = []
+            res.append(branch)
+        else:
+            line.append(tree.name)
+            for child in tree.children.keys():
+                line.append(child.name.strip())
+                rec(child, line)
+
+    rec(tree, [])
+    return res
 
 
 def main():
     mypath = "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\subroutines\\call-tree-visualization"
-
     main_tree = Call_tree("dssp")
     main_tree.fill()
     convert(main_tree, mypath)
