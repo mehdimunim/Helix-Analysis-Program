@@ -106,7 +106,7 @@ def search_tree(tree):
             res.append(branch)
             print(line)
         else:
-            line.append((node.name, 1))
+            line.append((node.name, 0))
             for child in node.children:
                 line.append((child.name, node.children[child]))
                 rec(child, line.copy())
