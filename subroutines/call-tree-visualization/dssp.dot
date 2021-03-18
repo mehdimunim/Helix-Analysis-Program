@@ -1,0 +1,12 @@
+strict graph dssp { 
+dssp--trnsfr
+dssp--zeroit
+dssp--nnlistsim--extension--askstop--askyn--explanation--lastchar
+dssp--nnlistsim--extension--askstop--askyn--lastchar
+dssp--nnlistsim--zeroiti
+dssp--zeroiti
+dssp--angles
+dssp--normplane--vprd
+dssp--normplane--norm
+dssp--radcirc--angdistw
+} 

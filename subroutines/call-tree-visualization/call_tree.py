@@ -81,12 +81,34 @@ def print_tree(node, prefix="", last=True, call_number=1):
         print_tree(child, prefix, last, call_number)
 
 
-def main():
+def write_tree(node, prefix="", last=True, call_number=1, file="test.txt"):
+    """
+    Display the call graph on console
+    Should also save it to a file
+    Inspired from https://vallentin.dev/2016/11/29/pretty-print-tree
+    """
+    with open(file, "w+") as f:
+        print(prefix, " \- " if last else "|- ",
+              node.name, " (", call_number, ")", sep="")
+        prefix += "   " if last else "|  "
+        child_count = len(node.children)
+        # put sort operations below
+        for i, child in enumerate(node.children.keys()):
+            last = i == (child_count - 1)
+            call_number = node.children[child]
+            write_tree(child, prefix, last, call_number, file)
+
+# Uncomment to test
+# def main():
     # Change the line below according to your desire
-    main_tree = Call_tree("dssp")
-    main_tree.fill()
-    print_tree(main_tree)
+    # main_tree = Call_tree("dssp")
+    # main_tree.fill()
+    # print_tree(main_tree)
+
+    # os.chdir("C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project")
+    # os.remove("test.txt")
+    # write_tree(main_tree)
 
 
-main()
-exit(0)
+# main()
+# exit(0)
