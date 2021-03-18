@@ -102,7 +102,7 @@ def search_tree(tree):
             line = line[::2]
             line = start + line + end
             branch = "--".join(
-                [item[0] + " (" + str(item[1]) + ")" for item in line])
+                [item[0] + "_" + str(item[1]) for item in line])
             res.append(branch)
             print(line)
         else:
