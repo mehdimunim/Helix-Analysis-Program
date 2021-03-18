@@ -1,4 +1,4 @@
-strict analyze { 
+strict graph analyze { 
 analyze--testconst
 analyze--indexit
 analyze--trnsfr

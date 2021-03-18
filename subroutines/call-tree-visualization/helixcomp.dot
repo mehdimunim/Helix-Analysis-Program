@@ -1,4 +1,4 @@
-strict helixcomp { 
+strict graph helixcomp { 
 helixcomp--helixaxis--dsmatvec--trnsfrd
 helixcomp--helixaxis--kahn--dvset
 helixcomp--helixaxis--kahn--dvdif

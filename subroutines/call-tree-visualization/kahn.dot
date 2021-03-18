@@ -1,4 +1,4 @@
-strict kahn { 
+strict graph kahn { 
 kahn--dvset
 kahn--dvdif
 kahn--dvnorm

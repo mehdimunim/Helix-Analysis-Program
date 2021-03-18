@@ -1,4 +1,4 @@
-strict parlsq { 
+strict graph parlsq { 
 parlsq--circfit--dvset
 parlsq--circfit--polar
 parlsq--circfit--rotabout

@@ -73,7 +73,7 @@ def convert(tree, mypath):
     # searching tree depth-first and writing the absolute path of the subroutines
     res = search_tree(tree)
     with open(tree.name + ".dot", "w+") as dot:
-        dot.write("strict " + tree.name + " { \n")
+        dot.write("strict graph " + tree.name + " { \n")
         for line in res:
             dot.write(line + "\n")
         dot.write("} \n")

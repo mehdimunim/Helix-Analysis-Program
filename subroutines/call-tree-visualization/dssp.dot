@@ -1,4 +1,4 @@
-strict dssp { 
+strict graph dssp { 
 dssp--trnsfr
 dssp--zeroit
 dssp--nnlistsim--extension--askstop--askyn--explanation--lastchar

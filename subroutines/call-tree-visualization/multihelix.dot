@@ -1,4 +1,4 @@
-strict multihelix { 
+strict graph multihelix { 
 multihelix--blankout
 multihelix--arrdiff
 multihelix--project
