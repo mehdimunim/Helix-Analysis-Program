@@ -3,12 +3,13 @@
 # Convert a tree as defined in call_tree to DOT format
 ######################################################
 import os
+from copy import copy
 
 
 class Call_tree:
 
     def __init__(self, name):
-        self.name = name
+        self.name = name.strip()
         # dictionary with children and number of calls
         self.children = {}
 
@@ -65,16 +66,14 @@ class Call_tree:
 
 def convert(tree, mypath):
     """
-    Write tree structure in dot format 
+    Write tree structure in dot format
     """
     os.chdir(mypath)
     # searching tree depth-first and writing the absolute path of the subroutines
     res = search_tree(tree)
-    print(tree.name)
     with open(tree.name + ".dot", "w+") as dot:
         dot.write("graph " + tree.name + " { \n")
         for line in res:
-            print(line)
             dot.write(line + "\n")
         dot.write("} \n")
 
@@ -82,24 +81,37 @@ def convert(tree, mypath):
 def search_tree(tree):
     """
         Returns a list representation of tree in depth-first-search fashion
-        each item is depicted with its absolute path from the mother node 
+        each item is depicted with its absolute path from the mother node
     """
     res = []
 
-    def rec(tree, line):
+    def rec(node, line):
         """
-        Recursive function 
+        Recursive function that fills res
         """
         # if node is a leaf
-        if len(tree.children) == 0:
-            branch = "--".join(line)
-            line = []
+        if len(node.children) == 0:
+            # cleaning the list of the elements in double
+            start = []
+            start.append(line[0])
+            end = []
+            end.append(line[-1])
+            print("end: ", end)
+            line = line[1:-1]
+            print("line ", line)
+            line = line[::2]
+            line = start + line + end
+            branch = "--".join(
+                [item[0] + " (" + str(item[1]) + ")" for item in line])
             res.append(branch)
+            print(line)
         else:
-            line.append(tree.name)
-            for child in tree.children.keys():
-                line.append(child.name.strip())
-                rec(child, line)
+            line.append((node.name, 1))
+            for child in node.children:
+                line.append((child.name, node.children[child]))
+                rec(child, line.copy())
+                # removes the name of the node that has been visited
+                line.pop(-1)
 
     rec(tree, [])
     return res

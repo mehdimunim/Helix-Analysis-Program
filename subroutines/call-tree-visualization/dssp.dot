@@ -1,12 +1,12 @@
 graph dssp { 
-dssp--trnsfr
-dssp--trnsfr--zeroit
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar--lastchar
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar--lastchar--zeroiti
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar--lastchar--zeroiti--zeroiti
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar--lastchar--zeroiti--zeroiti--angles
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar--lastchar--zeroiti--zeroiti--angles--normplane-- normplane--vprd
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar--lastchar--zeroiti--zeroiti--angles--normplane-- normplane--vprd--norm
-dssp--trnsfr--zeroit--nnlistsim-- nnlistsim--extension-- extension--askstop-- askstop--askyn-- askyn--explanation-- explanation--lastchar--lastchar--zeroiti--zeroiti--angles--normplane-- normplane--vprd--norm--radcirc-- radcirc--angdistw
+dssp (1)--trnsfr (1)
+dssp (1)--zeroit (1)
+dssp (1)--nnlistsim (1)--extension (1)--askstop (1)--askyn (1)--explanation (1)--lastchar (1)
+dssp (1)--nnlistsim (1)--extension (1)--askstop (1)--askyn (1)--lastchar (1)
+dssp (1)--nnlistsim (1)--zeroiti (1)
+dssp (1)--zeroiti (1)
+dssp (1)--angles (1)
+dssp (1)--normplane (1)--vprd (1)
+dssp (1)--normplane (1)--norm (1)
+dssp (1)--radcirc (1)--angdistw (1)
 } 
