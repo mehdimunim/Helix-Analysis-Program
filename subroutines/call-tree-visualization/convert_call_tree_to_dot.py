@@ -30,9 +30,10 @@ class Call_tree:
         os.chdir(
             "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\subroutines\\all")
         # Exclude the main file simulaid.f
-        if (self.name != "simulaid"):
-            file = "subroutine " + self.name.strip()
-        file += ".f"
+        if (self.name == "simulaid"):
+            file = "simulaid.f"
+        else:
+            file = "subroutine " + self.name.strip() + ".f"
         res = []
         if (os.path.isfile(file)):
             with open(file) as s:
@@ -72,7 +73,7 @@ def convert(tree, mypath):
     # searching tree depth-first and writing the absolute path of the subroutines
     res = search_tree(tree)
     with open(tree.name + ".dot", "w+") as dot:
-        dot.write("graph " + tree.name + " { \n")
+        dot.write("digraph " + tree.name + " { \n")
         for line in res:
             dot.write(line + "\n")
         dot.write("} \n")
@@ -90,23 +91,20 @@ def search_tree(tree):
         Recursive function that fills res
         """
         # if node is a leaf
-        if len(node.children) == 0:
+        if len(node.children) == 0 and len(line) != 0:
             # cleaning the list of the elements in double
             start = []
             start.append(line[0])
             end = []
-            end.append(line[-1])
-            print("end: ", end)
+            end.append((line[-1][0], 0))
             line = line[1:-1]
-            print("line ", line)
             line = line[::2]
             line = start + line + end
-            branch = "--".join(
+            branch = "->".join(
                 [item[0] + "_" + str(item[1]) for item in line])
             res.append(branch)
-            print(line)
         else:
-            line.append((node.name, 0))
+            line.append((node.name, ""))
             for child in node.children:
                 line.append((child.name, node.children[child]))
                 rec(child, line.copy())
@@ -119,9 +117,13 @@ def search_tree(tree):
 
 def main():
     mypath = "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\subroutines\\call-tree-visualization"
-    main_tree = Call_tree("dssp")
-    main_tree.fill()
-    convert(main_tree, mypath)
+
+    list_of_subroutines = ["analyze", "dssp",
+                           "multihelix", "helixcomp", "checkforhelix", "parlsq", "kahn", "simulaid"]
+    for sub in list_of_subroutines:
+        main_tree = Call_tree(sub)
+        main_tree.fill()
+        convert(main_tree, mypath)
 
 
 main()
