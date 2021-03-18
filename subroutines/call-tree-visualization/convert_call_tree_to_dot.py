@@ -73,7 +73,7 @@ def convert(tree, mypath):
     # searching tree depth-first and writing the absolute path of the subroutines
     res = search_tree(tree)
     with open(tree.name + ".dot", "w+") as dot:
-        dot.write("digraph " + tree.name + " { \n")
+        dot.write("strict " + tree.name + " { \n")
         for line in res:
             dot.write(line + "\n")
         dot.write("} \n")
@@ -100,7 +100,7 @@ def search_tree(tree):
             line = line[1:-1]
             line = line[::2]
             line = start + line + end
-            branch = "->".join(
+            branch = "--".join(
                 [item[0] for item in line])
             res.append(branch)
         else:
