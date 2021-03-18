@@ -1,12 +1,12 @@
 digraph dssp { 
-dssp_->trnsfr_0
-dssp_->zeroit_0
-dssp_->nnlistsim_1->extension_1->askstop_1->askyn_1->explanation_1->lastchar_0
-dssp_->nnlistsim_1->extension_1->askstop_1->askyn_1->lastchar_0
-dssp_->nnlistsim_1->zeroiti_0
-dssp_->zeroiti_0
-dssp_->angles_0
-dssp_->normplane_1->vprd_0
-dssp_->normplane_1->norm_0
-dssp_->radcirc_1->angdistw_0
+dssp-->trnsfr
+dssp-->zeroit
+dssp-->nnlistsim-->extension-->askstop-->askyn-->explanation-->lastchar
+dssp-->nnlistsim-->extension-->askstop-->askyn-->lastchar
+dssp-->nnlistsim-->zeroiti
+dssp-->zeroiti
+dssp-->angles
+dssp-->normplane-->vprd
+dssp-->normplane-->norm
+dssp-->radcirc-->angdistw
 } 

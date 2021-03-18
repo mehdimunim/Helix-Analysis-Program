@@ -1,9 +1,9 @@
 digraph multihelix { 
-multihelix_->blankout_0
-multihelix_->arrdiff_0
-multihelix_->project_0
-multihelix_->paramx_0
-multihelix_->trnsfr_0
-multihelix_->arrsum_0
-multihelix_->dee_1->paramx_0
+multihelix-->blankout
+multihelix-->arrdiff
+multihelix-->project
+multihelix-->paramx
+multihelix-->trnsfr
+multihelix-->arrsum
+multihelix-->dee-->paramx
 } 
