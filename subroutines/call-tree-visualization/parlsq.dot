@@ -1,12 +1,12 @@
 digraph parlsq { 
-parlsq-->circfit-->dvset
-parlsq-->circfit-->polar
-parlsq-->circfit-->rotabout
-parlsq-->dvnorm
-parlsq-->RMScalc-->dvdif
-parlsq-->RMScalc-->dvproj-->dvset
-parlsq-->RMScalc-->dvproj-->dvnorm
-parlsq-->RMScalc-->dvproj-->dvmul
-parlsq-->RMScalc-->dvsum
-parlsq-->writeout_h
+parlsq->circfit->dvset
+parlsq->circfit->polar
+parlsq->circfit->rotabout
+parlsq->dvnorm
+parlsq->RMScalc->dvdif
+parlsq->RMScalc->dvproj->dvset
+parlsq->RMScalc->dvproj->dvnorm
+parlsq->RMScalc->dvproj->dvmul
+parlsq->RMScalc->dvsum
+parlsq->writeout_h
 } 
