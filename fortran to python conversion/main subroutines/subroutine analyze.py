@@ -17,6 +17,19 @@
      -  rlim,iqspaceask,icharges,iallheavy,keeprem,innlistread,lentest,
      -  pi,radtodeg,asterisk,mflogfile,maxconfsel,maxrepconf,maxng,
      -  maxbox,mxbonds,maxrsd,maxrec,maxrec10,maxrcorr,mx2d)
+
+    """
+
+
+
+
+
+
+
+    """
+
+
+
       dimension nneig(maxrec),ineig(maxng,maxrec),iatnum(maxrec),
      -  c(3,maxrec10),atw(maxrec),cv(maxrec),charge(maxrec),
      -  nhbneig(maxrec),nneiga(maxrec),nhneig(maxrec),nnneig(maxrec),
@@ -35,6 +48,8 @@
      -  icntrl(20),centgra(3),molsltlim(3,maxrsd),ianc_anc(mxbonds),
      -  nhbdist(mxbonds),rhbdist(mxbonds),iwt(mx2d),rlim(maxng),
      -  rprox(maxrec),isc(maxrec)
+
+     
       #real*8 cdp(3,maxrec),cdp2(3,maxrec)
       character*1 asterisk,dssplab(maxrsd),altcol(maxrec),inscol(maxrec)
       character*4 segid4(nsegslt),segnames(maxrsd),extnam1,extnam2,
@@ -2964,22 +2979,14 @@ c---------(S) Helix axis directions
      -        idebughx,radtodeg,pi,MAXHX)
             iadssp1=ifres(ixres(icaahx(1,ihx)))
             iadssp2=ilres(ixres(icaahx(nreshx(ihx),ihx)))
-            call dssp(c,iadssp1,n,iadssp2,line,index,inamcol1,
-     -        inamcol2,iresncol1,iresncol2,nneig,ineig,nneiga,
-     -        ibnd,indexn,indexo,npneig,nsneig,nnneig,dssplab,
-     -        idistdssp,chn,c2,cv,indexs,indexa,nsse,itypsse,
-     -        ifsse,ilsse,ireshx1(ihx)-1,nframe,0,0,0,ifail,radtodeg,
-     -        maxrepconf,maxng*10,maxrec/10,maxng*20,
-     -        maxrec/20,200,maxrsd,maxrec)
+            dssp(c,iadssp1,n,iadssp2,line,index,inamcol1,inamcol2,iresncol1,iresncol2,nneig,ineig,nneiga,ibnd,indexn,indexo,npneig,nsneig,nnneig,dssplab,idistdssp,chn,c2,cv,indexs,indexa,nsse,itypsse,ifsse,ilsse,ireshx1(ihx)-1,nframe,0,0,0,ifail,radtodeg,maxrepconf,maxng*10,maxrec/10,maxng*20,maxrec/20,200,maxrsd,maxrec)
             lhelixcklab=9+1
             write (helixcklab,2160) 'H',ihx
-            call checkforhelix(ireshx2(ihx)-ireshx1(ihx)+1,
-     -        dssplab,indexn,iw0,hxoklab,ihxok,helixcklab,
-     -        lhelixcklab,maxrsd,maxrec)
+            checkforhelix(ireshx2(ihx)-ireshx1(ihx)+1,dssplab,indexn,iw0,hxoklab,ihxok,helixcklab,lhelixcklab,maxrsd,maxrec)
             nhelixok(ihxok)=nhelixok(ihxok)+1
           
-          if (nhx  >  1) call multihelix(iw0,nhx,nhxres,radtodeg,c,
-     -      icaahx,icbahx,icbreshx,maxrec,MAXHX,MAXNHX)
+          if (nhx  >  1): 
+            multihelix(iw0,nhx,nhxres,radtodeg,c,icaahx,icbahx,icbreshx,maxrec,MAXHX,MAXNHX)
         elif (ianaltyp  ==  26) :
 c---------(S) Distance calculation
           if (iclusterdist  ==  0) :
