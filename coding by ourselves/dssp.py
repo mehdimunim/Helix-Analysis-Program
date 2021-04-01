@@ -69,18 +69,19 @@ def calculate_energies():
     rchb = 9.2
     for residue in atoms:
         for other_residue in range(residue + 3, number_of_atoms):
-            # Compare energies between atoms
-            eij1 = 1.0/r(c[0][ixc[ir]], c[0][ixc[ir]])
+            # Comparing energies between CO and NH
+            # in one side or in the other side
+            eij1 = 1.0/r(c[0][ixo[ir]], c[0][ixn[jr]])
             eij2 = 1.0/r(c[0][ixc[ir]], ch[0][jr])
-            eij3 = -1.0/r(c[0][ixc[ir]], ch[0][jr])
-            eij4 = -1.0 / r(c[0][ixc[ir]], c[0][ixc[ir]])
+            eij3 = -1.0/r(c[0][ixo[ir]], ch[0][jr])
+            eij4 = -1.0 / r(c[0][ixc[ir]], c[0][ixn[jr]])
 
             eij = (q1*q2*f)*(eij1+eij2+eij3+eij4)
 
-            eji1 = 1.0/r(c[0][ixc[ir]], c[0][ixn[ir]])
-            eji2 = 1.0/r(c[0][ixc[ir]], ch[0][jr])
-            eji3 = -1.0/r(c[0][ixc[ir]], ch[0][jr])
-            eji4 = -1.0/r(c[0][ixc[ir]], c[0][ixn[ir]])
+            eji1 = 1.0/r(c[0][ixo[jr]], c[0][ixn[ir]])
+            eji2 = 1.0/r(c[0][ixc[jr]], ch[0][ir])
+            eji3 = -1.0/r(c[0][ixo[jr]], ch[0][ir])
+            eji4 = -1.0/r(c[0][ixc[jr]], c[0][ixn[ir]])
 
             eji = (0.42*0.20*332.0)*(eji1+eji2+eji3+eji4)
 
