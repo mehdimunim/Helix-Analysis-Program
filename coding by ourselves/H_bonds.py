@@ -16,8 +16,8 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
     Returns the energy value and the associated neighbour
     """
-    # Getting coordinates of the polypeptid skeleton
-    res = {
+    # Getting coordinates of the backbone chain
+    backbone = {
         "oxygen": coordinates[index_oxygen],
         "carbon": coordinates[index_simple_carbon],
         "alpha_carbon": coordinates[index_alpha_carbon],
@@ -25,8 +25,9 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
         "hydrogen": coordinates[index_hydrogene],
 
     }
+    number_residue = len(index_alpha_carbon)
 
-    res = pd.DataFrame.from_dict(residues)
+    res = pd.DataFrame.from_dict(backbone)
     # Dictionary for smallest neighbors index and corresponding energies
     hbond_neighbor = []
     energy = []
@@ -69,10 +70,10 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
                     hbond_neighbor[i] = j
 
     # opposite direction
-    for i in range(number_residue, 1, -1):
+    for i in range(number_residue, 0, -1):
         # First criterium to be an h-bond, having a distance of 3 residue
 
-        for j in range(i - 3, 1, -1):
+        for j in range(i - 3, 0, -1):
             # Second criterium: residue-distance below limit
 
             if (r(res["carbon", i]), res["carbon", j]) < limit_distance:
@@ -89,7 +90,11 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
                     # Neigborhood of the H-Bond
                     energy[i] = eij
                     hbond_neighbor[i] = j
+    return hbond_neighbor
 
 
 def main():
-    find_Hbonds()
+    find_Hbonds(np.zeros(1), [], [], [], [], [])
+
+
+main()
