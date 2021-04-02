@@ -242,7 +242,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
         for ir in range(nres):
             if (ihbneig[ir] >= 0):
                 for jjr in range(nneig[ir]):
-                    jr = ineig(jr, ir)
+                    jr = ineig(jjr, ir)
                     if (ihbneig[jr] >= 0 and jr > ir+2):
                         if (dist2(c[0][ixc[ir]], c[0][ixc[jr]]) < rchb**2):
 

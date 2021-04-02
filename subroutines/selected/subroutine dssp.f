@@ -243,7 +243,7 @@ c     -              ' jr,ihbneig(jr),enghb(jr)=',2i5,f10.5)
           end if
         end do
       end if
-c     A hydrogen bond exist from C=O(i) to NH(ihbneig(i))
+c     A hydrogen bond exists from C=O(i) to NH(ihbneig(i))
       nss=0
       call zeroiti(iparal,0,nres)
       call zeroiti(iantiparal,0,nres)

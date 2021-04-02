@@ -55,7 +55,8 @@ def parse_structure():
 
 def calculate_energies():
     """
-    Calculate the energies stored in the H-Bonds of the structure
+    For each residue, finds the nearest neigbor in term of H-Bonds energy.
+    Returns the energy values and the associated neighbour
     """
     # threshold to be considered as a hydrogene bond
     threshold = -0.5
@@ -69,6 +70,7 @@ def calculate_energies():
     rchb = 9.2
     for residue in atoms:
         for other_residue in range(residue + 3, number_of_atoms):
+            if ( )
             # Comparing energies between CO and NH
             # in one side or in the other side
             eij1 = 1.0/r(c[0][ixo[ir]], c[0][ixn[jr]])
@@ -86,7 +88,7 @@ def calculate_energies():
             eji = (0.42*0.20*332.0)*(eji1+eji2+eji3+eji4)
 
             # Look for the smallest energy
-            # between eji and eij
+            # so that for each residue, we only keep the minimal energy
             if (eij < enghb[ir]):
                 # Neigborhood of the H-Bond
                 neigborhood[ir] = jr
