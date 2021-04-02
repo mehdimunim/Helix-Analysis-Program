@@ -14,8 +14,9 @@ def r(atom1, atom2):
 def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxygen, index_nitrogen, index_hydrogene):
     """
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
-    Returns the energy value and the associated neighbour
+    Returns the energy value and the associated neighbor
     """
+
     # Getting coordinates of the backbone chain
     backbone = {
         "oxygen": coordinates[index_oxygen],
@@ -23,11 +24,12 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
         "alpha_carbon": coordinates[index_alpha_carbon],
         "nitrogen": coordinates[index_nitrogen],
         "hydrogen": coordinates[index_hydrogene],
-
     }
+    res = pd.DataFrame.from_dict(backbone)
+
+    # total number of residues in the molecule
     number_residue = len(index_alpha_carbon)
 
-    res = pd.DataFrame.from_dict(backbone)
     # Dictionary for smallest neighbors index and corresponding energies
     hbond_neighbor = []
     energy = []
