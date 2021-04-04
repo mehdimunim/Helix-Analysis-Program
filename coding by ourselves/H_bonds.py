@@ -51,7 +51,7 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
 
     # Searching minimal energy H-bond in first direction
     for i in range(number_residue):
-        # First criterium to be an h-bond, having a distance of 3 residue
+        # Criterium 0 to be an h-bond, having a distance of 3 residue
 
         for j in range(i + 3, number_residue):
             # Second criterium: residue-distance below limit
@@ -65,33 +65,25 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
 
                 eij = (q1 * q2 * f) * (eijON + eijCH - eijOH - eijCN)
 
-                # Third criterium: the two residues have the smallest energy
-                if (eij < hbonds_neighbors[i]):
+                # Bond energy in the opposite direction
+
+                ejiON = 1 / r(res["oxygen", i], res["nitrogen", j])
+                ejiCH = 1 / r(res["carbon", i], res["hydrogen", j])
+                ejiOH = 1 / r(res["oxygen", i], res["hydrogen", j])
+                ejiCN = 1 / r(res["carbon", i], res["nitrogen", j])
+
+                eji = (q1 * q2 * f) * (ejiON + ejiCH - ejiOH - ejiCN)
+
+                # Second and third criterium: the two residues have the smallest energy and is below -0.5 kcal/mol
+                if (eij < threshold and eij < energy[i]):
                     energy[i] = eij
                     # i and j make up a minimal energy H-bond
                     hbond_neighbor[i] = j
 
-    # opposite direction
-    for i in range(number_residue, 0, -1):
-        # First criterium to be an h-bond, having a distance of 3 residue
-
-        for j in range(i - 3, 0, -1):
-            # Second criterium: residue-distance below limit
-
-            if (r(res["carbon", i]), res["carbon", j]) < limit_distance:
-
-                eijON = 1 / r(res["oxygen", i], res["nitrogen", j])
-                eijCH = 1 / r(res["carbon", i], res["hydrogen", j])
-                eijOH = 1 / r(res["oxygen", i], res["hydrogen", j])
-                eijCN = 1 / r(res["carbon", i], res["nitrogen", j])
-
-                eij = (q1 * q2 * f) * (eijON + eijCH - eijOH - eijCN)
-
-                # Third criterium: the two residues have the smallest energy
-                if (eij < hbonds_neighbors[i]):
-                    # Neigborhood of the H-Bond
-                    energy[i] = eij
-                    hbond_neighbor[i] = j
+                if (eji < threshold and eji < energy[j]):
+                    energy[j] = eji
+                    # i and j make up a minimal energy H-bond
+                    hbond_neighbor[j] = i
     return hbond_neighbor
 
 
