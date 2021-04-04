@@ -1,3 +1,5 @@
+
+
 import pandas as pd
 import numpy as np
 import math
@@ -11,7 +13,7 @@ def r(atom1, atom2):
     return math.sqrt(np.dot(atom1, atom2))
 
 
-def find_Hbonds(coordinates, alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
+def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     """
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
     Returns the energy value and the associated neighbor

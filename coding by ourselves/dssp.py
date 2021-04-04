@@ -37,7 +37,7 @@
 
 def parse_structure():
     """
-    Parse the coordinates between: 
+    Parse the coordinates between:
     Carbon atoms
     Oxygene atoms
     Nitrogen atoms
@@ -51,51 +51,6 @@ def parse_structure():
     # Second step: search for C, O, N and CA(alpha carbons)
 
     # Third step: get the different residues
-
-
-def calculate_energies():
-    """
-    For each residue, finds the nearest neigbor in term of H-Bonds energy.
-    Returns the energy values and the associated neighbour
-    """
-    # threshold to be considered as a hydrogene bond
-    threshold = -0.5
-    # q1: partial charge on the C of CO
-    q1 = 0.42
-    # q2: partial charge on the H of NH
-    q2 = 0.20
-    # dimensional factor
-    f = 332
-    # maximal tolerance radius for H-bonds
-    rchb = 9.2
-    for residue in atoms:
-        for other_residue in range(residue + 3, number_of_atoms):
-            if ( )
-            # Comparing energies between CO and NH
-            # in one side or in the other side
-            eij1 = 1.0/r(c[0][ixo[ir]], c[0][ixn[jr]])
-            eij2 = 1.0/r(c[0][ixc[ir]], ch[0][jr])
-            eij3 = -1.0/r(c[0][ixo[ir]], ch[0][jr])
-            eij4 = -1.0 / r(c[0][ixc[ir]], c[0][ixn[jr]])
-
-            eij = (q1*q2*f)*(eij1+eij2+eij3+eij4)
-
-            eji1 = 1.0/r(c[0][ixo[jr]], c[0][ixn[ir]])
-            eji2 = 1.0/r(c[0][ixc[jr]], ch[0][ir])
-            eji3 = -1.0/r(c[0][ixo[jr]], ch[0][ir])
-            eji4 = -1.0/r(c[0][ixc[jr]], c[0][ixn[ir]])
-
-            eji = (0.42*0.20*332.0)*(eji1+eji2+eji3+eji4)
-
-            # Look for the smallest energy
-            # so that for each residue, we only keep the minimal energy
-            if (eij < enghb[ir]):
-                # Neigborhood of the H-Bond
-                neigborhood[ir] = jr
-                energies[ir] = eij
-            if (eji < energies[jr]):
-                neigborhood[jr] = ir
-                energies[jr] = eji
 
 
 def find_helices():
@@ -230,25 +185,13 @@ def find_helices():
                                     itypss[nss] = 5
 
 
-def check_irregularities():
-     """Remove all proline residues from a pdb file
-        Output : input pdb file without proline residues """
-    
-    with open("glut1.pdb", "r") as file_input:
-    with open("glut1_removed.pdb", "w") as output: 
-        for line in file_input:
-               if line.startswith('ATOM'):
-                    res_name = line[17:20].strip()
-                    if res_name != 'PRO' :
-                        output.write(line)
-                        
-                   
-def print_output():
 
 
-def dssp(atoms):
+def main():
     parse_structure()
     calculate_energy()
     find_helices()
     check_irregularities()
     print_output()
+
+main()
