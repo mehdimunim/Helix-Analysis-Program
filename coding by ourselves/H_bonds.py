@@ -11,7 +11,7 @@ def r(atom1, atom2):
     return math.sqrt(np.dot(atom1, atom2))
 
 
-def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxygen, index_nitrogen, index_hydrogene):
+def find_Hbonds(coordinates, alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     """
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
     Returns the energy value and the associated neighbor
@@ -19,11 +19,11 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
 
     # Getting coordinates of the backbone chain
     backbone = {
-        "oxygen": coordinates[index_oxygen],
-        "carbon": coordinates[index_simple_carbon],
-        "alpha_carbon": coordinates[index_alpha_carbon],
-        "nitrogen": coordinates[index_nitrogen],
-        "hydrogen": coordinates[index_hydrogene],
+        "oxygen": oxygens,
+        "carbon": simple_carbons,
+        "alpha_carbon": alpha_carbons,
+        "nitrogen": nitrogens,
+        "hydrogen": hydrogens,
     }
     res = pd.DataFrame.from_dict(backbone)
 
@@ -34,7 +34,7 @@ def find_Hbonds(coordinates, index_alpha_carbon, index_simple_carbon, index_oxyg
     hbond_neighbor = []
     energy = []
 
-    # Energy threshold to be considered as a hydrogene bond
+    # Energy threshold to be considered as a hydrogen bond
     threshold = -0.5
 
     # q1: partial charge on the C of CO
