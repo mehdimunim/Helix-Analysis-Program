@@ -35,6 +35,9 @@
 # BEND
 # Region of high curvature
 
+import os
+
+
 def parse_structure():
     """
     Parse the coordinates between:
@@ -185,13 +188,13 @@ def find_helices():
                                     itypss[nss] = 5
 
 
-
-
 def main():
+    os.chdir("coding by ourselves")
     parse_structure()
-    calculate_energy()
+    find_Hbonds()
     find_helices()
     check_irregularities()
     print_output()
+
 
 main()

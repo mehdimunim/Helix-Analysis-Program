@@ -1,5 +1,3 @@
-
-
 import pandas as pd
 import numpy as np
 import math
@@ -16,7 +14,7 @@ def r(atom1, atom2):
 def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     """
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
-    Returns the energy value and the associated neighbor
+    Returns the couple of residues engaged in H-Bonds
     """
 
     # Getting coordinates of the backbone chain
@@ -89,8 +87,14 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     return hbond_neighbor
 
 
-def main():
-    find_Hbonds(np.zeros(1), [], [], [], [], [])
+def test():
+    alpha_carbons =
+    simple_carbons =
+    oxygen =
+    nitrogens =
+    hydrogens =
+
+    find_Hbonds([], [], [], [], [])
 
 
-main()
+test()
