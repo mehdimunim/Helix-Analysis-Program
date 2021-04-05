@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 import os
-os.chdir("/dependencies")
+os.chdir("../dependencies")
 import dist2
 from dependencies import *
 
@@ -57,7 +57,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
     maxbox:
     listlen:
     maxss:
-    maxrsd:
+    maxrsd: max residue
     maxrec:
 
     Returns:
@@ -85,7 +85,7 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
         if (lnam == 4):
             atnam[5: 8] = ':   '
         if (lnam > 4):
-            #TODO: where us leftadjustn ?
+            #TODO: where is leftadjustn ?
             leftadjustn(atnam, atnam, lnam)
         if (atnam[1: 4] == 'C   ' or atnam[1: 4] == ' C   '):
             icfound = 1
@@ -216,17 +216,17 @@ def dssp(c, n1, n, nslt, line, index, inamcol1, inamcol2, iresncol1, iresncol2, 
                     if (ihbneig[jr] >= 0 and jr > ir+2):
                         if (dist2(c[0][ixc[ir]], c[0][ixc[jr]]) < rchb**2):
                             
-                            eij1 = 1.0/math.sqrt(dist2(c[0][ixo[ir], c[0][ixn[jr]]))
+                            eij1 = 1.0/math.sqrt(dist2(c[0][ixo[ir]], c[0][ixn[jr]]))
                             eij2 = 1.0/math.sqrt(dist2(c[0][ixc[ir]], ch[0][jr]))
-                            eij3 = -1.0/math.math.sqrt(dist2(c[0][ixo[[ir]], ch[0][jr]))
+                            eij3 = -1.0/math.math.sqrt(dist2(c[0][ixo[ir]], ch[0][jr]))
                             eij4 = -1.0/math.sqrt(dist2(c[0][ixc[ir]], c[0][ixn[jr]]))
 
                             eij= eij1+eij2+eij3+eij4
 
-                            eji1 = 1.0/math.sqrt(dist2(c[0][ixo[jr], c[0][ixn[[ir]]))
+                            eji1 = 1.0/math.sqrt(dist2(c[0][ixo[jr]], c[0][ixn[ir]]))
                             eji2 = 1.0/math.sqrt(dist2(c[0][ixc[jr]], ch[0][ir]))
-                            eji3 = -1.0/math.sqrt(dist2(c[0][ixo[jr], ch[0][ir]))
-                            eji4 = -1.0/math.sqrt(dist2(c[0][ixc[jr], c[0][ixn[ir]]))
+                            eji3 = -1.0/math.sqrt(dist2(c[0][ixo[jr]], ch[0][ir]))
+                            eji4 = -1.0/math.sqrt(dist2(c[0][ixc[jr]], c[0][ixn[ir]]))
 
                             eji = eji1+eji2+eji3+eji4
 

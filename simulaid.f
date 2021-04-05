@@ -12940,7 +12940,7 @@ c     Paths that Simulaid recognizes automatically
      -   '/sc/hydra/projects/mezeim01b/simulaid',
      -   '/mm/simulaid',
      -   '/simulaid',
-     -   'C:\Users\Mehdi\EIDD\Année 2\Semestre 2\Projet Transverse\Simulaid\simulaid'/
+     -   'C:\Users\Mehdi\EIDD\Annï¿½e 2\Semestre 2\Projet Transverse\Simulaid\simulaid'/
       data ldatapaths /28,36,12,76,00/
       data ldatapath /0/
       data lext /4*3,2*5,4*3,4,3,3,0,5*3/
