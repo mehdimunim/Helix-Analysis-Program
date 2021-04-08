@@ -192,7 +192,7 @@ def main():
     os.chdir("coding by ourselves")
     parse_structure()
     find_Hbonds()
-    find_helices()
+    find_patterns()
     check_irregularities()
     print_output()
 

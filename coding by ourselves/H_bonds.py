@@ -15,15 +15,17 @@ def r(atom1, atom2):
     return math.sqrt((atom1[0] - atom2[0])**2 + (atom1[1] - atom2[1])**2 + (atom1[2] - atom2[2])**2)
 
 
-def remove_value(list, value):
+def adapt_hbond(list):
     """
-    Remove value from list
+    Transforms the list "hbond" to a list of the couple of atoms in H-bonds
     Returns the reduced list
     """
+    # if list[i] = -1, i is NOT in any H-bonds
+    value = - 1
     cleaned = []
-    for item in list:
+    for index, item in enumerate(list):
         if (item != value):
-            cleaned.append(item)
+            cleaned.append((index, item))
     return cleaned
 
 
@@ -78,7 +80,7 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
             if distance < limit_distance:
 
                 # Bond energy in direction i -> j
-                
+
                 eijON = 1 / r(res["oxygen"][i], res["nitrogen"][j])
                 eijCH = 1 / r(res["carbon"][i], res["hydrogen"][j])
                 eijOH = 1 / r(res["oxygen"][i], res["hydrogen"][j])
@@ -105,7 +107,7 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
                     energy[j] = eji
                     # i and j make up a minimal energy H-bond
                     hbond_neighbor[j] = i
-    return remove_value(hbond_neighbor, -1)
+    return adapt_hbond(hbond_neighbor)
 
 
 def test():
