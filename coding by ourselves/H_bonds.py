@@ -12,7 +12,19 @@ def r(atom1, atom2):
     Calculates distance between atom1 and atom2
     atom1, atom2 are 3-arrays of coordinates
     """
-    return math.sqrt(np.dot(atom1, atom2))
+    return math.sqrt((atom1[0] - atom2[0])**2 + (atom1[1] - atom2[1])**2 + (atom1[2] - atom2[2])**2)
+
+
+def remove_value(list, value):
+    """
+    Remove value from list
+    Returns the reduced list
+    """
+    cleaned = []
+    for item in list:
+        if (item != value):
+            cleaned.append(item)
+    return cleaned
 
 
 def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
@@ -34,26 +46,25 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
 
     res = pd.DataFrame.from_dict(backbone)
 
-    # Dictionary for smallest neighbors index and corresponding energies
-    hbond_neighbor = []
-    energy = []
-
     # Energy threshold to be considered as a hydrogen bond
     threshold = -0.5
 
-    # elementary charge
-    e = 1.6 * 10**(-19)
+    # Hbond_neighbor corresponds to the atoms engaged in an hydrogen bond
+    # hbond_neighbor[i] = j means that (i, j) are forming a bond
+    hbond_neighbor = [-1]*number_residue
+    # the associated energies, initialized at threshold + 10^(-5)
+    energy = [threshold + 10**(-5)]*number_residue
 
-    # q1: partial charge on the C of CO
-    q1 = 0.42 * e
+    # q1: partial charge in eV on the C of CO
+    q1 = 0.42
 
     # q2: partial charge on the H of NH
-    q2 = 0.20 * e
+    q2 = 0.20
 
     # dimensional factor
     f = 332
 
-    # maximal tolerance radius for H-bonds
+    # maximal tolerance radius between O(i) and N(j) for H-bonds
     # distance in angstoms (same as in the PDB)
     limit_distance = 5.2
 
@@ -63,9 +74,11 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
 
         for j in range(i + 3, number_residue):
             # Second criterium: residue-distance below limit
+            distance = r(res["oxygen"][i], res["nitrogen"][j])
+            if distance < limit_distance:
 
-            if r(res["oxygen"][i], res["nitrogen"][j]) < limit_distance:
-
+                # Bond energy in direction i -> j
+                
                 eijON = 1 / r(res["oxygen"][i], res["nitrogen"][j])
                 eijCH = 1 / r(res["carbon"][i], res["hydrogen"][j])
                 eijOH = 1 / r(res["oxygen"][i], res["hydrogen"][j])
@@ -73,7 +86,7 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
 
                 eij = (q1 * q2 * f) * (eijON + eijCH - eijOH - eijCN)
 
-                # Bond energy in the opposite direction (done by simulaid)
+                # Bond energy in the opposite direction j -> i
 
                 ejiON = 1 / r(res["oxygen"][j], res["nitrogen"][i])
                 ejiCH = 1 / r(res["carbon"][j], res["hydrogen"][i])
@@ -83,16 +96,16 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
                 eji = (q1 * q2 * f) * (ejiON + ejiCH - ejiOH - ejiCN)
 
                 # Second and third criterium: the two residues have the smallest energy and is below -0.5 kcal/mol
-                if (eij < threshold and eij < energy[i]):
+                if (eij < energy[i]):
                     energy[i] = eij
                     # i and j make up a minimal energy H-bond
                     hbond_neighbor[i] = j
 
-                if (eji < threshold and eji < energy[j]):
+                if (eji < energy[j]):
                     energy[j] = eji
                     # i and j make up a minimal energy H-bond
                     hbond_neighbor[j] = i
-    return hbond_neighbor
+    return remove_value(hbond_neighbor, -1)
 
 
 def test():
@@ -102,6 +115,8 @@ def test():
 
     hdbond_neihgbor = find_Hbonds(
         alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens)
+
+    print("number of neighbors", len(hdbond_neihgbor))
 
 
 test()

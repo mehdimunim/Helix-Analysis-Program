@@ -31,7 +31,7 @@ def parse_structure(filename):
                 y = line[38:46].strip()
                 z = line[46:54].strip()
 
-                atom_coordinates = (x, y, z)
+                atom_coordinates = (float(x), float(y), float(z))
 
                 if (res_name != "PRO"):
                     if atom_name == 'CA':
