@@ -70,9 +70,9 @@ def test_parse():
         "glut1.pdb")
     print("alpha carbons", len(alpha_carbons))
     print("simple carbons", len(simple_carbons))
-    print("oxygen", len(oxygens))
-    print("nitrogen", len(nitrogens))
-    print("hydrogen", len(hydrogens))
+    print("oxygens", len(oxygens))
+    print("nitrogens", len(nitrogens))
+    print("hydrogens", len(hydrogens))
 
 
 test_parse()

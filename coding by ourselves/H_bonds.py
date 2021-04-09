@@ -15,20 +15,6 @@ def r(atom1, atom2):
     return math.sqrt((atom1[0] - atom2[0])**2 + (atom1[1] - atom2[1])**2 + (atom1[2] - atom2[2])**2)
 
 
-def adapt_hbond(list):
-    """
-    Transforms the list "hbond" to a list of the couple of atoms in H-bonds
-    Returns the reduced list
-    """
-    # if list[i] = -1, i is NOT in any H-bonds
-    value = - 1
-    cleaned = []
-    for index, item in enumerate(list):
-        if (item != value):
-            cleaned.append((index, item))
-    return cleaned
-
-
 def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     """
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
@@ -52,8 +38,8 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     threshold = -0.5
 
     # Hbond_neighbor corresponds to the atoms engaged in an hydrogen bond
-    # hbond_neighbor[i] = j means that (i, j) are forming a bond
-    hbond_neighbor = [-1]*number_residue
+    # hbond[i] = j means that (i, j) are forming a bond
+    hbond = [-1]*number_residue
     # the associated energies, initialized at threshold + 10^(-5)
     energy = [threshold + 10**(-5)]*number_residue
 
@@ -101,24 +87,10 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
                 if (eij < energy[i]):
                     energy[i] = eij
                     # i and j make up a minimal energy H-bond
-                    hbond_neighbor[i] = j
+                    hbond[i] = j
 
                 if (eji < energy[j]):
                     energy[j] = eji
                     # i and j make up a minimal energy H-bond
-                    hbond_neighbor[j] = i
-    return adapt_hbond(hbond_neighbor)
-
-
-def test():
-
-    alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
-        "glut1.pdb")
-
-    hdbond_neihgbor = find_Hbonds(
-        alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens)
-
-    print("number of neighbors", len(hdbond_neihgbor))
-
-
-test()
+                    hbond[j] = i
+    return hbond
