@@ -1,3 +1,8 @@
+import numpy as np
+import os
+os.chdir(
+    "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\coding by ourselves")
+
 
 def parse_structure(filename):
     """
@@ -5,31 +10,69 @@ def parse_structure(filename):
     to get the CA, C, O, N and H from the backbone chain
     Returns: the corresponding coordinates for each residue
     """
-    
-    do ia = n1, nslt
-            atnam(1: lnam) = line(index(ia))(inamcol1: inamcol2)
-            if (lnam .eq. 4) atnam(5: 8) = '    '
-            if (lnam .gt. 4) call leftadjustn(atnam, atnam, lnam)
-            if (atnam(1: 4) .eq. 'C   ' . or . atnam(1: 4) .eq. ' C   ') then
-              icfound = 1
-              ixc(nres+1) = ia
-            else if (atnam(1: 4) .eq. 'O   ' . or . atnam(1: 4) .eq. ' O   ')
-         -           then
-              iofound=1
-              ixo(nres+1)=ia
-            else if (atnam(1:4) .eq. 'N   ' .or. atnam(1:4) .eq. ' N   ')
-         -           then
-              infound=1
-              ixn(nres+1)=ia
-            else if (atnam(1:4) .eq. 'CA  ' .or. atnam(1:4) .eq. ' CA  ')
-         -           then
-              iafound=1
-              ixa(nres+1)=ia
-            else if (atnam(1:4) .eq. 'H   ' .or. atnam(1:4) .eq. ' H   '
-         -    .or. atnam(1:4) .eq. ' D  ' .or. atnam(1:4) .eq. 'D   ' .or.
-         -    atnam(1:4) .eq. 'HN  ' .or. atnam(1:4) .eq. ' HN ') then
-              ihfound=1
-              call trnsfr(ch(1,nres+1),c(1,ia),3)
-            end if
-            if (ia .eq. nslt) then
-              iresn=-1
+    alpha_carbons = []
+    simple_carbons = []
+    oxygens = []
+    nitrogens = []
+    hydrogens = []
+
+    # Itérer sur les lignes dans pdbname
+    # debug
+    i = 0
+    with open(filename, "r") as pdbname:
+        for line in pdbname:
+
+            #  Vérifier si la ligne commence par "ATOM"
+            if line.startswith('ATOM'):
+
+                atom_name = line[12:16].strip()
+                res_name = line[17:20].strip()
+                x = line[30:38].strip()
+                y = line[38:46].strip()
+                z = line[46:54].strip()
+
+                atom_coordinates = (float(x), float(y), float(z))
+
+                if (res_name != "PRO"):
+                    if atom_name == 'CA':
+                        alpha_carbons.append(atom_coordinates)
+
+                    elif atom_name == "C":
+                        simple_carbons.append(atom_coordinates)
+
+                    elif atom_name == "O":
+                        oxygens.append(atom_coordinates)
+
+                    elif atom_name == "N":
+                        nitrogens.append(atom_coordinates)
+
+                    elif atom_name == "HN":
+                        hydrogens.append(atom_coordinates)
+
+    # removing first residuecarbons, alpha-carbons and nitrogens
+    # as there are no OH in it
+    alpha_carbons = alpha_carbons[1:-1]
+    simple_carbons = simple_carbons[1:-1]
+    nitrogens = nitrogens[1:-1]
+
+    # extra last oxygen
+    oxygens = oxygens[1:]
+
+    # extra first hydrogen
+    hydrogens = hydrogens[:-1]
+
+    return alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens
+
+
+def test_parse():
+
+    alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
+        "glut1.pdb")
+    print("alpha carbons", len(alpha_carbons))
+    print("simple carbons", len(simple_carbons))
+    print("oxygen", len(oxygens))
+    print("nitrogen", len(nitrogens))
+    print("hydrogen", len(hydrogens))
+
+
+test_parse()
