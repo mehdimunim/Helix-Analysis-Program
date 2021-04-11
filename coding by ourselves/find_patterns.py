@@ -3,49 +3,72 @@ from H_bonds import find_Hbonds
 from adapt_hbond import adapt_hbond
 
 
+def find_nturns(hbond):
+    """
+    Finds the beginnings of the n-turns with n in {3, 4, 5} with the list of H-bonds
+    n-turns are H-bonds form CO(i) to NH(i+n)
+    """
+    nturn_starts = {
+        "3-turn": [],
+        # [1, 8] means there are two n-turns  (1, 1 + n) and (8, 8 +n)
+        "4-turn": [],
+        "5-turn": []
+    }
+
+    # iterating over atoms indexes i and their corresponding neighbors j
+    i = 0
+    while i < n_res:
+
+        # Calculating the gap between H-bond neighbors
+        if (hbond[i] == - 1):
+            n = - 1
+        else:
+            n = hbond[i] - i
+
+        if (n >= 3 and n <= 5):
+            name = str(n) + "-turn"
+            # Adding the beginning of the n-turn to the corresponding list
+            nturn_starts[name].append(i)
+        i += 1
+
+    return nturn_starts
+
+
+def find_minimal_helices(nturn_starts):
+    """
+    Find helices on the basis of the n-turn beginnings lists
+    Minimal helices are defined as consecutive n-turns
+    """
+    helices = {
+        "3-helices": [],
+        "4-helices": [],
+        "5-helices": []
+    }
+
+    for n in [3, 4, 5]:
+        name = str(n) + "-turn"
+        list = sorted(nturn_starts[name])
+        for i in range(len(list) - 1):
+            if list[i+1] == list[i] + 1:
+                helix_name = str(n) + "-helices"
+                helices[helix_name].append(i)
+
+    return helices
+
+
+def assemble_minimal_helices(helices):
+    """
+    Gathers consecutive helices     
+    """
+
+
 def cluster_hbonds(hbond):
     """
     Associate the H_bonds to a secondary structure
     as defined by the Dictionary of Secondary Structure (DSSP Kabsch & Sanders, 1983)
     """
-    # Storing the starts and ends of secondary structures
-    # in a dictionary
-    # (to be extended for other SS)
-    secondary_structure = {
-        "3-turn": [], # [1, 8, 19, 30]
-        "4-turn": [],
-        "5-turn": []
-    }
-
-    # Coding for at least 3,4,5- turns
-
-    # iterating over atoms indexes i and their corresponding neighbors j
-    for i, j in enumerate(hbond):
-        # i is not involved in a bond
-        if (j != -1):
-
-            # calculating the gap between neigbors
-            n = abs(i - j)
-
-            # For n-turns, n is in {3, 4, 5}
-            if (n >= 3 and n <= 5):
-                name = str(n) + "-" + "turn"
-
-                # starting turn in i
-                secondary_structure[name].append(i)
-
-                n_new = n
-                # are n_new and n of the same sign???
-                while (n_new == n and j != -1):
-                    i = j
-                    j = hbond[i]
-                    # comparing the gap with the neighbor of neighbor
-                    n_new = abs(i - j)
-
-                # ending turn in i + n
-                secondary_structure[name].append(j)
-
-    return secondary_structure
+    n_turns = find_nturns(hbond)
+    helices = find_helices(n_turns)
 
 
 def test_clustering():
@@ -59,8 +82,9 @@ def test_clustering():
     print("number of neighbors", len(adapt_hbond(hbond)))
 
     secondary_structure = cluster_hbonds(hbond)
+    print("number of 3-helices", int(len(secondary_structure["3, 10-turn"])/2))
     print("number of alpha helices", int(len(secondary_structure["4-turn"])/2))
-    print("number of 3-helices", int(len(secondary_structure["3-turn"])/2))
+    print("number of pi helices", int(len(secondary_structure["5-turn"])/2))
 
 
 test_clustering()
