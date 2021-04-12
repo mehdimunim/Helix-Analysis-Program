@@ -155,16 +155,17 @@ def test_clustering():
 
     secondary_structure = cluster_hbonds(hbond)
 
-    print("number of 3-helices", int(len(secondary_structure["3-helices"])/2))
-    print("number of alpha helices", int(
-        len(secondary_structure["4-helices"])/2))
-    print("number of pi helices", int(len(secondary_structure["5-helices"])/2))
+    print("Number of pi helices", int(len(secondary_structure["5-helices"])/2))
 
-    print(" \n 3,10 HELICES \n")
+    print(" \n   3,10 HELICES [start, end, start, end\n")
     print(secondary_structure["3-helices"])
+    print("Number of 3,10 -helices",
+          int(len(secondary_structure["3-helices"])/2))
 
-    print(" \n ALPHA HELICES \n")
+    print(" \n   ALPHA HELICES [start, end, start, end...] \n")
     print(secondary_structure["4-helices"])
+    print("Number of alpha helices", int(
+        len(secondary_structure["4-helices"])/2))
 
 
 test_clustering()
