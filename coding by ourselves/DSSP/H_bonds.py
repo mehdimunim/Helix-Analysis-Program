@@ -1,5 +1,3 @@
-import pandas as pd
-import numpy as np
 import math
 import os
 from parse_structure import parse_structure
@@ -32,8 +30,6 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
         "hydrogen": hydrogens
     }
 
-    res = pd.DataFrame.from_dict(backbone)
-
     # Energy threshold to be considered as a hydrogen bond
     threshold = -0.5
 
@@ -63,24 +59,24 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
 
         for j in range(i + 3, number_residue):
             # Second criterium: residue-distance below limit
-            distance = r(res["oxygen"][i], res["nitrogen"][j])
+            distance = r(backbone["oxygen"][i], backbone["nitrogen"][j])
             if distance < limit_distance:
 
                 # Bond energy in direction i -> j
 
-                eijON = 1 / r(res["oxygen"][i], res["nitrogen"][j])
-                eijCH = 1 / r(res["carbon"][i], res["hydrogen"][j])
-                eijOH = 1 / r(res["oxygen"][i], res["hydrogen"][j])
-                eijCN = 1 / r(res["carbon"][i], res["nitrogen"][j])
+                eijON = 1 / r(backbone["oxygen"][i], backbone["nitrogen"][j])
+                eijCH = 1 / r(backbone["carbon"][i], backbone["hydrogen"][j])
+                eijOH = 1 / r(backbone["oxygen"][i], backbone["hydrogen"][j])
+                eijCN = 1 / r(backbone["carbon"][i], backbone["nitrogen"][j])
 
                 eij = (q1 * q2 * f) * (eijON + eijCH - eijOH - eijCN)
 
                 # Bond energy in the opposite direction j -> i
 
-                ejiON = 1 / r(res["oxygen"][j], res["nitrogen"][i])
-                ejiCH = 1 / r(res["carbon"][j], res["hydrogen"][i])
-                ejiOH = 1 / r(res["oxygen"][j], res["hydrogen"][i])
-                ejiCN = 1 / r(res["carbon"][j], res["nitrogen"][i])
+                ejiON = 1 / r(backbone["oxygen"][j], backbone["nitrogen"][i])
+                ejiCH = 1 / r(backbone["carbon"][j], backbone["hydrogen"][i])
+                ejiOH = 1 / r(backbone["oxygen"][j], backbone["hydrogen"][i])
+                ejiCN = 1 / r(backbone["carbon"][j], backbone["nitrogen"][i])
 
                 eji = (q1 * q2 * f) * (ejiON + ejiCH - ejiOH - ejiCN)
 
