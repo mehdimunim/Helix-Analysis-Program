@@ -40,6 +40,7 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     # Hbond_neighbor corresponds to the atoms engaged in an hydrogen bond
     # hbond[i] = j means that (i, j) are forming a bond
     hbond = [-1]*number_residue
+
     # the associated energies, initialized at threshold + 10^(-5)
     energy = [threshold + 10**(-5)]*number_residue
 
@@ -58,7 +59,7 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
 
     # Searching minimal energy H-bond in first direction
     for i in range(number_residue):
-        # Criterium 0 to be an h-bond, having a distance of 3 residue
+        # First criterium to be an h-bond, being at least 3 residue afar
 
         for j in range(i + 3, number_residue):
             # Second criterium: residue-distance below limit
