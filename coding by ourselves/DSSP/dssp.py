@@ -23,11 +23,21 @@ def main():
 
         name = str(type) + "-helices"
 
-        print(" \n {} [start, end, start, end...]\n".format(name.upper()))
+        print(" \n {}\n".format(name.upper()))
 
-        print(secondary_structure[name])
+        str_starts = ""
+        str_ends = ""
+        for pos, val in enumerate(secondary_structure[name]):
+            str_val = "{:4d}".format(val)
+            if pos % 2 == 0:
+                str_starts += str_val
+            else:
+                str_ends += str_val
 
-        print("Number of {} {} ".format(
+        print("starts: ", str_starts)
+        print("ends:   ", str_ends)
+
+        print("Number of {}: {} ".format(
             name, int(len(secondary_structure[name])/2)))
 
 

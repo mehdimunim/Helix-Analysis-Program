@@ -49,7 +49,7 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     # dimensional factor
     f = 332
 
-    # maximal tolerance radius between O(i) and N(j) for H-bonds
+    # maximal tolerance radius between N(i) and O(j) for H-bond
     # distance in angstoms (same as in the PDB)
     limit_distance = 5.2
 
@@ -59,7 +59,8 @@ def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
 
         for j in range(i + 3, number_residue):
             # Second criterium: residue-distance below limit
-            distance = r(backbone["oxygen"][i], backbone["nitrogen"][j])
+            distance = r(backbone["oxygen"][i],
+                         backbone["nitrogen"][j])
             if distance < limit_distance:
 
                 # Bond energy in direction i -> j
