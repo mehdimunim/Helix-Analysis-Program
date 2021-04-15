@@ -7,8 +7,8 @@ from irreg import check_irregularities
 def main():
     """
     DSSP main function
+    Inspired both from the paper of Kabsh & Sander and from Simulaid
     """
-
     pdb_cleaned = check_irregularities("glut1")
 
     alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
