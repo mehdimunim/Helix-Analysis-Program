@@ -1,8 +1,6 @@
-import numpy as np
-import os
-os.chdir(
-    "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\coding by ourselves")
-
+#
+# Gets the backbone atoms
+#
 
 def parse_structure(filename):
     """
@@ -62,17 +60,3 @@ def parse_structure(filename):
     hydrogens = hydrogens[:-1]
 
     return alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens
-
-
-def test_parse():
-
-    alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
-        "glut1.pdb")
-    print("alpha carbons", len(alpha_carbons))
-    print("simple carbons", len(simple_carbons))
-    print("oxygens", len(oxygens))
-    print("nitrogens", len(nitrogens))
-    print("hydrogens", len(hydrogens))
-
-
-test_parse()

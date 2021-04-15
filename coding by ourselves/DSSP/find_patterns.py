@@ -1,7 +1,6 @@
-from parse_structure import parse_structure
-from H_bonds import find_Hbonds
-from adapt_hbond import adapt_hbond
-
+#
+# Finds the H-bond patterns as defined in Kabsch & Sander, 1983
+#
 
 def find_nturns(hbond):
     """
@@ -126,7 +125,7 @@ def shift_index(input_helices):
     return output_helices
 
 
-def cluster_hbonds(hbond):
+def find_patterns(hbond):
     """
     Associate the H_bonds to a secondary structure
     as defined by the Dictionary of Secondary Structure (DSSP Kabsch & Sanders, 1983)
@@ -141,31 +140,3 @@ def cluster_hbonds(hbond):
     helices = shift_index(helices)
 
     return helices
-
-
-def test_clustering():
-
-    alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
-        "glut1.pdb")
-
-    hbond = find_Hbonds(
-        alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens)
-
-    print("number of neighbors", len(adapt_hbond(hbond)))
-
-    secondary_structure = cluster_hbonds(hbond)
-
-    print("Number of pi helices", int(len(secondary_structure["5-helices"])/2))
-
-    print(" \n   3,10 HELICES [start, end, start, end\n")
-    print(secondary_structure["3-helices"])
-    print("Number of 3,10 -helices",
-          int(len(secondary_structure["3-helices"])/2))
-
-    print(" \n   ALPHA HELICES [start, end, start, end...] \n")
-    print(secondary_structure["4-helices"])
-    print("Number of alpha helices", int(
-        len(secondary_structure["4-helices"])/2))
-
-
-test_clustering()

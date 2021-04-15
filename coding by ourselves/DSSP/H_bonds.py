@@ -1,8 +1,8 @@
+#
+# Finds the H-bonds
+#
+
 import math
-import os
-from parse_structure import parse_structure
-os.chdir(
-    "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\coding by ourselves")
 
 
 def r(atom1, atom2):
