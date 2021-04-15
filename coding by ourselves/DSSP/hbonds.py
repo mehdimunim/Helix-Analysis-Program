@@ -13,7 +13,7 @@ def r(atom1, atom2):
     return math.sqrt((atom1[0] - atom2[0])**2 + (atom1[1] - atom2[1])**2 + (atom1[2] - atom2[2])**2)
 
 
-def find_Hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
+def find_hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     """
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
     Returns the couple of residues engaged in H-Bonds

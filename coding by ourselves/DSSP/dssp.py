@@ -1,7 +1,7 @@
-from parse_structure import parse_structure
-from H_bonds import find_Hbonds
-from find_patterns import find_patterns
-from check_irregularities import check_irregularities
+from parse import parse_structure
+from hbonds import find_hbonds
+from patterns import find_patterns
+from irreg import check_irregularities
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
     alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
         pdb_cleaned)
 
-    hbond = find_Hbonds(
+    hbond = find_hbonds(
         alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens)
 
     secondary_structure = find_patterns(hbond)

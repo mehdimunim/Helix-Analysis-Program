@@ -4,7 +4,7 @@
 
 def check_irregularities(pdb):
     """
-    Remove all proline residues from a pdb file
+    Removes all proline residues from a pdb file
     Output: input pdb file without proline residues
     """
     with open(pdb + ".pdb", "r") as file_input:
