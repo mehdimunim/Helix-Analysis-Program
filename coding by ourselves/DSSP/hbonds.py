@@ -13,32 +13,40 @@ def r(atom1, atom2):
     return math.sqrt((atom1[0] - atom2[0])**2 + (atom1[1] - atom2[1])**2 + (atom1[2] - atom2[2])**2)
 
 
-def find_hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
+def adapt_hbond(hbond, res_list):
+    """
+    Transforms hbond to a list of tuple (#residue, neighbor)
+    """
+    list = []
+    for pos, val in enumerate(hbond):
+        if val != -1:
+            list.append((res_list[i], val))
+    return list
+
+
+def find_hbonds(backbone):
     """
     For each residue, finds the nearest neigbor in term of H-Bonds energy.
     Returns the couple of residues engaged in H-Bonds
     """
-    # total number of residues in the molecule
-    number_residue = len(alpha_carbons)
-
-    # Getting coordinates of the backbone chain
-    backbone = {
-        "oxygen": oxygens,
-        "carbon": simple_carbons,
-        "alpha_carbon": alpha_carbons,
-        "nitrogen": nitrogens,
-        "hydrogen": hydrogens
-    }
+    # Unpack backbone
+    alpha_carbon = backbone["alpha_carbon"]
+    carbon = backbone["carbon"]
+    oxygen = backbone["oxygen"]
+    nitrogen = backbone["nitrogen"]
+    hydrogen = backbone["hydrogen"]
+    res_number_list = backbone["res_list"]
+    nresidue = len(res_number_list)
 
     # Energy threshold to be considered as a hydrogen bond
     threshold = -0.5
 
     # Hbond_neighbor corresponds to the atoms engaged in an hydrogen bond
     # hbonds[i] = j means that (i, j) are forming a bond
-    hbonds = [-1]*number_residue
+    hbonds = [-1]*nresidue
 
     # the associated energies, initialized at threshold + 10^(-5)
-    energy = [threshold + 10**(-5)]*number_residue
+    energy = [threshold + 10**(-5)]*nresidue
 
     # q1: partial charge in eV on the C of CO
     q1 = 0.42
@@ -54,10 +62,10 @@ def find_hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
     limit_distance = 5.2
 
     # Searching minimal energy H-bond in first direction
-    for i in range(number_residue):
+    for i in range(nresidue):
         # First criterium to be an h-bond, being at least 3 residue afar
 
-        for j in range(i + 3, number_residue):
+        for j in range(i + 3, nresidue):
             # Second criterium: residue-distance below limit
             distance = r(backbone["oxygen"][i],
                          backbone["nitrogen"][j])
@@ -91,4 +99,5 @@ def find_hbonds(alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens):
                     energy[j] = eji
                     # i and j make up a minimal energy H-bond
                     hbonds[j] = i
-    return hbonds
+
+    return adapt(hbonds, res_number_list)

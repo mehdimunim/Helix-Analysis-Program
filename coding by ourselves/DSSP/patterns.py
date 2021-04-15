@@ -20,15 +20,12 @@ def find_nturns(hbond):
     while i < n_res:
 
         # Calculating the gap between H-bond neighbors
-        if (hbond[i] == - 1):
-            n = - 1
-        else:
-            n = hbond[i] - i
+        n = hbond[i][1] - hbond[i][0]
 
         if (n >= 3 and n <= 5):
             name = str(n) + "-turn"
             # Adding the beginning of the n-turn to the corresponding list
-            nturn_starts[name].append(i)
+            nturn_starts[name].append(hbond[i][0])
         i += 1
 
     return nturn_starts
@@ -111,20 +108,6 @@ def assemble_minimal_helices(min_helices):
     return helices
 
 
-def shift_index(input_helices):
-    """
-    Makes the residue number start at 1 by convention
-    """
-
-    output_helices = {
-        "3-helices": [residue + 1 for residue in input_helices["3-helices"]],
-        "4-helices": [residue + 1 for residue in input_helices["4-helices"]],
-        "5-helices": [residue + 1 for residue in input_helices["5-helices"]]
-    }
-
-    return output_helices
-
-
 def find_patterns(hbond):
     """
     Associate the H_bonds to a secondary structure
@@ -136,7 +119,5 @@ def find_patterns(hbond):
     min_helices = find_minimal_helices(n_turns)
 
     helices = assemble_minimal_helices(min_helices)
-
-    helices = shift_index(helices)
 
     return helices
