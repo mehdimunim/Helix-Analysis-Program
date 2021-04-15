@@ -1,7 +1,6 @@
 from parse import parse_structure
 from hbonds import find_hbonds
 from patterns import find_patterns
-from irreg import check_irregularities
 
 
 def main():
@@ -9,10 +8,10 @@ def main():
     DSSP main function
     Inspired both from the paper of Kabsh & Sander and from Simulaid
     """
-    pdb_cleaned = check_irregularities("glut1")
+    pdb = "glut1.pdb"
 
     alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
-        pdb_cleaned)
+        pdb)
 
     hbond = find_hbonds(
         alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens)
