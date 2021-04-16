@@ -10,11 +10,9 @@ def main():
     """
     pdb = "glut1.pdb"
 
-    alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens = parse_structure(
-        pdb)
+    backbone = parse_structure(pdb)
 
-    hbond = find_hbonds(
-        alpha_carbons, simple_carbons, oxygens, nitrogens, hydrogens)
+    hbond = find_hbonds(backbone)
 
     secondary_structure = find_patterns(hbond)
 

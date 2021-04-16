@@ -19,8 +19,8 @@ def adapt_hbond(hbond, res_list):
     """
     list = []
     for pos, val in enumerate(hbond):
-        if val != -1:
-            list.append((res_list[i], val))
+        if val != - 1:
+            list.append((res_list[pos], res_list[val]))
     return list
 
 
@@ -35,7 +35,7 @@ def find_hbonds(backbone):
     oxygen = backbone["oxygen"]
     nitrogen = backbone["nitrogen"]
     hydrogen = backbone["hydrogen"]
-    res_number_list = backbone["res_list"]
+    res_number_list = backbone["res_number_list"]
     nresidue = len(res_number_list)
 
     # Energy threshold to be considered as a hydrogen bond
@@ -100,4 +100,16 @@ def find_hbonds(backbone):
                     # i and j make up a minimal energy H-bond
                     hbonds[j] = i
 
-    return adapt(hbonds, res_number_list)
+    return adapt_hbond(hbonds, res_number_list)
+
+
+def test_hbonds():
+    from parse import parse_structure
+    backbone = parse_structure("glut1.pdb")
+
+    hbonds = find_hbonds(backbone)
+    print("#hbond", len(hbonds))
+    print("example of hbond: ", hbonds[0])
+
+
+# test_hbonds()

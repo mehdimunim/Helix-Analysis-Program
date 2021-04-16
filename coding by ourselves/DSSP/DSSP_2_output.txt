@@ -1,0 +1,35 @@
+ 3-HELICES
+
+starts:    31 190 327
+ends:      34 194 330
+Number of 3-helices: 3
+
+ 4-HELICES
+
+starts:    11  37  59  91 118 152 185 193 220 237 268 286 307 332 363 389 402 421 432
+ends:      31  52  87 111 147 174 189 203 231 253 283 300 328 357 381 393 420 429 451
+Number of 4-helices: 19
+
+ 5-HELICES
+
+starts:
+ends:
+Number of 5-helices: 0
+
+Gap with reality (my result in parantheses) (+-1 residue):
+
+3-Helices
+
+All not found in reality
+Not kept in reality because less than 5 residues long.
+
+4-Helices
+
+92-115 (91 -111)
+150-175 (152 - 174)
+185-206 ( 185-189 ; 192-203)
+287-292 (286 - 300)
+399-429 (402 - 420 ; 421-429)
+460-465 (Nothing)
+
+6/21 almost false

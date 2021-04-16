@@ -15,18 +15,18 @@ def find_nturns(hbond):
         "5-turn": []
     }
 
-    # iterating over atoms indexes i and their corresponding neighbors j
-    i = 0
-    while i < n_res:
+    # iterating over the hbonds neigbors
+    for bond in hbond:
+        res1 = bond[0]
+        res2 = bond[1]
 
         # Calculating the gap between H-bond neighbors
-        n = hbond[i][1] - hbond[i][0]
+        n = res2 - res1
 
         if (n >= 3 and n <= 5):
             name = str(n) + "-turn"
             # Adding the beginning of the n-turn to the corresponding list
-            nturn_starts[name].append(hbond[i][0])
-        i += 1
+            nturn_starts[name].append(res1)
 
     return nturn_starts
 
@@ -45,7 +45,7 @@ def find_minimal_helices(nturn_starts):
     for n in [3, 4, 5]:
 
         name = str(n) + "-turn"
-        list_nturns = sorted(nturn_starts[name])
+        list_nturns = nturn_starts[name]
 
         for i in range(len(list_nturns) - 1):
             if list_nturns[i+1] == list_nturns[i] + 1:
