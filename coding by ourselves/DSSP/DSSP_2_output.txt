@@ -16,11 +16,11 @@ starts:
 ends:
 Number of 5-helices: 0
 
-Gap with reality (my result in parantheses) (+-1 residue):
+Gap with reality (my result in parentheses) (+-1 residue):
 
 3-Helices
 
-All not found in reality
+None
 Not kept in reality because less than 5 residues long.
 
 4-Helices
