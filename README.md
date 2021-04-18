@@ -13,3 +13,13 @@ Work done in a team of 4 for second year biological engineering project.
 Our final code is in the folder src.
 
 Our trials are dispatched between other folders.
+
+## Flowchart
+
+A flowchart of the whole program can be found.
+
+## Workflow
+
+The program has the following workflow:
+- DSSP
+- Inertia Axis
