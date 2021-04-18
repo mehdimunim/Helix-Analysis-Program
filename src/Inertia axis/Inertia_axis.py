@@ -1,16 +1,7 @@
 
-"""
-Computes principal axes from a PDB file.
-OL.
-
-tape python3 axe_inertie.py  glut1.pdb  sur le terminal
-"""
-
 import sys
 import os.path
 import numpy
-
-
 
 
 def read_pdb_xyz(pdb_name):
@@ -46,33 +37,33 @@ def check_argument(arguments):
     Check if filename passed as argument exists. 
     Parameters
     """
-   
+
     if len(arguments) == 2:
         file_name = arguments[1]
     else:
         message = """
         ERROR: missing pdb filename as argument
-        usage: %s file.pdb""" %(arguments[0])
+        usage: %s file.pdb""" % (arguments[0])
         sys.exit(message)
 
     # check if argument is an existing file
     if not os.path.exists(file_name):
-        sys.exit("ERROR: file %s does not seem to exist" %(file_name))
+        sys.exit("ERROR: file %s does not seem to exist" % (file_name))
 
     return file_name
 
 
+def inertia_axis(pdb_name):
+    """
+    Computes principal axes from a PDB file.
+    OL.
+    """
 
-if __name__ == '__main__':
-
-    # check if argument file exists
-    pdb_name = check_argument(sys.argv)
-
-
+    # read pdb
     xyz = read_pdb_xyz(pdb_name)
-    print("%d CA atomes found in %s" %(len(xyz), pdb_name))
+    print("%d CA atomes found in %s" % (len(xyz), pdb_name))
 
-    #create coordinates array
+    # create coordinates array
     coord = numpy.array(xyz, float)
 
     # compute geometric center
@@ -85,13 +76,10 @@ if __name__ == '__main__':
     # compute principal axis matrix
     inertia = numpy.dot(coord.transpose(), coord)
     e_values, e_vectors = numpy.linalg.eig(inertia)
- 
+
     order = numpy.argsort(e_values)
     eval3, eval2, eval1 = e_values[order]
     axis3, axis2, axis1 = e_vectors[:, order].transpose()
-  
+
     print("\nFirst principal axis")
     print("coordinates: ", axis1)
-   
-
-   
