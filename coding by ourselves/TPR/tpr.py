@@ -17,7 +17,7 @@ def angle(v1, v2, reference):
     return sign*angle
 
 
-def tpr(coordinates, ref_angle, incrot, axisdir):
+def tpr(alpha_carbons, ref_angle, axisdir):
     """
     Calculate the average turn angle per residue;
     Inspired from TRAJELIX from simulaid.
@@ -25,13 +25,16 @@ def tpr(coordinates, ref_angle, incrot, axisdir):
     ---
     incrot: number of residue to ignore for rotation
     """
-    nresu = nres - 2*incrot
-    a11 = (2*nresu**3 + 3*nresu**2 + nresu)/6
-    a21 = (nresu*(nresu + 1))/2
+    a11 = (2*nres**3 + 3*nres**2 + nres)/6
+    a21 = (nres*(nres + 1))/2
     a12 = a21
-    a22 = nresu
+    a22 = nres
     average_turnchange = 0
     a_turn = 0
+
+    # calculate perpendiculars
+
+    perpvec = calcperp(start, dir, alpha_carbons)
 
     # Iterate over residue
     for residue in range(1 + incrot, nres-incrot):
@@ -40,8 +43,8 @@ def tpr(coordinates, ref_angle, incrot, axisdir):
         turn_change = angle(perpendicular_before, perpendicular_after, axisdir)
         average_turnchange += turnchange
         a_turn += turnchange
-        b1 += (ir - incrot)*a_turn
+        b1 += residue*a_turn
         b2 += a_turn
     turnperres = (aa2*b1 - a12*b2)/(a22*a11 - a12*a21)
-    average_turnchange = average_turnchange/(nres - 2*incrot - 1)
+    average_turnchange = average_turnchange/(nres - 1)
     return turnperres, average_turnchange
