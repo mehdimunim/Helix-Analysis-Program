@@ -7,6 +7,8 @@ def parse_structure(filename):
     Parse PDB entry file
     to get the CA, C, O, N and H from the backbone chain
     Returns: the corresponding coordinates for each residue
+    ---
+    NOTE: Supress first and last residues that are electrically charged
     """
     alpha_carbons = []
     simple_carbons = []
@@ -85,4 +87,4 @@ def test_parse():
     print(backbone["res_number_list"])
 
 
-#test_parse()
+# test_parse()
