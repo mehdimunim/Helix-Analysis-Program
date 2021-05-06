@@ -27,7 +27,7 @@ class DSSP:
         for type in [3, 4, 5]:
             name = str(type) + "-helices"
             helices = self.secondary_structures[name]
-            for pos, val in enumerate(helices):
+            for i in range(1, len(helices)):
                 
 
 
