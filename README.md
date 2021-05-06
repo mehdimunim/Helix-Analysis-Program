@@ -23,3 +23,6 @@ A flowchart of the whole program can be found.
 The program has the following workflow:
 - DSSP
 - Inertia Axis
+- Turn Per Residue
+- Helices Length
+- Center of Mass
