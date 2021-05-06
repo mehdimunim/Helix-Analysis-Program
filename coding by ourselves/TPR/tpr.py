@@ -2,49 +2,56 @@
 # Turn per residue
 #
 
-from numpy import numpy.dot as dot
-from numpy import numpy.cross as cross
-from numpy import numpy.linalg.norm as norm
-from numpy import numpy.sign as sign
+from normal import normal
+from angle import angle
+from regression import regression
 
 
-def angle(v1, v2, reference):
+def tpr(alpha_carbons, axis):
     """
-    Calculate the angle between v1 and v2.
-    """
-    angle = dot(v1, v2)/(norm(v1)*norm(v2))
-    sign = sign(cross(v1, reference))
-    return sign*angle
-
-
-def tpr(alpha_carbons, ref_angle, axisdir):
-    """
-    Calculate the average turn angle per residue;
+    Calculate the turn angle per residue;
     Inspired from TRAJELIX from simulaid.
+
+    Two steps:
+
+    1- Calculate the turn angles phi(i) between first residue and i
+
+    2- Fit ph(i) = theta*i + phi_0 where theta is the turn angle per residue
+
     (Mezei, Filizola, 2006)
+
     ---
-    incrot: number of residue to ignore for rotation
+    Parameters:
+    alpha_carbons: alpha carbons (used to calculate the angle)
+    axis: inertia axis of the structure (often an alpha-helix)
+
+    ---
+    Return:
+    theta : turn per angle per residue
+
     """
-    a11 = (2*nres**3 + 3*nres**2 + nres)/6
-    a21 = (nres*(nres + 1))/2
-    a12 = a21
-    a22 = nres
-    average_turnchange = 0
-    a_turn = 0
 
-    # calculate perpendiculars
+    # First step
+    # Calculate the turn angles between first residue and i
 
-    perpvec = calcperp(start, dir, alpha_carbons)
+    phi = []
+    phi_i = 0
+    for i in range(3, n):
+        # calculate normal vectors for residue i-1 and i
+        vec_before = normal(axis, alpha_carbons[i-1])
+        vec_after = normal(axis, alpha_carbons[i])
 
-    # Iterate over residue
-    for residue in range(1 + incrot, nres-incrot):
-        perpendicular_before = perpvec[residue - 1]
-        perpendicular_after = perpvec[residue]
-        turn_change = angle(perpendicular_before, perpendicular_after, axisdir)
-        average_turnchange += turnchange
-        a_turn += turnchange
-        b1 += residue*a_turn
-        b2 += a_turn
-    turnperres = (aa2*b1 - a12*b2)/(a22*a11 - a12*a21)
-    average_turnchange = average_turnchange/(nres - 1)
-    return turnperres, average_turnchange
+        # angle between i-1 and i
+        angle = angle(vec_before, vec_after)
+
+        # angle between first residue and i
+        phi_i += angle
+
+        phi.append(phi_i)
+
+    # Second step
+    # Find turn angle per residue with linear regression
+
+    theta, phi_0 = linear_regression(phi)
+
+    return theta
