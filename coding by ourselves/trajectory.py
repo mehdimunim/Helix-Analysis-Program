@@ -109,7 +109,7 @@ if __name__ == '__main__':
         dot_product = numpy.dot(unit_vector_1, unit_vector_2)
         angle = numpy.arccos(dot_product)
 
-        rotation.append(unit_vector_1)
+        
         Rgyr.append((u.trajectory.time, math.degrees(angle)))
       
     #Affichage :
