@@ -1,9 +1,12 @@
 
 def alpha_carbons(filename):
     """
+    DEPRECATED: use DSSP(filename).get_ca() instead
+    ---
     Returns a list of tuples containing each:
     - the residue number
     - the coordinates of the alpha carbon
+
     """
 
     alpha_carbons = []

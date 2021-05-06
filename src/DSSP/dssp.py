@@ -14,26 +14,49 @@ class DSSP:
 
         self.backbone = parse_structure(filename)
 
-        self.hbonds = find_hbonds(backbone)
+        self.hbonds = find_hbonds(self.backbone)
 
-        self.secondary_structures = find_patterns(hbond)
+        self.secondary_structures = find_patterns(self.hbonds)
 
-    def get_ca(self):
+    def get_ca(self, res_number=False):
         """
         Get alpha carbons for each helix one by one
+        ---
+        Options:
+        res_number: if true, will return lists of tuples of (coordinates, residue_number)
+
+        ---
+        Return:
+        type: list of lists
+        Each sub-list corresponds to a helix and contains the coordinates of its alpha-carbons
         """
-        list_ca = []
+        list = []
+        res_num = self.backbone["res_number_list"]
+        alpha_carbons = self.backbone["alpha_carbon"]
 
         for type in [3, 4, 5]:
             name = str(type) + "-helices"
             helices = self.secondary_structures[name]
-            for i in range(1, len(helices)):
-                
+            i = 1
+            while i < len(helices):
 
+                # start and end residues of the helix
+                start = helices[i - 1]
+                end = helices[i]
 
-        
+                # alpha carbons between start and end
+                if (res_number):
+                    cas = [(alpha_carbons[j], res)
+                           for j, res in enumerate(res_num) if res >= start and res <= end]
+                else:
+                    cas = [alpha_carbons[j]
+                           for j, res in enumerate(res_num) if res >= start and res <= end]
 
-        return list_ca
+                list.append(cas)
+
+                i += 2
+
+        return list
 
     def basic_print(self):
         secondary_structures = self.secondary_structures
