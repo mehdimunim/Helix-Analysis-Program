@@ -7,7 +7,7 @@ class DSSP:
     """
     Class implementing DSSP
     Inspired both from the paper of Kabsh & Sander and from Simulaid
-    Contains print and get informations
+    Contains print and get methods
     """
 
     def __init__(self, filename):
@@ -17,6 +17,9 @@ class DSSP:
         self.hbonds = find_hbonds(self.backbone)
 
         self.secondary_structures = find_patterns(self.hbonds)
+
+    def get_structures():
+        return self.secondary_structures
 
     def get_ca(self, res_number=False):
         """
