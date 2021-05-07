@@ -30,7 +30,7 @@ def fit_angles(phi):
 
     # coefficients
     a11 = (2*n + 1)*(n + 1)*n/6
-    a21 = n*(n+1)*2
+    a21 = n*(n+1)/2
     a12 = a21
     a22 = n
 
