@@ -16,7 +16,7 @@ class DSSP:
 
         self.hbonds = find_hbonds(self.backbone)
 
-        self.secondary_structures = find_patterns(self.hbonds)
+        self.secondary_structures, self.irreg = find_patterns(self.hbonds)
 
     def get_structures():
         return self.secondary_structures
@@ -83,3 +83,7 @@ class DSSP:
 
             print("Number of {}: {} ".format(
                 name, int(len(secondary_structures[name])/2)))
+
+        print("\n **** Irregularities ****\n")
+        for tuple in self.irreg:
+            print(tuple)

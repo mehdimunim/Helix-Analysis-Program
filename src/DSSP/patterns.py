@@ -108,6 +108,39 @@ def assemble_minimal_helices(min_helices):
     return helices
 
 
+def merge_helices(helices):
+    """
+    Merge helices that are consecutive, i.e less than 3 residues afar.
+    Warns the user that there is an irregularities at the given precision 
+    """
+    irreg = []
+    for n in [3, 4, 5]:
+        name = str(n) + "-helices"
+        n_helices = helices[name]
+        i = 2
+        while i < len(n_helices):
+            # ending residue of the helix before
+            end_last = n_helices[i-1]
+
+            # beginning residue of the helix after
+            start_new = n_helices[i]
+
+            # number of residues between the helix before and after
+            # note that gap > 0
+            gap = start_new - end_last
+
+            if gap <= 3:
+                # helix irregularity between start_new and end_last
+                irreg.append((end_last, start_new))
+
+                # merge helices
+                n_helices.remove(start_new)
+                n_helices.remove(end_last)
+            i += 2
+
+    return helices, irreg
+
+
 def find_patterns(hbond):
     """
     Associate the H_bonds to a secondary structure
@@ -120,4 +153,6 @@ def find_patterns(hbond):
 
     helices = assemble_minimal_helices(min_helices)
 
-    return helices
+    helices, irreg = merge_helices(helices)
+
+    return helices, irreg
