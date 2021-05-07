@@ -11,4 +11,4 @@ def length(axis, alpha_carbons):
     _, first_orig = normal(axis, alpha_carbons[0])
     _, last_orig = normal(axis, alpha_carbons[-1])
 
-    return norm(last_orig - first_orig)
+    return distance(first_orig, last_orig)
