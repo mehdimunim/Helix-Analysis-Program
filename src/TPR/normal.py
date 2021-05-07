@@ -20,7 +20,7 @@ def normal(axis_direction, axis_origin, point):
     vector = point - axis_origin
 
     # projection of vector on axis
-    projection = np.dot(vector, axis)*axis_direction
+    projection = np.dot(vector, axis_direction)*axis_direction
 
     # the normal vector from normal_origin to point
     normal_direction = projection - vector
@@ -28,9 +28,12 @@ def normal(axis_direction, axis_origin, point):
     # normalized normal_direction
     normal_direction = normal_direction/np.linalg.norm(normal_direction)
 
-    # opposite of the projection of vector on normal 
+    # opposite of the projection of vector on normal
     projection2 = - np.dot(normal_direction, vector)*normal_direction
 
     normal_origin = point + projection2
 
     return normal_direction, normal_origin
+
+
+# def test_normal():

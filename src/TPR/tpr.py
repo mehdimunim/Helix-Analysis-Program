@@ -7,7 +7,7 @@ from angle import angle
 from fit_angles import fit_angles
 
 
-def tpr(alpha_carbons, axis):
+def tpr(alpha_carbons, axis_direction, axis_center):
     """
     Calculate the turn angle per residue;
     Inspired from TRAJELIX from simulaid.
@@ -23,11 +23,12 @@ def tpr(alpha_carbons, axis):
     ---
     Parameters:
     alpha_carbons: alpha carbons (used to calculate the angle)
-    axis: inertia axis of the structure (often an alpha-helix)
+    axis_direction: inertia axis direction of the structure (often an alpha-helix)
+    axis_center: center of the intertia axis
 
     ---
     Return:
-    theta : turn per angle per residue
+    theta : turn per angle per residue (in rad)
 
     """
 
@@ -36,16 +37,16 @@ def tpr(alpha_carbons, axis):
 
     phi = []
     phi_i = 0
-    for pos in range(1, len(alpha_carbons)):
+    for i in range(1, len(alpha_carbons)):
         # calculate normal vectors for residue i-1 and i
-        vec_before, _ = normal(axis, alpha_carbons[i-1])
-        vec_after, _ = normal(axis, alpha_carbons[i])
+        vec_before, _ = normal(axis_direction, axis_center, alpha_carbons[i-1])
+        vec_after, _ = normal(axis_direction, axis_center, alpha_carbons[i])
 
         # angle between i-1 and i
-        angle = angle(vec_before, vec_after)
+        angle_between = angle(vec_before, vec_after)
 
         # angle between first residue and i
-        phi_i += angle
+        phi_i += angle_between
 
         phi.append(phi_i)
 
