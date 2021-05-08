@@ -48,7 +48,7 @@ def parse_structure(filename):
                     elif atom_name == "N":
                         nitrogens.append(atom_coordinates)
 
-                    elif atom_name == "HN":
+                    elif atom_name == "HN" and atom_name == "H":
                         hydrogens.append(atom_coordinates)
 
     # removing first residue carbons, alpha-carbons and nitrogens
