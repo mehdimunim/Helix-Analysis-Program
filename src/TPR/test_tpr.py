@@ -11,7 +11,7 @@ def test_tpr():
     for helix in list_helices:
         orig, axis = principal_axis(helix)
         theta = tpr(helix, axis, orig)
-        print("theta = ", theta/(math.pi*2))
+        print("theta = ", theta*180/math.pi)
 
 
 test_tpr()

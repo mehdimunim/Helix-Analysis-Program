@@ -1,5 +1,5 @@
 
-def fit_angles(phi):
+def fit(phi):
     """
     Fit theta such as:
 
@@ -47,14 +47,14 @@ def fit_angles(phi):
     return theta
 
 
-def test_fit_angles():
+def test_fit():
     import math
     phi = [0, 1, 2, 3, 4, 5]
-    slope = fit_angles(phi)
+    slope = fit(phi)
     print(slope)
 
     phi = [0, -1, -2, -3, -4, -5]
-    slope = fit_angles(phi)
+    slope = fit(phi)
     # should be -1
     print(slope)
 

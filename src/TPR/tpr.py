@@ -4,7 +4,7 @@
 
 from normal import normal
 from angle import angle
-from fit_angles import fit_angles
+from fit import fit
 
 
 def tpr(alpha_carbons, axis_direction, axis_center):
@@ -53,6 +53,6 @@ def tpr(alpha_carbons, axis_direction, axis_center):
     # Second step
     # Find turn angle per residue with linear regression
 
-    theta = fit_angles(phi)
+    theta = fit(phi)
 
     return theta
