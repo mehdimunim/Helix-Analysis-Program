@@ -6,6 +6,11 @@ def test_get_ca(dssp):
     print(cas[3])
 
 
+def test_get_helices(dssp):
+    all_helices = dssp.get_ca()
+    print(all_helices[3])
+
+
 def test_print(dssp):
     dssp.basic_print()
 
@@ -15,6 +20,8 @@ def test():
     test_print(dssp)
     #print("\n *********** GET CAS TEST *********** \n")
     # test_get_ca(dssp)
+    print("\n *********** GET HELICES TEST *********** \n")
+    test_get_helices(helices)
 
 
 test()

@@ -21,6 +21,29 @@ class DSSP:
     def get_structures():
         return self.secondary_structures
 
+    def get_helices():
+        """
+        Get list of start and end residus of all helices regardless of the type 
+        
+        ---
+        Return:
+        
+        all_helices: list of tuple (start, end)
+
+        """
+        all_helices = []
+        for type in [3, 4, 5]:
+            name = str(n) + "-helices"
+            n_helices = self.secondary_structures[name]
+            i = 1
+            while (i < len(n_helices)):
+                start = n_helices[i - 1]
+                end = n_helices[i]
+                raw.append((start, end))
+                i += 2
+
+        return all_helices
+
     def get_ca(self, res_number=False):
         """
         Get alpha carbons for each helix one by one

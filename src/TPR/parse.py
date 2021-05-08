@@ -87,4 +87,4 @@ def test_parse():
     print(backbone["res_number_list"])
 
 
-# test_parse()
+test_parse()
