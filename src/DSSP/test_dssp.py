@@ -13,8 +13,8 @@ def test_print(dssp):
 def test():
     dssp = DSSP("glut1.pdb")
     test_print(dssp)
-    print("\n *********** GET CAS TEST *********** \n")
-    test_get_ca(dssp)
+    #print("\n *********** GET CAS TEST *********** \n")
+    # test_get_ca(dssp)
 
 
 test()
