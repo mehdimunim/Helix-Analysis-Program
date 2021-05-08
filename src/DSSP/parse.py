@@ -48,7 +48,7 @@ def parse_structure(filename):
                     elif atom_name == "N":
                         nitrogens.append(atom_coordinates)
 
-                    elif atom_name == "HN":
+                    elif atom_name == "HN" and atom_name == "H":
                         hydrogens.append(atom_coordinates)
 
     # removing first residue carbons, alpha-carbons and nitrogens
@@ -82,11 +82,11 @@ def parse_structure(filename):
 def test_parse():
     backbone = parse_structure("glut1.pdb")
     print("#a_carbon: ", len(backbone["alpha_carbon"]))
-    print("#carbons:  ", len(backbone["carbon"]))
+    print("#carbon:   ", len(backbone["carbon"]))
     print("#hydrogen: ", len(backbone["hydrogen"]))
     print("#nitrogen: ", len(backbone["nitrogen"]))
     print("#nitrogen: ", len(backbone["oxygen"]))
     print("#res:      ", len(backbone["res_number_list"]))
 
 
-test_parse()
+# test_parse()
