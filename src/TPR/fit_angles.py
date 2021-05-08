@@ -26,7 +26,7 @@ def fit_angles(phi):
 
 
     """
-    n = len(phi)
+    n = len(phi)-1
 
     # coefficients
     a11 = (2*n + 1)*(n + 1)*n/6
@@ -39,9 +39,24 @@ def fit_angles(phi):
     b2 = 0
 
     for i, phi in enumerate(phi):
-        b1 += phi
-        b2 += phi*i
+        b1 += phi*i
+        b2 += phi
 
     theta = (a22*b1 - a12 * b2)/(a22*a11 - a12*a21)
 
     return theta
+
+
+def test_fit_angles():
+    import math
+    phi = [0, 1, 2, 3, 4, 5]
+    slope = fit_angles(phi)
+    print(slope)
+
+    phi = [0, -1, -2, -3, -4, -5]
+    slope = fit_angles(phi)
+    # should be -1
+    print(slope)
+
+
+# test_fit_angles()

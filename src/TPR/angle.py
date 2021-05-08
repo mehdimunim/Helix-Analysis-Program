@@ -8,7 +8,7 @@ def angle(v1, v2):
     Calculate the angle between v1 and v2.
     ---
     Return:
-    angle: angle in rad
+    angle: angle in rad in [0, pi]
 
     """
     cos_angle = dot(v1, v2)/(norm(v1)*norm(v2))
