@@ -1,14 +1,39 @@
+def getAtomsPositions(filename):
+    """ renvoie un dictionnaire à partir du fichier pdb qui contient les coordonnées de chaque atome
+        en clé et son atome en valeur
+    """
+    print("isok")
+    pdb = open(filename, "r")
+
+    #déclaration du dictionnaire qui comportera toutes les informations
+    res_coords = {}
+    print("isok")
+
+    # Itérer sur les lignes dans pdb
+    for line in pdb:
+        print(line)
+        #  Vérifier si la ligne commence par "ATOM"
+        if line.startswith('ATOM'):
+            atom_name = line[12:16].strip()
+            residueX = line[30:38].strip()
+            residueY = line[38:46].strip()
+            residueZ = line[46:54].strip()
+
+            res_coords[(float(residueX),float(residueY),float(residueZ))] = atom_name
+
+    return res_coords
 
 
-def getPdbList():
+
+def getPdbList(filename):
     """transforme le fichier pdb en une liste contenant la position de tous les
        atomes 'CA'
     """
 
-    pdb = open("glut1.pdb", "r")
+    pdb = open(filename, "r")
 
     # stocker x,y,z des résidues extraites
-    res_coords = [] 
+    res_coords = []
 
     """ charged_res = ["ARG", "HIS", "LYS", "ASP", "GLU"] """
 
@@ -25,7 +50,7 @@ def getPdbList():
             x = line[30:38].strip()
             y = line[38:46].strip()
             z = line[46:54].strip()
-        
+
             for i in atom_id :
                 if atom_name == 'CA' :
                     #res_coords.append([atom_id x, y, z])
@@ -33,12 +58,17 @@ def getPdbList():
     return res_coords
 
 
-def getPdbDict():
+
+def getPdbDict(filename):
     """transforme le fichier pdb en un dictionnaire contenant une liste de tous les atomes
        pour chaque coordonnée de carbone 'CA'
+       => permet de récupérer toutes les chaînes d'atomes commençant par 'CA' et se terminant avant
+       le 'CA' suivant.
+
+       PAS UTILE POUR L'INSTANT
     """
 
-    pdb = open("glut1.pdb", "r")
+    pdb = open(filename, "r")
 
     """ On stocke les résidus dans un dictionnaire de la manière suivante:
         les clés sont un tuple de 3 éléments (x,y,z) qui représentent les coordonnées du début du résidut
@@ -80,7 +110,7 @@ def getPdbDict():
                 residueY = line[38:46].strip()
                 residueZ = line[46:54].strip()
                 res_coords[(float(residueX),float(residueY),float(residueZ))] = [atom_name]
-    
+
     return res_coords
 
 
