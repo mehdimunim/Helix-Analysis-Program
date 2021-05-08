@@ -34,7 +34,7 @@ def getDifferentsAtoms(atomsCoords):
 def centreGravite(filename):
     """Calcule le centre de gravité d'un fichier pdb à partir de getPdbDict
     """
-    #On créer un dictionnaire pour relier un atome avec sa masse:
+    #On crée un dictionnaire pour relier un atome avec sa masse:
     atomsPositions = getAtomsPositions(filename)
 
     # ATTENTION: les masses atomiques de O1- et N1+ ne sont peut être pas les bonnes
