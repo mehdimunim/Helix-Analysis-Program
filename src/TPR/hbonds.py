@@ -28,7 +28,7 @@ def find_hbonds(backbone):
     nitrogen = backbone["nitrogen"]
     hydrogen = backbone["hydrogen"]
     res_number_list = backbone["res_number_list"]
-    nresidue = len(res_number_list)
+    nresidue = len(alpha_carbon)
 
     # Energy threshold to be considered as a hydrogen bond
     threshold = -0.5
@@ -59,25 +59,24 @@ def find_hbonds(backbone):
 
         for j in range(i + 3, nresidue):
             # Second criterium: residue-distance below limit
-            distance = r(backbone["oxygen"][i],
-                         backbone["nitrogen"][j])
+            distance = r(oxygen[i], nitrogen[j])
             if distance < limit_distance:
 
                 # Bond energy in direction i -> j
 
-                eijON = 1 / r(backbone["oxygen"][i], backbone["nitrogen"][j])
-                eijCH = 1 / r(backbone["carbon"][i], backbone["hydrogen"][j])
-                eijOH = 1 / r(backbone["oxygen"][i], backbone["hydrogen"][j])
-                eijCN = 1 / r(backbone["carbon"][i], backbone["nitrogen"][j])
+                eijON = 1 / r(oxygen[i], nitrogen[j])
+                eijCH = 1 / r(carbon[i], hydrogen[j])
+                eijOH = 1 / r(oxygen[i], hydrogen[j])
+                eijCN = 1 / r(carbon[i], nitrogen[j])
 
                 eij = (q1 * q2 * f) * (eijON + eijCH - eijOH - eijCN)
 
                 # Bond energy in the opposite direction j -> i
 
-                ejiON = 1 / r(backbone["oxygen"][j], backbone["nitrogen"][i])
-                ejiCH = 1 / r(backbone["carbon"][j], backbone["hydrogen"][i])
-                ejiOH = 1 / r(backbone["oxygen"][j], backbone["hydrogen"][i])
-                ejiCN = 1 / r(backbone["carbon"][j], backbone["nitrogen"][i])
+                ejiON = 1 / r(oxygen[j], nitrogen[i])
+                ejiCH = 1 / r(carbon[j], hydrogen[i])
+                ejiOH = 1 / r(oxygen[j], hydrogen[i])
+                ejiCN = 1 / r(carbon[j], nitrogen[i])
 
                 eji = (q1 * q2 * f) * (ejiON + ejiCH - ejiOH - ejiCN)
 

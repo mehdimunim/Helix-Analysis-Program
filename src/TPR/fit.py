@@ -1,6 +1,9 @@
 
 def fit(phi):
     """
+    DEPRECATED AND WORKING FOR SMALL NUMBER OF SAMPLES
+    --
+
     Fit theta such as:
 
     phi_i = theta * i + phi_0 (E)
@@ -42,6 +45,8 @@ def fit(phi):
         b1 += phi*i
         b2 += phi
 
+    print((b1))
+    print((b2))
     theta = (a22*b1 - a12 * b2)/(a22*a11 - a12*a21)
 
     return theta
@@ -50,6 +55,7 @@ def fit(phi):
 def test_fit():
     import math
     phi = [0, 1, 2, 3, 4, 5]
+    # should be 1
     slope = fit(phi)
     print(slope)
 
@@ -58,5 +64,12 @@ def test_fit():
     # should be -1
     print(slope)
 
+    # Counter-examples
+    phi = [2.9045003839409125, 3.9638782375957637,
+           6.855200868214659]
+    slope = fit(phi)
+    # should be positive
+    print(slope)
 
-# test_fit_angles()
+
+# test_fit()

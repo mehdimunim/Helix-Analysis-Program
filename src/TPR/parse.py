@@ -8,7 +8,7 @@ def parse_structure(filename):
     to get the CA, C, O, N and H from the backbone chain
     Returns: the corresponding coordinates for each residue
     ---
-    NOTE: Supress first and last residues that are electrically charged
+    NOTE: Supress first and last residues as they are electrically charged
     """
     alpha_carbons = []
     simple_carbons = []
@@ -48,7 +48,7 @@ def parse_structure(filename):
                     elif atom_name == "N":
                         nitrogens.append(atom_coordinates)
 
-                    elif atom_name == "HN":
+                    elif atom_name == "HN" or atom_name == "H":
                         hydrogens.append(atom_coordinates)
 
     # removing first residue carbons, alpha-carbons and nitrogens
@@ -81,10 +81,12 @@ def parse_structure(filename):
 
 def test_parse():
     backbone = parse_structure("glut1.pdb")
-    print("#carbons: ", len(backbone["carbon"]))
+    print("#a_carbon: ", len(backbone["alpha_carbon"]))
+    print("#carbon:   ", len(backbone["carbon"]))
     print("#hydrogen: ", len(backbone["hydrogen"]))
-    print("#res: ", len(backbone["res_number_list"]))
-    print(backbone["res_number_list"])
+    print("#nitrogen: ", len(backbone["nitrogen"]))
+    print("#nitrogen: ", len(backbone["oxygen"]))
+    print("#res:      ", len(backbone["res_number_list"]))
 
 
-test_parse()
+#  test_parse()

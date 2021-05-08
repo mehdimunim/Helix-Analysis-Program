@@ -6,6 +6,7 @@ from normal import normal
 from angle import angle
 from fit import fit
 import math
+import numpy as np
 
 
 def tpr(alpha_carbons, axis_direction, axis_center):
@@ -46,18 +47,19 @@ def tpr(alpha_carbons, axis_direction, axis_center):
         # angle between i-1 and i
         angle_between = angle(vec_before, vec_after)
 
-        if (angle_between < 0):
-            print("ANGLE :", angle_between)
-
         # angle between first residue and i
         phi_i += angle_between
+        print(phi_i)
 
         phi.append(phi_i)
 
     # Second step
     # Find turn angle per residue with linear regression
+    # debug
     print("AVERAGE : {} ".format(
         phi[-1]*180/(math.pi*(len(alpha_carbons) - 1))))
-    theta = fit(phi)
+    
+    
+    _, theta = np.polynomial.polynomial.Polynomial.fit([i for i in range(len(phi)], phi)
 
     return theta
