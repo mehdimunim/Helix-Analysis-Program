@@ -16,7 +16,8 @@ def test_print(dssp):
 
 
 def test():
-    dssp = DSSP("glut1.pdb")
+    backbone = parse_structure("glut1.pdb")
+    dssp = DSSP(backbone)
     test_print(dssp)
     #print("\n *********** GET CAS TEST *********** \n")
     # test_get_ca(dssp)
@@ -24,4 +25,4 @@ def test():
     test_get_helices(dssp)
 
 
-# test()
+test()

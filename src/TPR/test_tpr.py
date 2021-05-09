@@ -11,7 +11,8 @@ def test_tpr():
     for helix in list_helices:
         orig, axis = principal_axis(helix)
         theta = tpr(helix, axis, orig)
-        print("theta = ", theta*180/math.pi)
+        # The angle is expected to be about 100° as there are 3.6 residue by alpha-helix turn
+        print("theta = {:.1f}°".format(theta*180/math.pi))
 
 
 test_tpr()

@@ -10,9 +10,9 @@ class DSSP:
     Contains print and get methods
     """
 
-    def __init__(self, filename):
+    def __init__(self, backbone):
 
-        self.backbone = parse_structure(filename)
+        self.backbone = backbone
 
         self.hbonds = find_hbonds(self.backbone)
 

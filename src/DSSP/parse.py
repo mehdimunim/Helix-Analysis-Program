@@ -80,7 +80,10 @@ def parse_structure(filename):
 
 
 def test_parse():
-    backbone = parse_structure("glut1.pdb")
+    import os
+    os.chdir(
+        "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
+    backbone = parse_structure("TSPO_first_frame.pdb")
     print("#a_carbon: ", len(backbone["alpha_carbon"]))
     print("#carbon:   ", len(backbone["carbon"]))
     print("#hydrogen: ", len(backbone["hydrogen"]))
@@ -89,4 +92,4 @@ def test_parse():
     print("#res:      ", len(backbone["res_number_list"]))
 
 
-#  test_parse()
+test_parse()
