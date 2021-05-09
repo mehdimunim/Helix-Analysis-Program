@@ -37,6 +37,7 @@ def print_tpr(list_tpr):
 
 def test_print_tpr_real():
     import os
+    # Put your path below
     os.chdir(
         "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
     list_thetas = trajectory_tpr("TSPO_traj.pdb")
