@@ -11,7 +11,6 @@ def getAtomsPositions(filename):
 
     # Itérer sur les lignes dans pdb
     for line in pdb:
-        print(line)
         #  Vérifier si la ligne commence par "ATOM"
         if line.startswith('ATOM'):
             atom_name = line[12:16].strip()

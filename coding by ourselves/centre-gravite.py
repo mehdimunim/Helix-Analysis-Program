@@ -1,3 +1,6 @@
+from DSSP import *
+from parser import *
+
 def getAtomsPositions(filename):
     """ renvoie un dictionnaire à partir du fichier pdb qui contient les coordonnées de chaque atome
         en clé et son atome en valeur
@@ -60,12 +63,12 @@ def getDifferentsAtoms(atomsCoords):
     return atoms
 
 
-def centreGravite(filename,begin,end):
+def centreGravite(filename,helice):
     """Calcule le centre de gravité de l'hélice commençant aux coos begin et terminant aux coos end
        à partir de getAtomsPositionsBetween 
     """
     #On crée un dictionnaire pour relier un atome avec sa masse:
-    atomsPositions = getAtomsPositionsBetween(filename,begin,end)
+    atomsPositions = getAtomsPositionsBetween(filename,helice[0],helice[1])
 
     # ATTENTION: les masses atomiques de O1- et N1+ ne sont peut être pas les bonnes
     atomicMass = {'C':12.0107,'H':1.00784,'O':15.999,'O1-':15.999,'S':16,'N':14.0067,'N1+':14.0067}
@@ -83,6 +86,13 @@ def centreGravite(filename,begin,end):
 
 
 
-
-
-centreGravite("DSSP/glut1.pdb")
+# test de la fonction centreGravite:
+if __name__ == '__main__':
+    dssp = DSSP("TSPO_traj.pdb")
+    listHelices = dssp.get_ca()
+    centresGravite = []
+    #on suppose qu'une hélice c'est un tuple (begin,end)
+    for helice in listHelices:
+        centresGravite.append(centreGravite("TSPO_traj.pdb",helice))
+    print(centresGravite)
+        
