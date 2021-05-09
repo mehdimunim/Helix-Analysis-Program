@@ -14,28 +14,32 @@ def trajectory_tpr(trajectory_file):
 
     ---
     Return:
-    thetas: list of list of tprs
+    list_thetas: list of lists of tprs. 
+    Each sub-list corresponds to a frame and each item of the sub-list to a helix
 
     """
 
     backbones = parse(trajectory_file)
-    thetas = []
+    list_thetas = []
     for backbone in backbones:
         list_helices = DSSP(backbone).get_ca()
+        thetas = []
         for helix in list_helices:
             orig, axis = principal_axis(helix)
             theta = tpr(helix, axis, orig)
             thetas.append(theta)
-    return thetas
+        list_thetas.append(thetas)
+    return list_thetas
 
 
 def test_traj_tpr(filename):
     import os
+    import math
     os.chdir(
         "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
-    thetas = trajectory_tpr(filename)
-    print(thetas[0][2])
-    print(thetas[1][2])
+    list_thetas = trajectory_tpr(filename)
+    print(list_thetas[0][4]*180/math.pi)
+    print(list_thetas[1][4]*180/math.pi)
 
 
 test_traj_tpr("TSPO_traj.pdb")

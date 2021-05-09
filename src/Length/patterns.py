@@ -79,7 +79,7 @@ def assemble_minimal_helices(min_helices):
         if (n_res == 0):
             new_helix = []
         elif (n_res == 1):
-            helices[output_name].append(new_helix[0])
+            helices[output_name].append(list_min_helices[0])
             new_helix = []
         else:
             # starting new helix at position 0
