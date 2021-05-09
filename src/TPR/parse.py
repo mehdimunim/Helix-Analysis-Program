@@ -148,7 +148,8 @@ def get_frames_limits(filename):
 
 def test_parse():
     import os
-    os.chdir("../../resource")
+    os.chdir(
+        "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
 
     # Test for static molecule
     backbone = parse("glut1.pdb")
@@ -171,4 +172,4 @@ def test_parse():
     print("#res:      ", len(backbone["res_number_list"]))
 
 
-test_parse()
+# test_parse()

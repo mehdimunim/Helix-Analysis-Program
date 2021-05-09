@@ -22,6 +22,7 @@ def parse(filename):
     for limit in limits:
         backbone = parse_structure(filename, limit[0], limit[1])
         backbones.append(backbone)
+
     if (len(backbones) == 1):
         return backbones[0]
     return backbones
@@ -156,7 +157,7 @@ def test_parse():
     print("#a_carbon: ", len(backbone["alpha_carbon"]))
     print("#carbon:   ", len(backbone["carbon"]))
     print("#hydrogen: ", len(backbone["hydrogen"]))
-    print("#nitrogen: ", len(backbone["nitrogen"]))
+    print("#oxygen: ", len(backbone["nitrogen"]))
     print("#nitrogen: ", len(backbone["oxygen"]))
     print("#res:      ", len(backbone["res_number_list"]))
 
@@ -168,8 +169,8 @@ def test_parse():
     print("#carbon:   ", len(backbone["carbon"]))
     print("#hydrogen: ", len(backbone["hydrogen"]))
     print("#nitrogen: ", len(backbone["nitrogen"]))
-    print("#nitrogen: ", len(backbone["oxygen"]))
+    print("#oxygen: ", len(backbone["oxygen"]))
     print("#res:      ", len(backbone["res_number_list"]))
 
 
-test_parse()
+# test_parse()

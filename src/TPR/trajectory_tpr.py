@@ -21,8 +21,11 @@ def trajectory_tpr(trajectory_file):
 
     backbones = parse(trajectory_file)
     list_thetas = []
-    for backbone in backbones:
-        list_helices = DSSP(backbone).get_ca()
+    for i, backbone in enumerate(backbones):
+        dssp = DSSP(backbone)
+        list_helices = dssp.get_ca()
+        if i == 77 or i == 42:
+            dssp.basic_print()
         thetas = []
         for helix in list_helices:
             orig, axis = principal_axis(helix)
@@ -38,8 +41,12 @@ def test_traj_tpr(filename):
     os.chdir(
         "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
     list_thetas = trajectory_tpr(filename)
-    print(list_thetas[0][4]*180/math.pi)
-    print(list_thetas[1][4]*180/math.pi)
+    print(list_thetas[0][1]*180/math.pi)
+    print(list_thetas[1][1]*180/math.pi)
+    print(list_thetas[2][1]*180/math.pi)
+    print(list_thetas[3][1]*180/math.pi)
+    print(list_thetas[4][1]*180/math.pi)
+    print(list_thetas[5][1]*180/math.pi)
 
 
-test_traj_tpr("TSPO_traj.pdb")
+#test_traj_tpr("TSPO_traj.pdb")
