@@ -1,3 +1,0 @@
-The conclusion of our first approach is that it is hard to translate simulaid's subroutines, 
-then to link them all.
-As a consequence, we will code the algorithms from the publications.
