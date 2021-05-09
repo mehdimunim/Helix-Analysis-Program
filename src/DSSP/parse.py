@@ -132,7 +132,7 @@ def get_frames_limits(filename):
     frames = []
     with open(filename, "r") as pdbname:
         lines = pdbname.readlines()
-        start = 1
+        start = 0
         end = len(lines)
         for i, line in enumerate(lines):
             if line.startswith("MODEL"):
@@ -141,6 +141,8 @@ def get_frames_limits(filename):
             elif line.startswith("ENDMDL"):
                 end = i
                 frames.append((start, end))
+    if len(frames) == 0:
+        frames.append((start, end))
     return frames
 
 
@@ -150,7 +152,7 @@ def test_parse():
         "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
 
     # Test for static molecule
-    backbone = parse("TSPO_first_frame.pdb")
+    backbone = parse("glut1.pdb")
     print("#a_carbon: ", len(backbone["alpha_carbon"]))
     print("#carbon:   ", len(backbone["carbon"]))
     print("#hydrogen: ", len(backbone["hydrogen"]))
@@ -160,7 +162,7 @@ def test_parse():
 
     # Test for trajectory file
     backbones = parse("TSPO_traj.pdb")
-    backbone = backbones[0]
+    backbone = backbones[2]
     print(len(backbones))
     print("#a_carbon: ", len(backbone["alpha_carbon"]))
     print("#carbon:   ", len(backbone["carbon"]))
