@@ -1,11 +1,13 @@
 from dssp import *
 from axis import *
 from tpr import *
+from parse import parse
 import math
 
 
 def test_tpr():
-    dssp = DSSP("glut1.pdb")
+    backbone = parse("glut1.pdb")
+    dssp = DSSP(backbone)
     list_helices = dssp.get_ca()
 
     for helix in list_helices:
