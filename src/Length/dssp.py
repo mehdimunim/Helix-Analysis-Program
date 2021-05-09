@@ -10,16 +10,39 @@ class DSSP:
     Contains print and get methods
     """
 
-    def __init__(self, filename):
+    def __init__(self, backbone):
 
-        self.backbone = parse_structure(filename)
+        self.backbone = backbone
 
         self.hbonds = find_hbonds(self.backbone)
 
         self.secondary_structures, self.irreg = find_patterns(self.hbonds)
 
-    def get_structures():
+    def get_structures(self):
         return self.secondary_structures
+
+    def get_helices(self):
+        """
+        Get list of start and end residus of all helices regardless of the type 
+
+        ---
+        Return:
+
+        all_helices: list of tuple (start, end)
+
+        """
+        all_helices = []
+        for n in [3, 4, 5]:
+            name = str(n) + "-helices"
+            n_helices = self.secondary_structures[name]
+            i = 1
+            while (i < len(n_helices)):
+                start = n_helices[i - 1]
+                end = n_helices[i]
+                all_helices.append((start, end))
+                i += 2
+
+        return all_helices
 
     def get_ca(self, res_number=False):
         """
