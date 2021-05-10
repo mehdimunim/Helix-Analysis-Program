@@ -23,7 +23,7 @@ class DSSP:
 
     def get_helices(self):
         """
-        Get list of start and end residus of all helices regardless of the type 
+        Get list of start and end residus of all helices regardless of the type
 
         ---
         Return:
@@ -110,3 +110,57 @@ class DSSP:
         print("\n **** Irregularities ****\n")
         for tuple in self.irreg:
             print(tuple)
+
+    def complete_print(self):
+        secondary_structures = self.secondary_structures
+
+        print("\nNumber of residues: ", len(self.backbone["alpha_carbon"]))
+        print("\nStructures: ")
+        for type in [3, 4, 5]:
+            name = str(type) + "-helices"
+            print(" \n {}\n".format(name.upper())
+            str_starts=""
+            str_ends=""
+            for pos, val in enumerate(secondary_structures[name]):
+                str_val="{:4d}".format(val)
+                if pos % 2 == 0:
+                    str_starts += str_val
+                else:
+                    str_ends += str
+                    print("starts: ", str_starts)
+                    print("ends:   ", str_e
+                    print("Number of {}: {} ".format(name, int(len(secondary_structures[name]) /
+        print("\n Irregularities:\n")
+        for tuple in self.irreg:
+            print(tuple)
+
+    def save_assignements(self):
+        secondary_structures=self.secondary_structures
+
+        file.write("Molecule: ", filename)
+        file.write("\nNumber of residues: ", len(self.backbone["alpha_carbon"])
+        file.write("\nStructures: ")
+        with open("dssp.txt", "w+") as file:
+            for type in [3, 4, 5]:
+
+                name=str(type) + "-helices"
+                file.write(" \n {}\n".format(name.upper()))
+
+                str_starts=""
+                str_ends=""
+                for pos, val in enumerate(secondary_structures[name]):
+                    str_val="{:4d}".format(val)
+                    if pos % 2 == 0:
+                        str_starts += str_val
+                    else:
+                        str_ends += str_val
+
+                file.write("starts: ", str_starts)
+                file.write("ends:   ", str_ends)
+
+                file.write("Number of {}: {} ".format(
+                    name, int(len(secondary_structures[name])/2)))
+
+            file.write("\n Irregularities:\n")
+            for tuple in self.irreg:
+                file.write(tuple)

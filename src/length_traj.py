@@ -34,10 +34,7 @@ def trajectory_length(trajectory_file):
 
 
 def test_length_traj(filename):
-    import os
     import math
-    os.chdir(
-        "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
     list_lengths = trajectory_length(filename)
     print(list_lengths[0][1])
     print(list_lengths[1][1])

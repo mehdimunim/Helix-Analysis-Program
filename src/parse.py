@@ -3,7 +3,7 @@
 #
 
 
-def parse(filename):
+def parse(filename, getTraj=False):
     """
     Parse a pdb file to get all backbone atoms
 
@@ -22,9 +22,14 @@ def parse(filename):
     for limit in limits:
         backbone = parse_structure(filename, limit[0], limit[1])
         backbones.append(backbone)
-    if (len(backbones) == 1):
-        return backbones[0]
-    return backbones
+    if getTraj:
+        if (len(backbones) == 1):
+            return backbones[0], False
+        return backbones, True
+    else:
+        if (len(backbones) == 1):
+            return backbones[0]
+        return backbones
 
 
 def parse_structure(filename, start, end):
@@ -147,10 +152,6 @@ def get_frames_limits(filename):
 
 
 def test_parse():
-    import os
-    os.chdir(
-        "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
-
     # Test for static molecule
     backbone = parse("glut1.pdb")
     print("#a_carbon: ", len(backbone["alpha_carbon"]))

@@ -26,7 +26,6 @@ import matplotlib.pyplot as plt
 from cogent3.maths.stats.special import fix_rounding_error
 
 
-
 def read_pdb_xyz(pdb_name):
     """
     Fonction qui retourne les coordonnées atomiques des atomes C-alpha à partir d'un fichier .pdb 
@@ -57,30 +56,27 @@ def check_argument(arguments):
     else:
         message = """
         ERROR: missing pdb filename as argument
-        usage: %s file.pdb""" %(arguments[0])
+        usage: %s file.pdb""" % (arguments[0])
         sys.exit(message)
     if not os.path.exists(file_name):
-        sys.exit("ERROR: file %s does not seem to exist" %(file_name))
+        sys.exit("ERROR: file %s does not seem to exist" % (file_name))
 
     return file_name
 
 
-def scalar(v1,v2):
+def scalar(v1, v2):
     return sum(v1*v2)
 
 
-if __name__ == '__main__':
-    
-    pdb_name = check_argument(sys.argv)
+def inertia_axes(backbone):
 
-    xyz = read_pdb_xyz(pdb_name)
-    u = mda.Universe(pdb_name) 
-
+    xyz = backbone["alpha_carbon"]
+    u = mda.Universe(pdb_name)
 
     Rgyr = []
-    for ts in u.trajectory: 
+    for ts in u.trajectory:
         print(ts)
-        #Création d'un tableau de coordonnées
+        # Création d'un tableau de coordonnées
         coord = numpy.array(xyz, float)
 
         # Calcul les coordonnées du centre géométrique
@@ -90,17 +86,16 @@ if __name__ == '__main__':
         # Création de la matrice d'inertie et extraction des valeurs et vecteurs propres
         inertia = numpy.dot(coord.transpose(), coord)
         e_values, e_vectors = numpy.linalg.eig(inertia)
-    
-        # Ordonner les valeurs propres 
+
+        # Ordonner les valeurs propres
         order = numpy.argsort(e_values)
 
-        #axes1 est l'axe principal avec la plus grande valeur propre (val1)
-        #axes2 est l'axe principal avec la deuxième plus grande valeur propre (val2).
+        # axes1 est l'axe principal avec la plus grande valeur propre (val1)
+        # axes2 est l'axe principal avec la deuxième plus grande valeur propre (val2).
         val3, val2, val1 = e_values[order]
         axes3, axes2, axes1 = e_vectors[:, order].transpose()
 
-
-        #Calcul l'angle entre les l'axe1 et l'axe2
+        # Calcul l'angle entre les l'axe1 et l'axe2
         """calcule l'angle entre deux vecteurs v1 et v2 qui sont des objets numpy.array.
         renvoie un flottant contenant l'angle en radians à convertir en degrée.
         """
@@ -109,10 +104,9 @@ if __name__ == '__main__':
         dot_product = numpy.dot(unit_vector_1, unit_vector_2)
         angle = numpy.arccos(dot_product)
 
-        
         Rgyr.append((u.trajectory.time, math.degrees(angle)))
-      
-    #Affichage :
+
+    # Affichage :
 
         """   
         print("\n Axe d'inertie 1 : ")
@@ -126,14 +120,11 @@ if __name__ == '__main__':
 
         print("\n Angle entre les deux axes (en degré): " , math.degrees(angle) )
         """
-        
+
     Rgyr = numpy.array(Rgyr)
     ax = plt.subplot(111)
-    ax.plot(Rgyr[:,0], Rgyr[:,1], 'r--', lw=2, label=r"$R_G$")
+    ax.plot(Rgyr[:, 0], Rgyr[:, 1], 'r--', lw=2, label=r"$R_G$")
     ax.set_xlabel("time (ps)")
     ax.set_ylabel(r"Angle entre les deux axes(en degré)")
     ax.figure.savefig("angle_deux_axes.pdf")
     plt.draw()
-
-    
-   

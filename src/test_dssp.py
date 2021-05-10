@@ -25,4 +25,4 @@ def test():
     test_get_helices(dssp)
 
 
-test()
+#test()

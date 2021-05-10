@@ -26,9 +26,6 @@ def test_print_length_mock():
 
 
 def test_print_length_real(filename):
-    import os
-    os.chdir(
-        "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
     list = trajectory_length("TSPO_traj.pdb")
     list_lengths = [list[i][1] for i in range(len(list))]
     print_length(list_lengths)
