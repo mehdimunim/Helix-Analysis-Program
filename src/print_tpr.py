@@ -31,7 +31,13 @@ def print_tpr(list_tpr):
 
     ax.grid(True)
 
+<<<<<<< Updated upstream
     ax.set_title("Turn angle per residue", va='bottom')
+=======
+    plt.set_cmap("gist_rainbow")
+    ax.set_title("Turn angle per residue for TSPO's second helix",
+                 fontsize=12, va='bottom')
+>>>>>>> Stashed changes
     plt.show()
 
 
@@ -40,7 +46,7 @@ def test_print_tpr_real():
     os.chdir(
         "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
     list_thetas = trajectory_tpr("TSPO_traj.pdb")
-    list_tpr = [list_thetas[i][1] for i in range(len(list_thetas))]
+    list_tpr = [list_thetas[i][2] for i in range(len(list_thetas))]
 
     print_tpr(list_tpr)
 

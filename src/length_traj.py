@@ -2,6 +2,7 @@ from parse import parse
 from length import length as get_length
 from dssp import *
 from axis import principal_axis
+from parse import test_parse
 
 
 def trajectory_length(trajectory_file):
@@ -37,8 +38,13 @@ def test_length_traj(filename):
     import os
     import math
     os.chdir(
+<<<<<<< Updated upstream
         "C:\\Users\\Mehdi\\Documents\\GitHub\\Interdisciplinary-Project\\resource")
+=======
+        "C:\\Users\\hassn\\Documents\\A 2A\\Github\\src")
+>>>>>>> Stashed changes
     list_lengths = trajectory_length(filename)
+    print("Helices length :")
     print(list_lengths[0][1])
     print(list_lengths[1][1])
     print(list_lengths[2][1])
@@ -52,5 +58,4 @@ def test_length_traj(filename):
     print(list_lengths[10][1])
     print(list_lengths[11][1])
 
-
-# test_length_traj("TSPO_traj.pdb")
+test_length_traj("TSPO_traj.pdb")

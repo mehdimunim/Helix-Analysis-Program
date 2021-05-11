@@ -1,4 +1,5 @@
 from dssp import *
+from parse import parse
 
 
 def test_get_ca(dssp):
@@ -16,13 +17,13 @@ def test_print(dssp):
 
 
 def test():
-    backbone = parse_structure("glut1.pdb")
+    backbone = parse("TSPO_traj.pdb")
     dssp = DSSP(backbone)
     test_print(dssp)
     #print("\n *********** GET CAS TEST *********** \n")
     # test_get_ca(dssp)
-    print("\n *********** GET HELICES TEST *********** \n")
-    test_get_helices(dssp)
+    #print("\n *********** GET HELICES TEST *********** \n")
+    # test_get_helices(dssp)
 
 
 test()
