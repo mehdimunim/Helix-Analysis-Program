@@ -5,8 +5,10 @@ from dssp import *
 from print_tpr import print_tpr
 from length_traj import *
 from trajectory import inertia_axes
+from trajectory import check_argument
 from print_length import print_length
 from massCenter import COM
+
 
 def main():
     """
@@ -19,10 +21,12 @@ def main():
     filename = sys.argv[1]
 
     print("Check arguments...")
-    check_argument(arguments)
+    check_argument(sys.argv)
 
     print("Parsing file...")
     backbones, isTraj = parse(filename, True)
+
+    dssp = DSSP(backbones)
 
     print("Saving helix assignements...")
     dssp.save_assignements()

@@ -1,3 +1,9 @@
 .tmp
 settings.json
 *.pdb
+.vscode
+__pycache__
+*.pyc 
+build
+dist
+_build

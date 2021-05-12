@@ -52,7 +52,7 @@ def fit_simulaid(phi):
     return theta
 
 
-def test_fit():
+def test_fit_simulaid():
     import math
     phi = [0, 1, 2, 3, 4, 5]
     # should be 1
@@ -72,4 +72,4 @@ def test_fit():
     print(slope)
 
 
-# test_fit()
+# test_fit_simulaid()

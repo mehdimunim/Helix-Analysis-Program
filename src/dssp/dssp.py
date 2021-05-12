@@ -1,6 +1,6 @@
-from parse import parse_structure
-from hbonds import find_hbonds
-from patterns import find_patterns
+from .. import parser
+from . import hbonds
+from . import patterns
 
 
 class DSSP:
@@ -118,49 +118,51 @@ class DSSP:
         print("\nStructures: ")
         for type in [3, 4, 5]:
             name = str(type) + "-helices"
-            print(" \n {}\n".format(name.upper())
-            str_starts=""
-            str_ends=""
+            print(" \n {}\n".format(name.upper()))
+            str_starts = ""
+            str_ends = ""
             for pos, val in enumerate(secondary_structures[name]):
-                str_val="{:4d}".format(val)
+                str_val = "{:4d}".format(val)
                 if pos % 2 == 0:
                     str_starts += str_val
                 else:
                     str_ends += str
                     print("starts: ", str_starts)
-                    print("ends:   ", str_e
-                    print("Number of {}: {} ".format(name, int(len(secondary_structures[name]) /
+                    print("ends:   ", str_ends)
+                    print("Number of {}: {} ".format(
+                        name, int(len(secondary_structures[name]))))
         print("\n Irregularities:\n")
         for tuple in self.irreg:
             print(tuple)
 
-    def save_assignements(self):
-        secondary_structures=self.secondary_structures
+    def save_assignements(self, filename):
+        secondary_structures = self.secondary_structures
+        with open(filename, "w+") as file:
+            file.write("Molecule: ", filename)
+            file.write("\nNumber of residues: ", len(
+                self.backbone["alpha_carbon"]))
+            file.write("\nStructures: ")
+            with open("dssp.txt", "w+") as file:
+                for type in [3, 4, 5]:
 
-        file.write("Molecule: ", filename)
-        file.write("\nNumber of residues: ", len(self.backbone["alpha_carbon"])
-        file.write("\nStructures: ")
-        with open("dssp.txt", "w+") as file:
-            for type in [3, 4, 5]:
+                    name = str(type) + "-helices"
+                    file.write(" \n {}\n".format(name.upper()))
 
-                name=str(type) + "-helices"
-                file.write(" \n {}\n".format(name.upper()))
+                    str_starts = ""
+                    str_ends = ""
+                    for pos, val in enumerate(secondary_structures[name]):
+                        str_val = "{:4d}".format(val)
+                        if pos % 2 == 0:
+                            str_starts += str_val
+                        else:
+                            str_ends += str_val
 
-                str_starts=""
-                str_ends=""
-                for pos, val in enumerate(secondary_structures[name]):
-                    str_val="{:4d}".format(val)
-                    if pos % 2 == 0:
-                        str_starts += str_val
-                    else:
-                        str_ends += str_val
+                    file.write("starts: ", str_starts)
+                    file.write("ends:   ", str_ends)
 
-                file.write("starts: ", str_starts)
-                file.write("ends:   ", str_ends)
+                    file.write("Number of {}: {} ".format(
+                        name, int(len(secondary_structures[name])/2)))
 
-                file.write("Number of {}: {} ".format(
-                    name, int(len(secondary_structures[name])/2)))
-
-            file.write("\n Irregularities:\n")
-            for tuple in self.irreg:
-                file.write(tuple)
+                file.write("\n Irregularities:\n")
+                for tuple in self.irreg:
+                    file.write(tuple)

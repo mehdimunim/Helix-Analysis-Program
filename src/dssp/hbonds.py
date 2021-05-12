@@ -2,9 +2,6 @@
 # Finds the H-bonds
 #
 
-from distance import distance as r
-
-
 def adapt_hbond(hbond, res_list):
     """
     Transforms hbond to a list of tuple (#residue, neighbor)
@@ -92,15 +89,3 @@ def find_hbonds(backbone):
                     hbonds[j] = i
 
     return adapt_hbond(hbonds, res_number_list)
-
-
-def test_hbonds():
-    from parse import parse_structure
-    backbone = parse_structure("glut1.pdb")
-
-    hbonds = find_hbonds(backbone)
-    print("#hbond", len(hbonds))
-    print("example of hbond: ", hbonds[0])
-
-
-# test_hbonds()
