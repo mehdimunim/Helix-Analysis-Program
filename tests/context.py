@@ -6,3 +6,4 @@ from src import dssp
 from src import common
 from src import parser
 from src import axis
+from src import tpr

@@ -1,10 +1,8 @@
-from context import dssp as dssp_mod
-from context import parser
+from context import tpr
 
 
 def test_length_traj(filename):
-    import math
-    list_lengths = trajectory_length(filename)
+    list_lengths = tpr.trajectory_length(filename)
     print(list_lengths[0][1])
     print(list_lengths[1][1])
     print(list_lengths[2][1])
@@ -19,4 +17,4 @@ def test_length_traj(filename):
     print(list_lengths[11][1])
 
 
-# test_length_traj("TSPO_traj.pdb")
+test_length_traj("data/TSPO_traj.pdb")

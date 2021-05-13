@@ -1,6 +1,9 @@
+from context import tpr
+import math
+
+
 def test_traj_tpr(filename):
-    import math
-    list_thetas = trajectory_tpr(filename)
+    list_thetas = tpr.trajectory_tpr(filename)
     print(list_thetas[0][1]*180/math.pi)
     print(list_thetas[1][1]*180/math.pi)
     print(list_thetas[2][1]*180/math.pi)
@@ -9,4 +12,4 @@ def test_traj_tpr(filename):
     print(list_thetas[5][1]*180/math.pi)
 
 
-# test_traj_tpr("TSPO_traj.pdb")
+test_traj_tpr("data/TSPO_traj.pdb")
