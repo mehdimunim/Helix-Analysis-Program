@@ -2,11 +2,9 @@
 # Turn per residue
 #
 
-from normal import normal
-from angle import angle
-from fit import fit
-import math
-import numpy as np
+from ..common import normal
+from ..common import angle
+from .fit import fit
 
 
 def tpr(alpha_carbons, axis_direction, axis_center):

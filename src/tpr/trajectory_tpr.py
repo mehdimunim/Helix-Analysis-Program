@@ -1,7 +1,7 @@
-from parse import parse
-from tpr import tpr
-from dssp import *
-from axis import principal_axis
+from ..parser import parse
+from .tpr import tpr
+from ..dssp import dssp as dssp_mod
+from ..axis import principal_axis
 
 
 def trajectory_tpr(trajectory_file):
@@ -22,9 +22,9 @@ def trajectory_tpr(trajectory_file):
     backbones = parse(trajectory_file)
     list_thetas = []
     for i, backbone in enumerate(backbones):
-        dssp = DSSP(backbone)
+        dssp = dssp_mod.DSSP(backbone)
         list_helices = dssp.get_ca()
-        ithetas = []
+        thetas = []
         for helix in list_helices:
             orig, axis = principal_axis(helix)
             theta = tpr(helix, axis, orig)

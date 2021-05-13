@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from trajectory_tpr import trajectory_tpr
+from .trajectory_tpr import trajectory_tpr
 
 
 def print_tpr(filename):
