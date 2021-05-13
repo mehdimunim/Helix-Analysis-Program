@@ -1,13 +1,12 @@
 import sys
 import os
-from parse import parse
-from dssp import *
-from print_tpr import print_tpr
-from length_traj import *
-from trajectory import inertia_axes
-from trajectory import check_argument
-from print_length import print_length
-from massCenter import COM
+import axis
+import com
+import common
+import dssp as dssp_mod
+import length
+import parser
+import tpr
 
 
 def main():
@@ -21,32 +20,32 @@ def main():
     filename = sys.argv[1]
 
     print("Check arguments...")
-    check_argument(sys.argv)
+    common.check_argument(sys.argv)
 
     print("Parsing file...")
-    backbones, isTraj = parse(filename, True)
+    backbones, isTraj = parser.parse(filename, True)
 
-    dssp = DSSP(backbones)
+    dssp = dssp_mod.DSSP(backbones)
 
     print("Saving helix assignements...")
     dssp.save_assignements()
 
     print("Turn angle per residue...")
-    print_tpr(filename)
+    tpr.print_tpr(filename)
 
     if (isTrajectory):
         print("Length...")
-        length_traj(filename)
+        length.length_traj(filename)
 
     else:
         print("DSSP...")
         dssp.complete_print(filename)
         print("Inertia axes....")
-        inertia_axes(backbones)
+        axis.inertia_axes(backbones)
         print("Length...")
-        print_length(backbones)
+        length.print_length(backbones)
         print("Center of mass...")
-        COM(backbones)
+        com.COM(backbones)
 
     print("Done")
 

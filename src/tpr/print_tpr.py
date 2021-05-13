@@ -18,6 +18,7 @@ def print_tpr(filename):
 def print_helix_tpr(list_tpr, nhelix):
     """
     Print turn angle per residue of the given frame as a dial plot
+    Save the result to PNG file
 
     ---
     Parameters:
@@ -45,6 +46,6 @@ def print_helix_tpr(list_tpr, nhelix):
 
     ax.set_title("Turn angle per residue " + str(nhelix), va='bottom')
     plt.show()
-    plt.savefig("Turn angle per residue " + str(nhelix) + ".png")
+    plt.savefig("output/Turn angle per residue " + str(nhelix) + ".png")
 
 
