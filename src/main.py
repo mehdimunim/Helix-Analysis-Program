@@ -1,34 +1,36 @@
 import sys
 import os
-import axis
-import com
-import common
-import dssp as dssp_mod
-import length
-import parser
-import tpr
 
 
 def main():
     """
     Helix analysis program function to be launched directly
-
-
     """
+    sys.path.insert(0, os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..')))
+    from src import length
+    from src import tpr
+    from src import axis
+    from src import parser
+    from src import common
+    from src import dssp as dssp_mod
+
     print("Helix Analysis Program")
     print("Greetings!")
-    filename = sys.argv[1]
+    # filename = sys.argv[1]
+    # test
+    #filename = "data/glut1.pdb"
 
-    print("Check arguments...")
-    common.check_argument(sys.argv)
+    #print("Check arguments...")
+    #common.check_argument(sys.argv)
 
     print("Parsing file...")
-    backbones, isTraj = parser.parse(filename, True)
+    backbones, isTrajectory = parser.parse(filename, True)
 
     dssp = dssp_mod.DSSP(backbones)
 
     print("Saving helix assignements...")
-    dssp.save_assignements()
+    dssp.save_assignements(filename)
 
     print("Turn angle per residue...")
     tpr.print_tpr(filename)
