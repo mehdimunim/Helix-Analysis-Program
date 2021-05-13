@@ -1,6 +1,6 @@
 from numpy.linalg import norm
-from normal import *
-from distance import *
+from ..common import normal
+from ..common import distance
 
 
 def length(helix, axis, orig):

@@ -1,7 +1,7 @@
-from parse import parse
-from length import length as get_length
-from dssp import *
-from axis import principal_axis
+from .. import parser
+from ..length import length as get_length
+from .. import dssp as dssp_mod
+from ..axis import principal_axis
 
 
 def trajectory_length(trajectory_file):
@@ -19,10 +19,10 @@ def trajectory_length(trajectory_file):
 
     """
 
-    backbones = parse(trajectory_file)
+    backbones = parser.parse(trajectory_file)
     list_lengths = []
     for i, backbone in enumerate(backbones):
-        dssp = DSSP(backbone)
+        dssp = dssp_mod.DSSP(backbone)
         list_helices = dssp.get_ca()
         lengths = []
         for helix in list_helices:

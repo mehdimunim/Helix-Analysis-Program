@@ -1,4 +1,4 @@
-from length_traj import trajectory_length
+from .length_traj import trajectory_length
 import matplotlib.pyplot as plt
 import numpy as np
 

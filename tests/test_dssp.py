@@ -1,8 +1,5 @@
-from context import dssp
-from context import common
-import parser
-import parser.parse_structure
-import parse_structure
+from context import dssp as dssp_mod
+from context import parser
 
 
 def test_get_ca(dssp):
@@ -20,8 +17,8 @@ def test_print(dssp):
 
 
 def test():
-    backbone = parse_structure("glut1.pdb")
-    dssp = dssp.DSSP(backbone)
+    backbone = parser.parse("data/glut1.pdb")
+    dssp = dssp_mod.DSSP(backbone)
     test_print(dssp)
     #print("\n *********** GET CAS TEST *********** \n")
     # test_get_ca(dssp)

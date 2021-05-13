@@ -2,8 +2,8 @@
 # Gets the backbone atoms
 #
 
-from . import frame_limits
-from . import parse_structure
+from .frame_limits import get_frames_limits
+from .parse_structure import parse_structure
 
 
 def parse(filename, getTraj=False):

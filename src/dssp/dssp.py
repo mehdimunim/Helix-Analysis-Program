@@ -1,6 +1,5 @@
-from .. import parser
-from . import hbonds
-from . import patterns
+from .hbonds import find_hbonds
+from .patterns import find_patterns
 
 
 class DSSP:

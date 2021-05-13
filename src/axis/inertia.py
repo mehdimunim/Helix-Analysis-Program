@@ -22,6 +22,7 @@ import numpy
 import math
 import MDAnalysis as mda
 import matplotlib.pyplot as plt
+from ..parser import parse
 
 from cogent3.maths.stats.special import fix_rounding_error
 
@@ -68,8 +69,10 @@ def scalar(v1, v2):
     return sum(v1*v2)
 
 
-def inertia_axes(backbone):
+def inertia_axes(pdb_name):
 
+    backbone = parse(pdb_name)
+    
     xyz = backbone["alpha_carbon"]
     u = mda.Universe(pdb_name)
 

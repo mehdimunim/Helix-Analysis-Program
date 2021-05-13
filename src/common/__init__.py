@@ -1,3 +1,3 @@
-from . import angle
-from . import distance
-from . import normal
+from .angle import angle
+from .distance import distance
+from .normal import normal

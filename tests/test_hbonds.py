@@ -1,10 +1,12 @@
-def test_hbonds():
-    from parse import parse_structure
-    backbone = parse_structure("glut1.pdb")
+from context import dssp as dssp_mod
+from context import parser
 
-    hbonds = find_hbonds(backbone)
+def test_hbonds():
+    backbone = parser.parse("data/glut1.pdb")
+
+    hbonds = dssp_mod.find_hbonds(backbone)
     print("#hbond", len(hbonds))
     print("example of hbond: ", hbonds[0])
 
 
-# test_hbonds()
+test_hbonds()

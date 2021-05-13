@@ -2,6 +2,8 @@
 # Finds the H-bonds
 #
 
+from ..common import distance as r      
+
 def adapt_hbond(hbond, res_list):
     """
     Transforms hbond to a list of tuple (#residue, neighbor)

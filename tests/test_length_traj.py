@@ -1,3 +1,7 @@
+from context import dssp as dssp_mod
+from context import parser
+
+
 def test_length_traj(filename):
     import math
     list_lengths = trajectory_length(filename)
