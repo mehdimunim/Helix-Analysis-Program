@@ -1,0 +1,8 @@
+ 
+ 3-HELICES
+starts: ends:   Number of 3-helices: 0  
+ 4-HELICES
+starts: ends:   Number of 4-helices: 0  
+ 5-HELICES
+starts: ends:   Number of 5-helices: 0 
+ Irregularities:

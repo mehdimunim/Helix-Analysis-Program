@@ -19,7 +19,7 @@ def trajectory_tpr(trajectory_file):
 
     """
 
-    backbones = parse(trajectory_file)
+    backbones = parse(trajectory_file, False)
     list_thetas = []
     for i, backbone in enumerate(backbones):
         dssp = dssp_mod.DSSP(backbone)

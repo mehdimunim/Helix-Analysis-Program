@@ -11,41 +11,44 @@ def main():
     from src import length
     from src import tpr
     from src import axis
+    from src import com
     from src import parser
     from src import common
     from src import dssp as dssp_mod
 
     print("Helix Analysis Program")
     print("Greetings!")
-    # filename = sys.argv[1]
-    # test
-    #filename = "data/glut1.pdb"
 
-    #print("Check arguments...")
-    #common.check_argument(sys.argv)
+    filename = sys.argv[1]
 
-    print("Parsing file...")
+    print("Check arguments...")
+    common.check_argument(sys.argv)
+
+    print("Parsing file {:s}...".format(filename))
     backbones, isTrajectory = parser.parse(filename, True)
-
-    dssp = dssp_mod.DSSP(backbones)
-
-    print("Saving helix assignements...")
-    dssp.save_assignements(filename)
-
-    print("Turn angle per residue...")
-    tpr.print_tpr(filename)
 
     if (isTrajectory):
         print("Length...")
         length.length_traj(filename)
 
+        print("Turn angle per residue...")
+        tpr.print_tpr(filename)
+
     else:
+        dssp = dssp_mod.DSSP(backbones)
+
+        print("Saving helix assignements...")
+        dssp.save_assignements(filename)
+
         print("DSSP...")
         dssp.complete_print(filename)
+
         print("Inertia axes....")
         axis.inertia_axes(backbones)
+
         print("Length...")
         length.print_length(backbones)
+
         print("Center of mass...")
         com.COM(backbones)
 
