@@ -16,41 +16,36 @@ def main():
     from src import common
     from src import dssp as dssp_mod
 
-    print("Helix Analysis Program")
-    print("Greetings!")
+    print("  Helix Analysis Program\n")
+    print("  Greetings!\n")
 
     filename = sys.argv[1]
 
-    print("Check arguments...")
+    print("  Checking arguments...\n")
     common.check_argument(sys.argv)
 
-    print("Parsing file {:s}...".format(filename))
+    print("  Parsing file {:s}...\n".format(filename))
+
     backbones, isTrajectory = parser.parse(filename, True)
 
     if (isTrajectory):
-        print("Length...")
-        length.length_traj(filename)
+        print("   Length...\n")
+        length.trajectory_length(filename)
 
-        print("Turn angle per residue...")
+        print("   Inertia axes...\n")
+        axis.inertia_axes(backbones)
+
+        print("   Turn angle per residue...\n")
         tpr.print_tpr(filename)
 
     else:
         dssp = dssp_mod.DSSP(backbones)
 
-        print("Saving helix assignements...")
+        print("   Saving helix assignements...\n")
         dssp.save_assignements(filename)
 
-        print("DSSP...")
+        print("   DSSP...\n")
         dssp.complete_print(filename)
-
-        print("Inertia axes....")
-        axis.inertia_axes(backbones)
-
-        print("Length...")
-        length.print_length(backbones)
-
-        print("Center of mass...")
-        com.COM(backbones)
 
     print("Done")
 

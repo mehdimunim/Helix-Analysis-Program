@@ -114,9 +114,9 @@ class DSSP:
         """
         Print dssp output with as much information as possible
         """
-        name = filename.split("/")[1]
+        molecule_name = filename.split("/")[1][:-4]
 
-        print("Molecule: ", name)
+        print("Molecule: ", molecule_name)
         secondary_structures = self.secondary_structures
 
         print("\nNumber of residues: ", len(self.backbone["alpha_carbon"]))
@@ -131,11 +131,11 @@ class DSSP:
                 if pos % 2 == 0:
                     str_starts += str_val
                 else:
-                    str_ends += str
-                    print("starts: ", str_starts)
-                    print("ends:   ", str_ends)
-                    print("Number of {}: {} ".format(
-                        name, int(len(secondary_structures[name]))))
+                    str_ends += str_val
+            print("starts: ", str_starts)
+            print("ends:   ", str_ends)
+            print("Number of {}: {} ".format(
+                name, int(len(secondary_structures[name])/2)))
         print("\n Irregularities:\n")
         for tuple in self.irreg:
             print(tuple)
@@ -171,12 +171,13 @@ class DSSP:
                     else:
                         str_ends += str_val
 
-                file.write("starts: " + str_starts)
-                file.write("ends:   " + str_ends)
-                file.write("Number of {}: {} ".format(
+                file.write("\nstarts: {:s} \n".format(str_starts))
+                file.write("\nends:  {:s} \n".format(str_ends))
+                file.write("\n Number of {}: {}\n".format(
                     name, int(len(secondary_structures[name])/2)))
-                file.write("\n Irregularities:\n")
 
-                for tuple in self.irreg:
+            file.write("\n Irregularities:\n")
 
-                    file.write(str(tuple))
+            for tuple in self.irreg:
+
+                file.write(str(tuple))

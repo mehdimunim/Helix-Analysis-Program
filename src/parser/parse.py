@@ -27,8 +27,8 @@ def parse(filename, getTraj=False):
         backbones.append(backbone)
     if getTraj:
         if (len(backbones) == 1):
-            return backbones[0], False
-        return backbones, True
+            return (backbones[0], False)
+        return (backbones, True)
     else:
         if (len(backbones) == 1):
             return backbones[0]
