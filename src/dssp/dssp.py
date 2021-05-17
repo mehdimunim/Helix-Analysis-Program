@@ -59,7 +59,7 @@ class DSSP:
         res_num = self.backbone["res_number_list"]
         alpha_carbons = self.backbone["alpha_carbon"]
 
-        for type in [3, 4, 5]:  
+        for type in [3, 4, 5]:
             name = str(type) + "-helices"
             helices = self.secondary_structures[name]
             i = 1
