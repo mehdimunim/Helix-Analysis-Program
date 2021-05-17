@@ -57,7 +57,7 @@ $ cd ../l
 ## Flowchart
 
 A flowchart of the whole program can be found :
-https://github.com/mehdimunim/Interdisciplinary-Project/blob/main/flowcharts/flowchart%20program.png
+https://github.com/mehdimunim/Helix-Analysis-Program/blob/main/flowcharts/flowchart%20program.png
 
 ## Sources
 
@@ -72,6 +72,6 @@ Created by :
 - Romain Fourel  @Romain-Fourel  Role:  IT Support
 - Naima Oulhourchemt @noulhourchemt   Role:  IT Support for Physics
 
-Feel free to contact us !
+Feel free to contact us!
 
 
