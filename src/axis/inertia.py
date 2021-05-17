@@ -23,39 +23,90 @@ import math
 import MDAnalysis as mda
 import matplotlib.pyplot as plt
 from ..parser import parse
+from ..common import angle
 
 from cogent3.maths.stats.special import fix_rounding_error
 
 
-def read_pdb_xyz(pdb_name):
+def inertia_helix(helix):
     """
-    Fonction qui retourne les coordonnées atomiques des atomes C-alpha à partir d'un fichier .pdb 
-    sou forme de tableau de coordonnées
-        [[x1 y1 z1]
-         [x2 y2 z2]
-         [.. .. ..]
-         [xn yn zn]]
+    Calculate angles between inertia axes 1 and 2 of helix
+
+    ---
+    Parameters:
+    helix : list of a-carbons of the helix
+
+    ---
+    Return:
+    the angle between inertia axes in °
+
     """
-    xyz = []
-    with open(pdb_name, 'r') as pdb_file:
-        for line in pdb_file:
-            if line.startswith("ATOM"):
-                x = float(line[30:38].strip())
-                y = float(line[38:46].strip())
-                z = float(line[46:54].strip())
-                if line[12:16].strip() == "CA":
-                    xyz.append([x, y, z])
-    return xyz
+
+    Rgyr = []
+    # Création d'un tableau de coordonnées
+    coord = numpy.array(helix, float)
+
+    # Calcul les coordonnées du centre géométrique
+    center = numpy.mean(coord, 0)
+    coord = coord - center
+
+    # Création de la matrice d'inertie et extraction des valeurs et vecteurs propres
+    inertia = numpy.dot(coord.transpose(), coord)
+    e_values, e_vectors = numpy.linalg.eig(inertia)
+
+    # Ordonner les valeurs propres
+    order = numpy.argsort(e_values)
+
+    # axis1 est l'axe principal avec la plus grande valeur propre (val1)
+    # axis2 est l'axe principal avec la deuxième plus grande valeur propre (val2).
+    _, axis2, axis1 = e_vectors[:, order].transpose()
+
+    # Calcul l'angle entre les l'axe1 et l'axe2
+    """calcule l'angle entre deux vecteurs v1 et v2 qui sont des objets numpy.array.
+    renvoie un flottant contenant l'angle en radians à convertir en degrée.
+    """
+    angle = angle(axis1, axis2)
+    return math.degrees(angle)
 
 
-def scalar(v1, v2):
-    return sum(v1*v2)
+def inertia(list_helices, pdb_name):
+    """
+    Calculate angles between inertia axes 1 and 2 of helix
+
+    ---
+    Output:
+    Save it to output/inertia_MOLECULE
+
+    """
+    molecule_name = pdb_name.split("/")[1][:-4]
+
+    angles = []
+    for helix in list_helices:
+        angle = inertia_helix(helix)
+        angles.append(angle)
+
+    angles = numpy.array(angles)
+    ind = [i for i in range(len(list_helices))]
+
+    plt.xlabel("#Helix")
+    plt.ylabel("Angle (°)")
+    plt.title("Angle between the first two inertia axes")
+    plt.scatter(ind, angles)
+    plt.savefig("output/inertia_" + molecule_name + ".png")
 
 
-def inertia_axes(pdb_name):
+def inertia_traj(pdb_name):
+    """
+    Calculate angles between inertia axes 1 and 2
 
+    ---
+    Ouput:
+    Save file in "ouput/inertia_traj_MOLECULE.png"
+
+    """
+    molecule_name = pdb_name.split("/")[1][:-4]
     backbone = parse(pdb_name)
-    
+
     xyz = backbone["alpha_carbon"]
     u = mda.Universe(pdb_name)
 
@@ -76,41 +127,21 @@ def inertia_axes(pdb_name):
         # Ordonner les valeurs propres
         order = numpy.argsort(e_values)
 
-        # axes1 est l'axe principal avec la plus grande valeur propre (val1)
-        # axes2 est l'axe principal avec la deuxième plus grande valeur propre (val2).
-        val3, val2, val1 = e_values[order]
-        axes3, axes2, axes1 = e_vectors[:, order].transpose()
+        # axis1 est l'axe principal avec la plus grande valeur propre (val1)
+        # axis2 est l'axe principal avec la deuxième plus grande valeur propre (val2).
+        _, axis2, axis1 = e_vectors[:, order].transpose()
 
         # Calcul l'angle entre les l'axe1 et l'axe2
         """calcule l'angle entre deux vecteurs v1 et v2 qui sont des objets numpy.array.
         renvoie un flottant contenant l'angle en radians à convertir en degrée.
         """
-        unit_vector_1 = axes1 / numpy.linalg.norm(axes1)
-        unit_vector_2 = axes2 / numpy.linalg.norm(axes2)
-        dot_product = numpy.dot(unit_vector_1, unit_vector_2)
-        angle = numpy.arccos(dot_product)
+        angle = angle(axis1, axis2)
 
         Rgyr.append((u.trajectory.time, math.degrees(angle)))
-
-    # Affichage :
-
-        """   
-        print("\n Axe d'inertie 1 : ")
-        print("Coordonnées: ", axes1)
-        print("Valeur propre :", val1)
-
-        print("\n Axe d'inertie 2 :")
-        print("Coordonnées:", axes2)
-        print("Valeur propre :", val2)
-
-
-        print("\n Angle entre les deux axes (en degré): " , math.degrees(angle) )
-        """
 
     Rgyr = numpy.array(Rgyr)
     ax = plt.subplot(111)
     ax.plot(Rgyr[:, 0], Rgyr[:, 1], 'r--', lw=2, label=r"$R_G$")
     ax.set_xlabel("time (ps)")
-    ax.set_ylabel(r"Angle entre les deux axes(en degré)")
-    ax.figure.savefig("angle_deux_axes.pdf")
-    plt.draw()
+    ax.set_ylabel(r"Angle between the first two inertia axes (°)")
+    ax.figure.savefig("output/inertia_traj_" + molecule_name + ".png")

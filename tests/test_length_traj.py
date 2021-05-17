@@ -2,7 +2,7 @@ from context import length
 
 
 def test_length_traj(filename):
-    list_lengths = length.trajectory_length(filename)
+    list_lengths = length.length_list(filename)
     print(list_lengths[0][1])
     print(list_lengths[1][1])
     print(list_lengths[2][1])

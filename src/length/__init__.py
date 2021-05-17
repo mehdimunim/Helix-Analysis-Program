@@ -1,3 +1,4 @@
 from .length import length
-from .print_length import print_length
-from .length_traj import trajectory_length
+from .length import length_traj
+from .length import length_list
+from .length import length_helix

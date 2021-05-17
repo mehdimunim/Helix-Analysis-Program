@@ -8,10 +8,10 @@ def main():
     """
     sys.path.insert(0, os.path.abspath(
         os.path.join(os.path.dirname(__file__), '..')))
-    from src import length
-    from src import tpr
-    from src import axis
-    from src import com
+    from src import length as length_mod
+    from src import tpr as tpr_mod
+    from src import axis as axis_mod
+    from src import com as com_mod
     from src import parser
     from src import common
     from src import dssp as dssp_mod
@@ -30,13 +30,16 @@ def main():
 
     if (isTrajectory):
         print("   Length...\n")
-        length.trajectory_length(filename)
+        length_mod.length_traj(filename)
 
         print("   Inertia axes...\n")
-        axis.inertia_axes(backbones)
+        axis_mod.inertia_traj(filename)
 
         print("   Turn angle per residue...\n")
-        tpr.print_tpr(filename)
+        tpr_mod.tpr_traj(filename)
+
+        print("   Center of mass...\n")
+        com_mod.com_traj(filename)
 
     else:
         dssp = dssp_mod.DSSP(backbones)
@@ -46,6 +49,18 @@ def main():
 
         print("   DSSP...\n")
         dssp.complete_print(filename)
+
+        print("   Length...\n")
+        length_mod.length(backbones, filename)
+
+        print("   Inertia axes...\n")
+        axis_mod.inertia(backbones, filename)
+
+        print("   Turn angle per residue...\n")
+        tpr_mod.tpr(backbones, filename)
+
+        print("   Center of mass...\n")
+        com_mod.com(backbones, filename)
 
     print("Done")
 
