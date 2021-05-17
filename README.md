@@ -56,8 +56,8 @@ $ cd ../l
 
 ## Flowchart
 
-A flowchart of the whole program can be found :
-https://github.com/mehdimunim/Helix-Analysis-Program/blob/main/flowcharts/flowchart%20program.png
+
+![Flowchart](https://github.com/mehdimunim/Helix-Analysis-Program/blob/main/flowcharts/flowchart%20program.png)
 
 ## Sources
 
