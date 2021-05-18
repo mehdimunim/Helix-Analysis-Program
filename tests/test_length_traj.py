@@ -15,6 +15,7 @@ def test_length_traj(filename):
     print(list_lengths[9][1])
     print(list_lengths[10][1])
     print(list_lengths[11][1])
+    length.length_traj(filename)
 
 
 test_length_traj("data/TSPO_traj.pdb")

@@ -19,12 +19,10 @@ def main():
     print("  Helix Analysis Program\n")
     print("  Greetings!\n")
 
-    filename = sys.argv[1]
-
     print("  Checking arguments...\n")
     common.check_argument(sys.argv)
 
-    print("  Parsing file {:s}...\n".format(filename))
+    filename = sys.argv[1]
 
     backbones, isTrajectory = parser.parse(filename, True)
 
@@ -51,13 +49,13 @@ def main():
         dssp.complete_print(filename)
 
         print("   Length...\n")
-        length_mod.length(backbones, filename)
+        length_mod.length(dssp.get_ca(), filename)
 
         print("   Inertia axes...\n")
-        axis_mod.inertia(backbones, filename)
+        axis_mod.inertia(dssp.get_ca(), filename)
 
         print("   Turn angle per residue...\n")
-        tpr_mod.tpr(backbones, filename)
+        tpr_mod.tpr(dssp.get_ca(), filename)
 
         print("   Center of mass...\n")
         com_mod.showGraphMassCenters(filename, False)

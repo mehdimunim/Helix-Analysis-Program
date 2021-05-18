@@ -65,8 +65,8 @@ def inertia_helix(helix):
     """calcule l'angle entre deux vecteurs v1 et v2 qui sont des objets numpy.array.
     renvoie un flottant contenant l'angle en radians à convertir en degrée.
     """
-    angle = angle(axis1, axis2)
-    return math.degrees(angle)
+    angle_between = angle(axis1, axis2)
+    return math.degrees(angle_between)
 
 
 def inertia(list_helices, pdb_name):

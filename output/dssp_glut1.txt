@@ -1,0 +1,29 @@
+Molecule: glut1
+Number of residues: 438
+Structures:  
+ 3-HELICES
+
+starts:   31 190 327 
+
+ends:    34 194 330 
+
+ Number of 3-helices: 3
+ 
+ 4-HELICES
+
+starts:   11  37  59  91 118 152 185 193 220 237 268 307 332 363 389 402 432 
+
+ends:    31  52  87 111 147 174 189 203 231 253 300 328 357 381 393 429 451 
+
+ Number of 4-helices: 17
+ 
+ 5-HELICES
+
+starts:  
+
+ends:   
+
+ Number of 5-helices: 0
+
+ Irregularities:
+(283, 286)(420, 421)

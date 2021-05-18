@@ -63,10 +63,12 @@ def length(list_helices, filename):
     list_lengths = []
     for helix in list_helices:
         orig, axis = principal_axis(helix)
-        len = length(helix, axis, orig)
-        list_lengths.append(len)
+        len_ = length_helix(helix, axis, orig)
+        list_lengths.append(len_)
 
-    ind = [i for i in range(len(list_lengths))]
+    # number of helices
+    nhelix = len(list_lengths)
+    ind = [i for i in range(nhelix)]
 
     list_lengths = np.array(list_lengths)
     ind = np.array(ind)
@@ -96,7 +98,7 @@ def length_traj(filename):
         ind = [i for i in range(nframe)]
         list_lengths = np.array(list_lengths)
         ind = np.array(ind)
-        plt.scatter(ind, list_lengths)
+        plt.scatter(ind, traj)
         plt.xlabel("frame numbers")
         plt.ylabel("length (A)")
         plt.title("Lengths of helix " + str(helix))

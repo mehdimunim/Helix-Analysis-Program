@@ -61,6 +61,7 @@ def getMassCenters(backbones, atomsPositions):
 
 
 def showGraphMassCenters_traj(filename):
+    molecule_name = filename.split("/")[1][:-4]
     backbones = parse(filename)
     atomsPositions = getAtomsPositions(filename)
     res = getMassCenters(backbones, atomsPositions)
@@ -71,10 +72,11 @@ def showGraphMassCenters_traj(filename):
         axeX = [i for i in range(len(massCentersNormed))]
         plt.scatter(axeX, massCentersNormed)
 
-    plt.show()
+    plt.savefig("output/COM_" + molecule_name + ".png")
 
 
 def showGraphMassCenters_static(filename):
+    molecule_name = filename.split("/")[1][:-4]
     backbone = parse(filename)
     atomsPositions = getAtomsPositions(filename)
     res = getMassCenters([backbone], atomsPositions)
@@ -84,6 +86,8 @@ def showGraphMassCenters_static(filename):
         massCentersNormed = np.array([norm(x) for x in massCenters])
         axeX = [i for i in range(len(massCentersNormed))]
         plt.scatter(axeX, massCentersNormed)
+
+    plt.savefig("output/COM_" + molecule_name + ".png")
 
 
 def showGraphMassCenters(filename, isTrajectory):

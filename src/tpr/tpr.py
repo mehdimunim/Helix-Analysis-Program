@@ -5,7 +5,6 @@
 from ..parser import parse
 from ..axis import principal_axis
 from ..dssp import dssp as dssp_mod
-from .tpr import tpr
 import numpy as np
 import matplotlib.pyplot as plt
 from ..common import normal
@@ -13,7 +12,7 @@ from ..common import angle
 from .fit import fit
 
 
-def tpr(alpha_carbons, axis_direction, axis_center):
+def tpr_algo(alpha_carbons, axis_direction, axis_center):
     """
     Calculate the turn angle per residue
     Inspired from TRAJELIX from simulaid.
@@ -115,6 +114,7 @@ def tpr(list_helices, filename):
     """"
     Calculate tpr for helices in backbone
     """
+    plt.axes
 
     molecule_name = filename.split("/")[1][:-4]
 
@@ -122,7 +122,8 @@ def tpr(list_helices, filename):
 
     for helix in list_helices:
         orig, axis = principal_axis(helix)
-        theta = tpr(helix, axis, orig)
+        theta = tpr_algo(helix, axis, orig)
+        thetas.append(theta)
 
     r = np.arange(0, 1, 1/100)
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
@@ -161,7 +162,7 @@ def tpr_list(trajectory_file):
         thetas = []
         for helix in list_helices:
             orig, axis = principal_axis(helix)
-            theta = tpr(helix, axis, orig)
+            theta = tpr_algo(helix, axis, orig)
             thetas.append(theta)
         list_thetas.append(thetas)
     return list_thetas
