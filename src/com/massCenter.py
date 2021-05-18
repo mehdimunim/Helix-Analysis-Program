@@ -60,14 +60,10 @@ def getMassCenters(backbones, atomsPositions):
     return res
 
 
-def get_graphs(filename):
-    """
-    Print graphs for center of mass
-    """
+def showGraphMassCenters_traj(filename):
     backbones = parse(filename)
     atomsPositions = getAtomsPositions(filename)
     res = getMassCenters(backbones, atomsPositions)
-    print("res done !")
 
     # to get graphs:
     for massCenters in res:
@@ -76,3 +72,22 @@ def get_graphs(filename):
         plt.scatter(axeX, massCentersNormed)
 
     plt.show()
+
+
+def showGraphMassCenters_static(filename):
+    backbone = parse(filename)
+    atomsPositions = getAtomsPositions(filename)
+    res = getMassCenters([backbone], atomsPositions)
+
+    # to get graphs:
+    for massCenters in res:
+        massCentersNormed = np.array([norm(x) for x in massCenters])
+        axeX = [i for i in range(len(massCentersNormed))]
+        plt.scatter(axeX, massCentersNormed)
+
+
+def showGraphMassCenters(filename, isTrajectory):
+    if isTrajectory:
+        showGraphMassCenters_traj(filename)
+    else:
+        showGraphMassCenters_static(filename)

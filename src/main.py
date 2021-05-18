@@ -39,7 +39,7 @@ def main():
         tpr_mod.tpr_traj(filename)
 
         print("   Center of mass...\n")
-        com_mod.com_traj(filename)
+        com_mod.showGraphMassCenters(filename, True)
 
     else:
         dssp = dssp_mod.DSSP(backbones)
@@ -60,7 +60,7 @@ def main():
         tpr_mod.tpr(backbones, filename)
 
         print("   Center of mass...\n")
-        com_mod.com(backbones, filename)
+        com_mod.showGraphMassCenters(filename, False)
 
     print("Done")
 
