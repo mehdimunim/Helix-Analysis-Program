@@ -15,7 +15,7 @@ from .fit import fit
 
 def tpr(alpha_carbons, axis_direction, axis_center):
     """
-    Calculate the turn angle per residue;
+    Calculate the turn angle per residue
     Inspired from TRAJELIX from simulaid.
 
     Two steps:
@@ -64,18 +64,6 @@ def tpr(alpha_carbons, axis_direction, axis_center):
     return theta
 
 
-def print_tpr(filename):
-    """
-    Print turn angle per residue for all frames
-
-    """
-    list_thetas = trajectory_tpr(filename)
-    len = min([len(list) for list in list_thetas])
-    for j in range(len(list_thetas[0])):
-        list_tpr = [list_thetas[i][j] for i in range(len(list_thetas))]
-        print_tpr(list_tpr, j)
-
-
 def tpr_helix(list_tpr, nhelix):
     """
     Print turn angle per residue of the given frame as a dial plot
@@ -106,11 +94,51 @@ def tpr_helix(list_tpr, nhelix):
     ax.grid(True)
 
     ax.set_title("Turn angle per residue " + str(nhelix), va='bottom')
-    plt.show()
     plt.savefig("output/TPR_" + str(nhelix) + ".png")
 
 
-def trajectory_tpr(trajectory_file):
+def tpr_trajectory(filename):
+    """"
+    Calculate tpr variations for each helix
+    Save all dial graphs in ouput
+    """
+
+    list_tprs = tpr_list(filename)
+
+    nhelix = min([len(frame) for frame in list_tprs])
+
+    for i in range(nhelix):
+        tpr_helix(list_tprs, i)
+
+
+def tpr(list_helices, filename):
+    """"
+    Calculate tpr for helices in backbone
+    """
+
+    molecule_name = filename.split("/")[1][:-4]
+
+    thetas = []
+
+    for helix in list_helices:
+        orig, axis = principal_axis(helix)
+        theta = tpr(helix, axis, orig)
+
+    r = np.arange(0, 1, 1/100)
+    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+    ax.set_rticks([0.5, 0.75, 1])
+
+    for theta in thetas:
+        theta_to_plot = [theta for _ in r]
+        ax.plot(theta_to_plot, r)
+
+    ax.grid(True)
+
+    ax.set_title("Turn angle per residue " + molecule_name, va='bottom')
+    plt.savefig("output/TPR_" + molecule_name + ".png")
+
+
+def tpr_list(trajectory_file):
     """
     Get tpr list for each frame
 
