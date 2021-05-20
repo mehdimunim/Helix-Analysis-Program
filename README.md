@@ -46,10 +46,12 @@ Project is created with:
 
 ## Setup
 
+First put the data in the data folder.
+
 To run this project :
 
 ```
-$ cd ../l
+$ python3 src/main.py data/filename.pdb
 ...
 ```
 

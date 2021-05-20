@@ -163,4 +163,4 @@ def inertia_traj(pdb_name):
     ax.plot(Rgyr[:, 0], Rgyr[:, 1], 'r--', lw=2, label=r"$R_G$")
     ax.set_xlabel("time (ps)")
     ax.set_ylabel(r"Angle between the first two inertia axes (°)")
-    ax.figure.savefig("output/inertia_traj_" + molecule_name + ".png")
+    ax.figure.savefig("output/inertia_" + molecule_name + ".png")
