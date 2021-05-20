@@ -41,7 +41,6 @@ The program follows the following steps:
 
 Project is created with:
 * Python 3.6 or 3.8
-...
 
 ## Setup
 
