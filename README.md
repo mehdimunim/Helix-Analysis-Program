@@ -56,22 +56,22 @@ $ cd ../l
 
 ## Flowchart
 
-A flowchart of the whole program can be found :
-https://github.com/mehdimunim/Interdisciplinary-Project/blob/main/flowcharts/flowchart%20program.png
+
+![Flowchart](https://github.com/mehdimunim/Helix-Analysis-Program/blob/main/flowcharts/flowchart%20program.png)
 
 ## Sources
 
-This program is inspired by Mihaly Meze analysis tool SIMULAID a simulation facilitator (2010) that performs a large number of simulation-related tasks: interconversion and modification of structure and trajectory files, optimization of orientation, and a large variety of analysis functions [https://mezeim01.u.hpc.mssm.edu/simulaid/simulaid.html].
+This program is inspired by Mihaly Mezei analysis tool SIMULAID a simulation facilitator (2010) that performs a large number of simulation-related tasks: interconversion and modification of structure and trajectory files, optimization of orientation, and a large variety of analysis functions [https://mezeim01.u.hpc.mssm.edu/simulaid/simulaid.html].
 
 
 ## Contact
 
 Created by :
-- Mehdi Munim @mehdimunim  Role: Bioinformatics Support
-- Hassna Boudalil @hassnabdl Role: Bioinformatics Support
-- Romain Fourel  @Romain-Fourel  Role:  IT Support
-- Naima Oulhourchemt @noulhourchemt   Role:  IT Support for Physics
+- Mehdi Munim @mehdimunim             Role: Bioinformatics Support
+- Hassna Boudalil @hassnabdl          Role: Bioinformatics Support
+- Romain Fourel  @Romain-Fourel       Role: IT Support
+- Naima Oulhourchemt @noulhourchemt   Role: IT Support for Physics
 
-Feel free to contact us !
+Feel free to contact us!
 
 
