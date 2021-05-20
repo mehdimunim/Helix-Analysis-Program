@@ -83,6 +83,43 @@ class DSSP:
 
         return list
 
+    def get_ca_with(self, first_assignement):
+        """
+        Get helices's CAs based on a pre-calculated assignement
+
+        ---
+        Parameters:
+        first_assignement: a precalculated assignement, same shape as secondary_structures
+
+        ---
+        Ouput:
+        CAS of the helices based on first_assignement
+
+        """
+        list = []
+        res_num = self.backbone["res_number_list"]
+        alpha_carbons = self.backbone["alpha_carbon"]
+
+        for type in [3, 4, 5]:
+            name = str(type) + "-helices"
+            helices = first_assignement[name]
+            i = 1
+            while i < len(helices):
+
+                # start and end residues of the helix
+                start = helices[i - 1]
+                end = helices[i]
+
+                # alpha carbons between start and end
+                cas = [alpha_carbons[j] for j, res in enumerate(
+                    res_num) if res >= start and res <= end]
+
+                list.append(cas)
+
+                i += 2
+
+        return list
+
     def basic_print(self):
         secondary_structures = self.secondary_structures
 

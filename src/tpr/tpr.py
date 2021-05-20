@@ -63,9 +63,9 @@ def tpr_algo(alpha_carbons, axis_direction, axis_center):
     return theta
 
 
-def tpr_helix(list_tpr, nhelix):
+def tpr_helix(list_tpr, nhelix, filename):
     """
-    Print turn angle per residue of the given frame as a dial plot
+    Print turn angle per residue of the given helix as a dial plot
     Save the result to PNG file
 
     ---
@@ -77,6 +77,7 @@ def tpr_helix(list_tpr, nhelix):
     Dial plot of the tpr for a given helix
 
     """
+    molecule_name = filename.split("/")[1][:-4]
 
     plt.axes
 
@@ -90,10 +91,17 @@ def tpr_helix(list_tpr, nhelix):
         theta_to_plot = [theta for _ in r]
         ax.plot(theta_to_plot, r)
 
+    textstr = "Number of frames " + str(len(list_tpr))
+    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+    ax.text(0.05, 0.05, textstr, transform=ax.transAxes, fontsize=14,
+            verticalalignment='bottom', bbox=props)
     ax.grid(True)
 
-    ax.set_title("Turn angle per residue " + str(nhelix), va='bottom')
-    plt.savefig("output/TPR_" + str(nhelix) + ".png")
+    ax.set_title("Turn angle per residue, helix " +
+                 str(nhelix) + " "+molecule_name, va='bottom')
+    plt.savefig("output/TPR_helix_" + str(nhelix) +
+                "_" + molecule_name + ".png")
+    plt.clf()
 
 
 def tpr_trajectory(filename):
@@ -104,10 +112,46 @@ def tpr_trajectory(filename):
 
     list_tprs = tpr_list(filename)
 
-    nhelix = min([len(frame) for frame in list_tprs])
+    nhelix = min([len(frame) for frame in list_tprs]) + 1
 
-    for i in range(nhelix):
-        tpr_helix(list_tprs, i)
+    for i in range(1, nhelix):
+        helix_tprs = list_tprs[i-1]
+        tpr_helix(helix_tprs, i)
+
+
+def tpr_traj_corrected(filename):
+    """
+    Same as tpr_trajectory but use first frame's helix assignements.
+
+    """
+    list_tprs = tpr_list_corrected(filename)
+
+    nhelix = min([len(frame) for frame in list_tprs]) + 1
+
+    for i in range(1, nhelix):
+        helix_tprs = [frame[i-1] for frame in list_tprs]
+        tpr_helix(helix_tprs, i, filename)
+
+
+def tpr_list_corrected(filename):
+    """
+    Correction of tpr_list
+    """
+    backbones = parse(filename, False)
+    list_thetas = []
+    first_backbone = backbones[0]
+    dssp = dssp_mod.DSSP(first_backbone)
+    first_assignement = dssp.get_structures()
+    for i, backbone in enumerate(backbones):
+        dssp = dssp_mod.DSSP(backbone)
+        list_helices = dssp.get_ca_with(first_assignement)
+        thetas = []
+        for helix in list_helices:
+            orig, axis = principal_axis(helix)
+            theta = tpr_algo(helix, axis, orig)
+            thetas.append(theta)
+        list_thetas.append(thetas)
+    return list_thetas
 
 
 def tpr(list_helices, filename):
@@ -133,10 +177,15 @@ def tpr(list_helices, filename):
         theta_to_plot = [theta for _ in r]
         ax.plot(theta_to_plot, r)
 
+    textstr = "Number of helices " + str(len(list_helices))
+    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+    ax.text(0.05, 0.05, textstr, transform=ax.transAxes, fontsize=14,
+            verticalalignment='bottom', bbox=props)
     ax.grid(True)
 
     ax.set_title("Turn angle per residue " + molecule_name, va='bottom')
     plt.savefig("output/TPR_" + molecule_name + ".png")
+    plt.clf()
 
 
 def tpr_list(trajectory_file):
