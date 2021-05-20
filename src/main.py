@@ -48,12 +48,6 @@ def main():
         print("   Lengths of all helices during the trajectory...\n")
         length_mod.length_traj_corrected(filename)
 
-        print("   Inertia axes...\n")
-        axis_mod.inertia_traj(filename)
-
-        print("   Center of mass for all helices during the trajectory...\n")
-        com_mod.showGraphMassCenters(filename, True)
-
         print("   Turn angle per residue for each helix...\n")
         tpr_mod.tpr_traj_corrected(filename)
 
@@ -68,12 +62,6 @@ def main():
 
         print("   Length of helices...\n")
         length_mod.length(dssp.get_ca(), filename)
-
-        print("   Inertia axes...\n")
-        axis_mod.inertia(dssp.get_ca(), filename)
-
-        print("   Center of mass for helices...\n")
-        com_mod.showGraphMassCenters(filename, False)
 
         print("   Turn angle per residue for helices...\n")
         tpr_mod.tpr(dssp.get_ca(), filename)
