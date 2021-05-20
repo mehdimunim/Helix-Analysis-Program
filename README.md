@@ -40,9 +40,7 @@ The program follows the following steps:
 ## Technologies used
 
 Project is created with:
-* Python 2.7 or 3.6
-* 
-...
+* Python 3.6 or 3.8
 
 ## Setup
 
@@ -52,7 +50,7 @@ To run this project :
 
 ```
 $ python3 src/main.py data/filename.pdb
-...
+
 ```
 
 
